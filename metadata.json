@@ -1,0 +1,8 @@
+{
+  "name": "Remix Avarani POS",
+  "description": "Offline POS billing, customer khata, daily reports, and stock management for Avarani Bastralaya (আবরণী বস্ত্রালয়).",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

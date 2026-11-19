@@ -1,0 +1,134 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "Authenticated shop owner profile and cloud sync metadata.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "description": "Firebase Auth UID of the owner." },
+        "storeName": { "type": "string", "description": "Retail store name." },
+        "displayName": { "type": "string", "description": "Owner display name." },
+        "email": { "type": "string", "description": "Owner email address." },
+        "createdAt": { "type": "string", "format": "date-time", "description": "Server creation timestamp." },
+        "updatedAt": { "type": "string", "format": "date-time", "description": "Server update timestamp." }
+      },
+      "required": ["userId", "storeName", "createdAt", "updatedAt"]
+    },
+    "StoreProduct": {
+      "title": "StoreProduct",
+      "description": "Clothing store product item with lookup code, bilingual names, price, and stock.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "description": "Owner UID." },
+        "code": { "type": "string", "description": "Product lookup code." },
+        "nameBn": { "type": "string", "description": "Bengali product name." },
+        "nameEn": { "type": "string", "description": "English product name." },
+        "category": { "type": "string", "description": "Product category." },
+        "price": { "type": "number", "description": "Selling price in INR." },
+        "stock": { "type": "integer", "description": "Available stock count." },
+        "createdAt": { "type": "string", "format": "date-time", "description": "Server creation timestamp." },
+        "updatedAt": { "type": "string", "format": "date-time", "description": "Server update timestamp." }
+      },
+      "required": ["userId", "code", "nameBn", "nameEn", "category", "price", "stock", "createdAt", "updatedAt"]
+    },
+    "StoreCustomer": {
+      "title": "StoreCustomer",
+      "description": "Customer Khata ledger record with code, contact details, and pending due.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "description": "Owner UID." },
+        "code": { "type": "string", "description": "Customer code." },
+        "name": { "type": "string", "description": "Customer name." },
+        "phone": { "type": "string", "description": "Phone number." },
+        "address": { "type": "string", "description": "Customer address." },
+        "due": { "type": "number", "description": "Pending due balance in INR." },
+        "createdAt": { "type": "string", "format": "date-time", "description": "Server creation timestamp." },
+        "updatedAt": { "type": "string", "format": "date-time", "description": "Server update timestamp." }
+      },
+      "required": ["userId", "code", "name", "phone", "address", "due", "createdAt", "updatedAt"]
+    },
+    "StoreBill": {
+      "title": "StoreBill",
+      "description": "Finalized POS bill summary.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "description": "Owner UID." },
+        "billNo": { "type": "integer", "description": "Sequential bill number." },
+        "dateIso": { "type": "string", "description": "YYYY-MM-DD bill date." },
+        "customerId": { "type": "string", "description": "Optional customer document ID." },
+        "customerCode": { "type": "string", "description": "Optional customer code." },
+        "customerName": { "type": "string", "description": "Customer name or Walk-in." },
+        "itemCount": { "type": "integer", "description": "Total item quantity in the bill." },
+        "subtotal": { "type": "number", "description": "Subtotal in INR." },
+        "discount": { "type": "number", "description": "Discount in INR." },
+        "netBill": { "type": "number", "description": "Net bill in INR." },
+        "prevDue": { "type": "number", "description": "Previous due included in bill." },
+        "grandPayable": { "type": "number", "description": "Total payable amount." },
+        "cashPaid": { "type": "number", "description": "Cash received." },
+        "remainingDue": { "type": "number", "description": "Remaining balance due." },
+        "createdAt": { "type": "string", "format": "date-time", "description": "Server creation timestamp." },
+        "updatedAt": { "type": "string", "format": "date-time", "description": "Server update timestamp." }
+      },
+      "required": ["userId", "billNo", "dateIso", "customerName", "itemCount", "subtotal", "discount", "netBill", "prevDue", "grandPayable", "cashPaid", "remainingDue", "createdAt", "updatedAt"]
+    },
+    "StoreExpense": {
+      "title": "StoreExpense",
+      "description": "Daily shop expense entry.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "description": "Owner UID." },
+        "dateIso": { "type": "string", "description": "YYYY-MM-DD expense date." },
+        "desc": { "type": "string", "description": "Expense description." },
+        "amount": { "type": "number", "description": "Expense amount in INR." },
+        "createdAt": { "type": "string", "format": "date-time", "description": "Server creation timestamp." },
+        "updatedAt": { "type": "string", "format": "date-time", "description": "Server update timestamp." }
+      },
+      "required": ["userId", "dateIso", "desc", "amount", "createdAt", "updatedAt"]
+    },
+    "StoreDuePayment": {
+      "title": "StoreDuePayment",
+      "description": "Customer Khata due collection payment record.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "description": "Owner UID." },
+        "dateIso": { "type": "string", "description": "YYYY-MM-DD payment date." },
+        "customerId": { "type": "string", "description": "Customer document ID." },
+        "customerCode": { "type": "string", "description": "Customer code." },
+        "customerName": { "type": "string", "description": "Customer name." },
+        "oldDue": { "type": "number", "description": "Due before payment." },
+        "amount": { "type": "number", "description": "Amount paid." },
+        "newDue": { "type": "number", "description": "Due after payment." },
+        "note": { "type": "string", "description": "Optional payment note." },
+        "createdAt": { "type": "string", "format": "date-time", "description": "Server creation timestamp." },
+        "updatedAt": { "type": "string", "format": "date-time", "description": "Server update timestamp." }
+      },
+      "required": ["userId", "dateIso", "customerId", "customerCode", "customerName", "oldDue", "amount", "newDue", "createdAt", "updatedAt"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": { "$ref": "#/entities/UserProfile" },
+      "description": "Shop owner profile document."
+    },
+    "/users/{userId}/products/{productId}": {
+      "schema": { "$ref": "#/entities/StoreProduct" },
+      "description": "User-scoped product stock catalog."
+    },
+    "/users/{userId}/customers/{customerId}": {
+      "schema": { "$ref": "#/entities/StoreCustomer" },
+      "description": "User-scoped customer Khata ledger."
+    },
+    "/users/{userId}/bills/{billId}": {
+      "schema": { "$ref": "#/entities/StoreBill" },
+      "description": "User-scoped POS sales bills."
+    },
+    "/users/{userId}/expenses/{expenseId}": {
+      "schema": { "$ref": "#/entities/StoreExpense" },
+      "description": "User-scoped daily shop expenses."
+    },
+    "/users/{userId}/duePayments/{paymentId}": {
+      "schema": { "$ref": "#/entities/StoreDuePayment" },
+      "description": "User-scoped customer due payment receipts."
+    }
+  }
+}

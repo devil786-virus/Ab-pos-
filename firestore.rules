@@ -1,0 +1,235 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Global default-deny safety net
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() >= 1 && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    function isValidUserProfile(data) {
+      return data.userId is string && data.userId == request.auth.uid &&
+             data.storeName is string && data.storeName.size() >= 1 && data.storeName.size() <= 100 &&
+             (!('displayName' in data) || (data.displayName is string && data.displayName.size() <= 100)) &&
+             (!('email' in data) || (data.email is string && data.email.size() <= 150));
+    }
+
+    function isValidProduct(data) {
+      return data.userId is string && data.userId == request.auth.uid &&
+             data.code is string && data.code.size() >= 1 && data.code.size() <= 30 &&
+             data.nameBn is string && data.nameBn.size() >= 1 && data.nameBn.size() <= 120 &&
+             data.nameEn is string && data.nameEn.size() >= 1 && data.nameEn.size() <= 120 &&
+             data.category is string && data.category.size() <= 60 &&
+             data.price is number && data.price >= 0 && data.price <= 10000000 &&
+             data.stock is int && data.stock >= 0 && data.stock <= 1000000;
+    }
+
+    function isValidCustomer(data) {
+      return data.userId is string && data.userId == request.auth.uid &&
+             data.code is string && data.code.size() >= 1 && data.code.size() <= 30 &&
+             data.name is string && data.name.size() >= 1 && data.name.size() <= 120 &&
+             data.phone is string && data.phone.size() <= 30 &&
+             data.address is string && data.address.size() <= 250 &&
+             data.due is number && data.due >= 0 && data.due <= 100000000;
+    }
+
+    function isValidBill(data) {
+      return data.userId is string && data.userId == request.auth.uid &&
+             data.billNo is int && data.billNo >= 1 && data.billNo <= 100000000 &&
+             data.dateIso is string && data.dateIso.size() == 10 &&
+             (!('customerId' in data) || (data.customerId is string && data.customerId.size() <= 128)) &&
+             (!('customerCode' in data) || (data.customerCode is string && data.customerCode.size() <= 30)) &&
+             data.customerName is string && data.customerName.size() >= 1 && data.customerName.size() <= 120 &&
+             data.itemCount is int && data.itemCount >= 0 && data.itemCount <= 100000 &&
+             data.subtotal is number && data.subtotal >= 0 && data.subtotal <= 100000000 &&
+             data.discount is number && data.discount >= 0 && data.discount <= 100000000 &&
+             data.netBill is number && data.netBill >= 0 && data.netBill <= 100000000 &&
+             data.prevDue is number && data.prevDue >= 0 && data.prevDue <= 100000000 &&
+             data.grandPayable is number && data.grandPayable >= 0 && data.grandPayable <= 100000000 &&
+             data.cashPaid is number && data.cashPaid >= 0 && data.cashPaid <= 100000000 &&
+             data.remainingDue is number && data.remainingDue >= 0 && data.remainingDue <= 100000000;
+    }
+
+    function isValidExpense(data) {
+      return data.userId is string && data.userId == request.auth.uid &&
+             data.dateIso is string && data.dateIso.size() == 10 &&
+             data.desc is string && data.desc.size() >= 1 && data.desc.size() <= 200 &&
+             data.amount is number && data.amount > 0 && data.amount <= 100000000;
+    }
+
+    function isValidDuePayment(data) {
+      return data.userId is string && data.userId == request.auth.uid &&
+             data.dateIso is string && data.dateIso.size() == 10 &&
+             data.customerId is string && data.customerId.size() >= 1 && data.customerId.size() <= 128 &&
+             data.customerCode is string && data.customerCode.size() <= 30 &&
+             data.customerName is string && data.customerName.size() >= 1 && data.customerName.size() <= 120 &&
+             data.oldDue is number && data.oldDue >= 0 && data.oldDue <= 100000000 &&
+             data.amount is number && data.amount > 0 && data.amount <= 100000000 &&
+             data.newDue is number && data.newDue >= 0 && data.newDue <= 100000000 &&
+             (!('note' in data) || (data.note is string && data.note.size() <= 200));
+    }
+
+    match /users/{userId} {
+      allow get: if isOwner(userId) && isValidId(userId);
+      allow list: if isOwner(userId);
+
+      allow create: if isOwner(userId) &&
+                       isValidId(userId) &&
+                       incoming().keys().hasAll(['userId', 'storeName', 'createdAt', 'updatedAt']) &&
+                       incoming().keys().hasOnly(['userId', 'storeName', 'displayName', 'email', 'createdAt', 'updatedAt']) &&
+                       incoming().createdAt is timestamp && incoming().createdAt <= request.time &&
+                       incoming().updatedAt is timestamp && incoming().updatedAt <= request.time &&
+                       isValidUserProfile(incoming());
+
+      allow update: if isSignedIn() &&
+                       isValidUserProfile(incoming()) &&
+                       isOwner(userId) &&
+                       isValidId(userId) &&
+                       incoming().userId == existing().userId &&
+                       incoming().createdAt == existing().createdAt &&
+                       incoming().updatedAt is timestamp && incoming().updatedAt <= request.time &&
+                       incoming().diff(existing()).affectedKeys().hasOnly(['storeName', 'displayName', 'email', 'updatedAt']);
+
+      allow delete: if isOwner(userId) && isValidId(userId);
+
+      match /products/{productId} {
+        allow get: if isOwner(userId) && isValidId(productId);
+        allow list: if isOwner(userId);
+
+        allow create: if isOwner(userId) &&
+                         isValidId(productId) &&
+                         incoming().keys().hasAll(['userId', 'code', 'nameBn', 'nameEn', 'category', 'price', 'stock', 'createdAt', 'updatedAt']) &&
+                         incoming().keys().hasOnly(['userId', 'code', 'nameBn', 'nameEn', 'category', 'price', 'stock', 'createdAt', 'updatedAt']) &&
+                         incoming().createdAt is timestamp && incoming().createdAt <= request.time &&
+                         incoming().updatedAt is timestamp && incoming().updatedAt <= request.time &&
+                         isValidProduct(incoming());
+
+        allow update: if isSignedIn() &&
+                         isValidProduct(incoming()) &&
+                         isOwner(userId) &&
+                         isValidId(productId) &&
+                         incoming().userId == existing().userId &&
+                         incoming().createdAt == existing().createdAt &&
+                         incoming().updatedAt is timestamp && incoming().updatedAt <= request.time &&
+                         incoming().diff(existing()).affectedKeys().hasOnly(['code', 'nameBn', 'nameEn', 'category', 'price', 'stock', 'updatedAt']);
+
+        allow delete: if isOwner(userId) && isValidId(productId);
+      }
+
+      match /customers/{customerId} {
+        allow get: if isOwner(userId) && isValidId(customerId);
+        allow list: if isOwner(userId);
+
+        allow create: if isOwner(userId) &&
+                         isValidId(customerId) &&
+                         incoming().keys().hasAll(['userId', 'code', 'name', 'phone', 'address', 'due', 'createdAt', 'updatedAt']) &&
+                         incoming().keys().hasOnly(['userId', 'code', 'name', 'phone', 'address', 'due', 'createdAt', 'updatedAt']) &&
+                         incoming().createdAt is timestamp && incoming().createdAt <= request.time &&
+                         incoming().updatedAt is timestamp && incoming().updatedAt <= request.time &&
+                         isValidCustomer(incoming());
+
+        allow update: if isSignedIn() &&
+                         isValidCustomer(incoming()) &&
+                         isOwner(userId) &&
+                         isValidId(customerId) &&
+                         incoming().userId == existing().userId &&
+                         incoming().createdAt == existing().createdAt &&
+                         incoming().updatedAt is timestamp && incoming().updatedAt <= request.time &&
+                         incoming().diff(existing()).affectedKeys().hasOnly(['code', 'name', 'phone', 'address', 'due', 'updatedAt']);
+
+        allow delete: if isOwner(userId) && isValidId(customerId);
+      }
+
+      match /bills/{billId} {
+        allow get: if isOwner(userId) && isValidId(billId);
+        allow list: if isOwner(userId);
+
+        allow create: if isOwner(userId) &&
+                         isValidId(billId) &&
+                         incoming().keys().hasAll(['userId', 'billNo', 'dateIso', 'customerName', 'itemCount', 'subtotal', 'discount', 'netBill', 'prevDue', 'grandPayable', 'cashPaid', 'remainingDue', 'createdAt', 'updatedAt']) &&
+                         incoming().keys().hasOnly(['userId', 'billNo', 'dateIso', 'customerId', 'customerCode', 'customerName', 'itemCount', 'subtotal', 'discount', 'netBill', 'prevDue', 'grandPayable', 'cashPaid', 'remainingDue', 'createdAt', 'updatedAt']) &&
+                         incoming().createdAt is timestamp && incoming().createdAt <= request.time &&
+                         incoming().updatedAt is timestamp && incoming().updatedAt <= request.time &&
+                         isValidBill(incoming());
+
+        allow update: if isSignedIn() &&
+                         isValidBill(incoming()) &&
+                         isOwner(userId) &&
+                         isValidId(billId) &&
+                         incoming().userId == existing().userId &&
+                         incoming().createdAt == existing().createdAt &&
+                         incoming().updatedAt is timestamp && incoming().updatedAt <= request.time &&
+                         incoming().diff(existing()).affectedKeys().hasOnly(['billNo', 'dateIso', 'customerId', 'customerCode', 'customerName', 'itemCount', 'subtotal', 'discount', 'netBill', 'prevDue', 'grandPayable', 'cashPaid', 'remainingDue', 'updatedAt']);
+
+        allow delete: if isOwner(userId) && isValidId(billId);
+      }
+
+      match /expenses/{expenseId} {
+        allow get: if isOwner(userId) && isValidId(expenseId);
+        allow list: if isOwner(userId);
+
+        allow create: if isOwner(userId) &&
+                         isValidId(expenseId) &&
+                         incoming().keys().hasAll(['userId', 'dateIso', 'desc', 'amount', 'createdAt', 'updatedAt']) &&
+                         incoming().keys().hasOnly(['userId', 'dateIso', 'desc', 'amount', 'createdAt', 'updatedAt']) &&
+                         incoming().createdAt is timestamp && incoming().createdAt <= request.time &&
+                         incoming().updatedAt is timestamp && incoming().updatedAt <= request.time &&
+                         isValidExpense(incoming());
+
+        allow update: if isSignedIn() &&
+                         isValidExpense(incoming()) &&
+                         isOwner(userId) &&
+                         isValidId(expenseId) &&
+                         incoming().userId == existing().userId &&
+                         incoming().createdAt == existing().createdAt &&
+                         incoming().updatedAt is timestamp && incoming().updatedAt <= request.time &&
+                         incoming().diff(existing()).affectedKeys().hasOnly(['dateIso', 'desc', 'amount', 'updatedAt']);
+
+        allow delete: if isOwner(userId) && isValidId(expenseId);
+      }
+
+      match /duePayments/{paymentId} {
+        allow get: if isOwner(userId) && isValidId(paymentId);
+        allow list: if isOwner(userId);
+
+        allow create: if isOwner(userId) &&
+                         isValidId(paymentId) &&
+                         incoming().keys().hasAll(['userId', 'dateIso', 'customerId', 'customerCode', 'customerName', 'oldDue', 'amount', 'newDue', 'createdAt', 'updatedAt']) &&
+                         incoming().keys().hasOnly(['userId', 'dateIso', 'customerId', 'customerCode', 'customerName', 'oldDue', 'amount', 'newDue', 'note', 'createdAt', 'updatedAt']) &&
+                         incoming().createdAt is timestamp && incoming().createdAt <= request.time &&
+                         incoming().updatedAt is timestamp && incoming().updatedAt <= request.time &&
+                         isValidDuePayment(incoming());
+
+        allow update: if isSignedIn() &&
+                         isValidDuePayment(incoming()) &&
+                         isOwner(userId) &&
+                         isValidId(paymentId) &&
+                         incoming().userId == existing().userId &&
+                         incoming().createdAt == existing().createdAt &&
+                         incoming().updatedAt is timestamp && incoming().updatedAt <= request.time &&
+                         incoming().diff(existing()).affectedKeys().hasOnly(['dateIso', 'customerId', 'customerCode', 'customerName', 'oldDue', 'amount', 'newDue', 'note', 'updatedAt']);
+
+        allow delete: if isOwner(userId) && isValidId(paymentId);
+      }
+    }
+  }
+}

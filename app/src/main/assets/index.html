@@ -1,0 +1,3659 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>আবরণী বস্ত্রালয় | Avarani Bastralaya POS</title>
+<style>
+  :root {
+    --primary: #8B1E24;
+    --primary-dark: #681217;
+    --primary-light: #FDF2F2;
+    --accent: #D97706;
+    --accent-light: #FEF3C7;
+    --success: #047857;
+    --success-light: #ECFDF5;
+    --danger: #B91C1C;
+    --danger-light: #FEF2F2;
+    --bg: #F8F5F0;
+    --card: #FFFFFF;
+    --text: #1F2937;
+    --text-muted: #4B5563;
+    --border: #E5E0D8;
+    --shadow: 0 2px 8px rgba(0,0,0,0.07);
+    --radius: 14px;
+    --base-font: 16px;
+  }
+
+  * {
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  html {
+    font-size: var(--base-font);
+  }
+
+  body {
+    margin: 0;
+    padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Noto Sans Bengali", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background-color: var(--bg);
+    color: var(--text);
+    line-height: 1.45;
+    padding-bottom: 86px;
+  }
+
+  /* Header */
+  .topbar {
+    position: sticky;
+    top: 0;
+    z-index: 40;
+    background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+    color: #FFFFFF;
+    padding: 10px 12px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.16);
+  }
+
+  .topbar-inner {
+    max-width: 1120px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+  }
+
+  .brand-logo {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    background: #FBBF24;
+    color: #681217;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.35rem;
+    font-weight: 800;
+    flex-shrink: 0;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  }
+
+  .brand-text h1 {
+    margin: 0;
+    font-size: 1.12rem;
+    font-weight: 800;
+    letter-spacing: 0.2px;
+    line-height: 1.2;
+  }
+
+  .brand-text p {
+    margin: 2px 0 0 0;
+    font-size: 0.72rem;
+    opacity: 0.9;
+    line-height: 1.2;
+  }
+
+  .topbar-controls {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+
+  .ctrl-btn {
+    border: 1px solid rgba(255,255,255,0.35);
+    background: rgba(255,255,255,0.14);
+    color: #FFFFFF;
+    border-radius: 10px;
+    padding: 7px 10px;
+    min-height: 40px;
+    min-width: 40px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+  }
+
+  .ctrl-btn:active {
+    background: rgba(255,255,255,0.28);
+    transform: scale(0.97);
+  }
+
+  .ctrl-btn.lang-btn {
+    background: #FBBF24;
+    color: #450A0A;
+    border-color: #F59E0B;
+  }
+
+  /* Main Container */
+  .container {
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 12px;
+  }
+
+  .tab-section {
+    display: none;
+  }
+
+  .tab-section.active {
+    display: block;
+  }
+
+  /* Responsive 2-column layout on tablet/desktop for Billing */
+  .billing-layout {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  @media (min-width: 860px) {
+    .billing-layout {
+      flex-direction: row;
+      align-items: flex-start;
+    }
+    .billing-left {
+      flex: 1.25;
+      min-width: 0;
+    }
+    .billing-right {
+      flex: 0.95;
+      min-width: 340px;
+      position: sticky;
+      top: 76px;
+    }
+  }
+
+  /* Cards */
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 14px;
+    box-shadow: var(--shadow);
+    margin-bottom: 12px;
+  }
+
+  .card-title {
+    margin: 0 0 10px 0;
+    font-size: 1rem;
+    font-weight: 800;
+    color: var(--primary);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  /* Form Elements */
+  label {
+    display: block;
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    margin-bottom: 4px;
+  }
+
+  input, select, textarea {
+    width: 100%;
+    min-height: 46px;
+    padding: 9px 12px;
+    font-size: 1rem;
+    font-family: inherit;
+    border: 2px solid #D1D5DB;
+    border-radius: 10px;
+    background: #FFFFFF;
+    color: var(--text);
+    outline: none;
+  }
+
+  input:focus, select:focus, textarea:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(139,30,36,0.12);
+  }
+
+  .row {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    align-items: flex-end;
+  }
+
+  .col {
+    flex: 1;
+    min-width: 120px;
+  }
+
+  .col-auto {
+    flex: 0 0 auto;
+  }
+
+  /* Buttons */
+  .btn {
+    min-height: 48px;
+    padding: 10px 14px;
+    border: none;
+    border-radius: 11px;
+    font-size: 0.95rem;
+    font-weight: 800;
+    font-family: inherit;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    text-align: center;
+    transition: transform 0.08s ease, opacity 0.12s ease;
+  }
+
+  .btn:active {
+    transform: scale(0.97);
+  }
+
+  .btn-sm {
+    min-height: 40px;
+    padding: 6px 11px;
+    font-size: 0.85rem;
+    border-radius: 9px;
+  }
+
+  .btn-primary {
+    background: var(--primary);
+    color: #FFFFFF;
+  }
+
+  .btn-success {
+    background: var(--success);
+    color: #FFFFFF;
+  }
+
+  .btn-accent {
+    background: var(--accent);
+    color: #FFFFFF;
+  }
+
+  .btn-outline {
+    background: #FFFFFF;
+    color: var(--text);
+    border: 2px solid #D1D5DB;
+  }
+
+  .btn-danger {
+    background: var(--danger);
+    color: #FFFFFF;
+  }
+
+  .btn-soft {
+    background: var(--primary-light);
+    color: var(--primary);
+    border: 1px solid #F5C2C5;
+  }
+
+  .btn-block {
+    width: 100%;
+  }
+
+  /* Badges & Chips */
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 3px 9px;
+    border-radius: 999px;
+    font-size: 0.78rem;
+    font-weight: 800;
+    background: #F3F4F6;
+    color: #374151;
+  }
+
+  .badge-code {
+    background: var(--primary-light);
+    color: var(--primary);
+    border: 1px solid #F5C2C5;
+  }
+
+  .badge-due {
+    background: var(--danger-light);
+    color: var(--danger);
+    border: 1px solid #FECACA;
+  }
+
+  .badge-ok {
+    background: var(--success-light);
+    color: var(--success);
+    border: 1px solid #A7F3D0;
+  }
+
+  .badge-warn {
+    background: var(--accent-light);
+    color: #92400E;
+    border: 1px solid #FDE68A;
+  }
+
+  .chip-scroll {
+    display: flex;
+    gap: 6px;
+    overflow-x: auto;
+    padding: 4px 0 6px 0;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .chip {
+    flex: 0 0 auto;
+    min-height: 40px;
+    padding: 6px 12px;
+    border-radius: 999px;
+    border: 1.5px solid var(--border);
+    background: #FFFDF9;
+    color: var(--text);
+    font-size: 0.84rem;
+    font-weight: 700;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    white-space: nowrap;
+  }
+
+  .chip.active, .chip:active {
+    background: var(--primary);
+    color: #FFFFFF;
+    border-color: var(--primary);
+  }
+
+  /* Customer Banner in Billing */
+  .cust-banner {
+    margin-top: 10px;
+    padding: 10px 12px;
+    border-radius: 10px;
+    background: #FFFBEB;
+    border: 1.5px solid #FDE68A;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  /* Product match preview */
+  .prod-preview {
+    margin-top: 8px;
+    padding: 9px 12px;
+    border-radius: 10px;
+    background: var(--success-light);
+    border: 1px solid #A7F3D0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    font-size: 0.9rem;
+    font-weight: 700;
+  }
+
+  /* Cart Item */
+  .cart-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .cart-item {
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    padding: 10px;
+    background: #FFFDF9;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .cart-item-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .cart-item-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .qty-stepper {
+    display: inline-flex;
+    align-items: center;
+    border: 1.5px solid #D1D5DB;
+    border-radius: 10px;
+    overflow: hidden;
+    background: #FFFFFF;
+  }
+
+  .qty-stepper button {
+    width: 42px;
+    height: 42px;
+    border: none;
+    background: #F3F4F6;
+    font-size: 1.2rem;
+    font-weight: 800;
+    color: var(--text);
+    cursor: pointer;
+  }
+
+  .qty-stepper button:active {
+    background: #E5E7EB;
+  }
+
+  .qty-stepper span {
+    min-width: 38px;
+    text-align: center;
+    font-weight: 800;
+    font-size: 1rem;
+    padding: 0 4px;
+  }
+
+  /* Summary Box */
+  .summary-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px 0;
+    font-size: 0.96rem;
+    border-bottom: 1px dashed #E5E7EB;
+  }
+
+  .summary-row.total {
+    font-size: 1.2rem;
+    font-weight: 900;
+    color: var(--primary);
+    border-bottom: 2px solid var(--primary);
+    padding: 9px 0;
+  }
+
+  .summary-row.due-highlight {
+    font-size: 1.12rem;
+    font-weight: 900;
+    padding: 9px 10px;
+    margin-top: 8px;
+    border-radius: 10px;
+    border-bottom: none;
+  }
+
+  /* List Cards (Customers, Stock, Reports) */
+  .item-card {
+    background: #FFFFFF;
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    padding: 12px;
+    margin-bottom: 10px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+  }
+
+  .item-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 8px;
+    margin-bottom: 6px;
+  }
+
+  .item-actions {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-top: 10px;
+  }
+
+  /* KPI Grid */
+  .kpi-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+
+  .kpi-box {
+    flex: 1 1 145px;
+    background: #FFFFFF;
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    padding: 12px;
+    box-shadow: var(--shadow);
+  }
+
+  .kpi-label {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--text-muted);
+  }
+
+  .kpi-value {
+    font-size: 1.32rem;
+    font-weight: 900;
+    margin-top: 4px;
+  }
+
+  /* Bottom Navigation */
+  .bottom-nav {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 50;
+    background: #FFFFFF;
+    border-top: 2px solid var(--border);
+    box-shadow: 0 -3px 14px rgba(0,0,0,0.09);
+    display: flex;
+    justify-content: space-around;
+    align-items: stretch;
+    padding: 4px 4px env(safe-area-inset-bottom, 4px) 4px;
+  }
+
+  .nav-btn {
+    flex: 1;
+    border: none;
+    background: transparent;
+    padding: 6px 4px;
+    min-height: 62px;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    color: #4B5563;
+    font-family: inherit;
+    border-radius: 10px;
+  }
+
+  .nav-btn .nav-icon {
+    font-size: 1.45rem;
+    line-height: 1;
+  }
+
+  .nav-btn .nav-label {
+    font-size: 0.72rem;
+    font-weight: 800;
+    line-height: 1.15;
+    text-align: center;
+  }
+
+  .nav-btn.active {
+    background: var(--primary-light);
+    color: var(--primary);
+  }
+
+  /* Modals */
+  .modal-backdrop {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.58);
+    z-index: 100;
+    padding: 14px;
+    overflow-y: auto;
+    align-items: flex-start;
+    justify-content: center;
+  }
+
+  .modal-backdrop.open {
+    display: flex;
+  }
+
+  .modal-box {
+    background: #FFFFFF;
+    width: 100%;
+    max-width: 540px;
+    border-radius: 16px;
+    padding: 16px;
+    margin: auto;
+    box-shadow: 0 12px 32px rgba(0,0,0,0.25);
+    max-height: 92vh;
+    overflow-y: auto;
+  }
+
+  .modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+    border-bottom: 1.5px solid var(--border);
+  }
+
+  .modal-header h3 {
+    margin: 0;
+    font-size: 1.08rem;
+    font-weight: 800;
+    color: var(--primary);
+  }
+
+  .close-x {
+    width: 42px;
+    height: 42px;
+    border-radius: 10px;
+    border: 1.5px solid #D1D5DB;
+    background: #F9FAFB;
+    font-size: 1.25rem;
+    font-weight: 800;
+    cursor: pointer;
+  }
+
+  /* Thermal Receipt Preview Styling */
+  .receipt-wrapper {
+    display: flex;
+    justify-content: center;
+    background: #E5E7EB;
+    padding: 12px;
+    border-radius: 12px;
+    overflow-x: auto;
+  }
+
+  .receipt-paper {
+    position: relative;
+    background: #FFFFFF;
+    color: #000000;
+    font-family: "Courier New", Courier, "Noto Sans Bengali", monospace;
+    padding: 12px 10px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.18);
+    overflow: hidden;
+  }
+
+  .receipt-paper.w58 {
+    width: 220px;
+    font-size: 11px;
+  }
+
+  .receipt-paper.w80 {
+    width: 302px;
+    font-size: 12.5px;
+  }
+
+  .receipt-watermark {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(-32deg);
+    font-size: 1.55em;
+    font-weight: 900;
+    color: rgba(0, 0, 0, 0.085);
+    white-space: nowrap;
+    pointer-events: none;
+    z-index: 1;
+    text-align: center;
+    line-height: 1.8;
+    user-select: none;
+  }
+
+  .receipt-content {
+    position: relative;
+    z-index: 2;
+  }
+
+  .rcpt-center { text-align: center; }
+  .rcpt-bold { font-weight: 800; }
+  .rcpt-hr { border-top: 1px dashed #000; margin: 6px 0; }
+  .rcpt-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 6px;
+    margin: 2px 0;
+  }
+  .rcpt-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.94em;
+  }
+  .rcpt-table th, .rcpt-table td {
+    padding: 2px 0;
+    text-align: left;
+    vertical-align: top;
+  }
+  .rcpt-table th.num, .rcpt-table td.num {
+    text-align: right;
+    white-space: nowrap;
+  }
+
+  /* Toast */
+  .toast {
+    position: fixed;
+    top: 74px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #111827;
+    color: #FFFFFF;
+    padding: 10px 18px;
+    border-radius: 999px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    z-index: 200;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.28);
+    display: none;
+    max-width: 90%;
+    text-align: center;
+  }
+
+  .empty-state {
+    text-align: center;
+    padding: 26px 14px;
+    color: var(--text-muted);
+    font-weight: 600;
+  }
+
+  /* Print Rules for 58mm / 80mm Thermal Printers & Browser Print */
+  @media print {
+    body {
+      background: #FFFFFF !important;
+      padding: 0 !important;
+      margin: 0 !important;
+    }
+    .topbar, .container, .bottom-nav, .modal-header, .no-print, .toast {
+      display: none !important;
+    }
+    .modal-backdrop {
+      position: static !important;
+      background: transparent !important;
+      padding: 0 !important;
+      display: block !important;
+    }
+    .modal-backdrop:not(.print-target) {
+      display: none !important;
+    }
+    .modal-box {
+      box-shadow: none !important;
+      padding: 0 !important;
+      margin: 0 !important;
+      max-width: none !important;
+      max-height: none !important;
+      overflow: visible !important;
+    }
+    .receipt-wrapper {
+      background: transparent !important;
+      padding: 0 !important;
+      display: block !important;
+    }
+    .receipt-paper {
+      box-shadow: none !important;
+      margin: 0 auto !important;
+      padding: 4px !important;
+      color: #000000 !important;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+    .receipt-paper.w58 {
+      width: 58mm !important;
+    }
+    .receipt-paper.w80 {
+      width: 80mm !important;
+    }
+  }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="brand">
+      <div class="brand-logo" aria-hidden="true">আ</div>
+      <div class="brand-text">
+        <h1 id="hdr-store-name">আবরণী বস্ত্রালয়</h1>
+        <p id="hdr-store-addr">নিমতলা বাজার, খেজুরী, পূর্ব মেদিনীপুর - ৭২১৪৩১</p>
+      </div>
+    </div>
+    <div class="topbar-controls">
+      <button type="button" class="ctrl-btn" id="btn-cloud-sync" onclick="openCloudSyncSheet()" style="display:none;" aria-label="Cloud Sync">☁️</button>
+      <button type="button" class="ctrl-btn" id="btn-ai-assist" onclick="openAiAssistant()" style="display:none; background:#F59E0B; color:#450A0A; border-color:#FBBF24;" aria-label="AI Assistant">✨ AI</button>
+      <button type="button" class="ctrl-btn" onclick="adjustFont(-1)" aria-label="Decrease font size">A-</button>
+      <button type="button" class="ctrl-btn" onclick="adjustFont(1)" aria-label="Increase font size">A+</button>
+      <button type="button" class="ctrl-btn lang-btn" id="btn-lang-toggle" onclick="toggleLang()">EN / বাংলা</button>
+      <button type="button" class="ctrl-btn" onclick="openSettingsModal()" aria-label="Settings and Backup">⚙️</button>
+    </div>
+  </div>
+</header>
+
+<div id="toast" class="toast"></div>
+
+<main class="container">
+  <!-- TAB 1: BILLING -->
+  <section id="tab-billing" class="tab-section active">
+    <div class="billing-layout">
+      <div class="billing-left">
+        <!-- Customer Quick Code Selection -->
+        <div class="card">
+          <div class="card-title">
+            <span data-i18n="cust_select_title">👤 কাস্টমার নির্বাচন (কোড বা নাম)</span>
+            <div style="display:flex; gap:6px;">
+              <button type="button" class="btn btn-sm btn-outline" onclick="clearSelectedCustomer()" data-i18n="walk_in">নগদ ক্রেতা</button>
+              <button type="button" class="btn btn-sm btn-soft" onclick="openCustomerModal(null, true)" data-i18n="new_cust_short">+ নতুন</button>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <label for="bill-cust-code" data-i18n="cust_code_label">কাস্টমার কোড / ফোন / নাম (যেমন: 503)</label>
+              <input type="text" id="bill-cust-code" oninput="onCustomerCodeInput()" placeholder="503 / Arun / Phone..." autocomplete="off">
+            </div>
+            <div class="col-auto">
+              <button type="button" class="btn btn-outline" onclick="openPickerModal('customer')" data-i18n="browse">তালিকা</button>
+            </div>
+          </div>
+          <div id="bill-cust-banner" class="cust-banner" style="display:none;"></div>
+        </div>
+
+        <!-- Product Quick Code Entry -->
+        <div class="card">
+          <div class="card-title">
+            <span data-i18n="quick_item_entry">🏷️ প্রোডাক্ট কোড দিয়ে বিল</span>
+            <button type="button" class="btn btn-sm btn-soft" onclick="openPickerModal('product')" data-i18n="browse_items">সব পণ্য দেখুন</button>
+          </div>
+          <div class="row">
+            <div class="col" style="flex:1.5;">
+              <label for="bill-prod-code" data-i18n="prod_code_label">প্রোডাক্ট কোড বা নাম (যেমন: 101)</label>
+              <input type="text" id="bill-prod-code" oninput="onProductCodeInput()" onkeydown="if(event.key==='Enter'){event.preventDefault();addByCodeInput();}" placeholder="101..." autocomplete="off">
+            </div>
+            <div class="col" style="max-width:92px; min-width:80px;">
+              <label for="bill-prod-qty" data-i18n="qty">সংখ্যা</label>
+              <input type="number" id="bill-prod-qty" value="1" min="1" step="1">
+            </div>
+            <div class="col-auto">
+              <button type="button" class="btn btn-primary" onclick="addByCodeInput()" data-i18n="add_btn">+ যোগ</button>
+            </div>
+          </div>
+          <div id="bill-prod-preview" class="prod-preview" style="display:none;"></div>
+
+          <div style="margin-top:10px;">
+            <label data-i18n="quick_tap_items">দ্রুত যোগ করুন:</label>
+            <div id="quick-product-chips" class="chip-scroll"></div>
+          </div>
+        </div>
+
+        <!-- Cart Items -->
+        <div class="card">
+          <div class="card-title">
+            <span data-i18n="bill_items_title">🛒 বিলের তালিকা</span>
+            <span id="cart-count-badge" class="badge badge-code">0</span>
+          </div>
+          <div id="cart-list" class="cart-list"></div>
+        </div>
+      </div>
+
+      <!-- Billing Summary & Payment -->
+      <div class="billing-right">
+        <div class="card">
+          <div class="card-title">
+            <span data-i18n="bill_calc_title">💰 হিসাব ও পেমেন্ট</span>
+            <button type="button" class="btn btn-sm btn-outline" onclick="clearCartConfirm()" data-i18n="clear_bill">পরিষ্কার</button>
+          </div>
+
+          <div class="summary-row">
+            <span data-i18n="subtotal">মোট দাম (Subtotal)</span>
+            <strong id="sum-subtotal">₹0.00</strong>
+          </div>
+
+          <div class="summary-row" style="gap:10px;">
+            <span data-i18n="discount_rs">ছাড় (Discount ₹)</span>
+            <input type="number" id="bill-discount" value="0" min="0" oninput="recalcTotals()" style="max-width:130px; min-height:40px; text-align:right; font-weight:800;">
+          </div>
+
+          <div class="summary-row">
+            <span data-i18n="net_bill">বর্তমান বিল (Net Bill)</span>
+            <strong id="sum-netbill">₹0.00</strong>
+          </div>
+
+          <div class="summary-row">
+            <span data-i18n="prev_due">আগের বাকি (Old Due)</span>
+            <strong id="sum-prevdue" style="color:var(--danger);">₹0.00</strong>
+          </div>
+
+          <div class="summary-row total">
+            <span data-i18n="grand_payable">সর্বমোট পাওনা</span>
+            <span id="sum-grandtotal">₹0.00</span>
+          </div>
+
+          <div style="margin-top:10px;">
+            <label for="bill-cash-paid" data-i18n="cash_paid_label">নগদ জমা (Cash Paid ₹)</label>
+            <input type="number" id="bill-cash-paid" value="0" min="0" oninput="onCashPaidManual()" style="font-size:1.15rem; font-weight:900; color:var(--success);">
+            <div class="chip-scroll" style="margin-top:6px;">
+              <button type="button" class="chip" onclick="setQuickCash('exact')" data-i18n="cash_exact">পুরো টাকা</button>
+              <button type="button" class="chip" onclick="setQuickCash('net')" data-i18n="cash_net_only">শুধু আজকের বিল</button>
+              <button type="button" class="chip" onclick="setQuickCash(500)">₹500</button>
+              <button type="button" class="chip" onclick="setQuickCash(1000)">₹1000</button>
+              <button type="button" class="chip" onclick="setQuickCash(0)" data-i18n="cash_zero">₹0 (বাকি)</button>
+            </div>
+          </div>
+
+          <div id="sum-due-box" class="summary-row due-highlight badge-due">
+            <span id="sum-due-label" data-i18n="remaining_due">বাকি থাকল (Due)</span>
+            <span id="sum-remaining-due">₹0.00</span>
+          </div>
+
+          <div style="margin-top:12px; display:flex; flex-direction:column; gap:8px;">
+            <button type="button" class="btn btn-accent btn-block" onclick="openUpiQrModal()" data-i18n="show_upi_qr">📱 UPI QR কোড দেখান (Paytm / GPay / PhonePe)</button>
+            <div class="row">
+              <div class="col">
+                <button type="button" class="btn btn-success btn-block" onclick="finalizeBill(true)" data-i18n="save_and_print">🖨️ সেভ ও প্রিন্ট বিল</button>
+              </div>
+              <div class="col-auto">
+                <button type="button" class="btn btn-primary" onclick="finalizeBill(false)" data-i18n="save_only">💾 সেভ</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TAB 2: CUSTOMER KHATA -->
+  <section id="tab-khata" class="tab-section">
+    <div class="kpi-grid">
+      <div class="kpi-box">
+        <div class="kpi-label" data-i18n="total_customers">মোট কাস্টমার</div>
+        <div class="kpi-value" id="khata-total-cust">0</div>
+      </div>
+      <div class="kpi-box">
+        <div class="kpi-label" data-i18n="total_market_due">মোট বাকি পাওনা</div>
+        <div class="kpi-value" id="khata-total-due" style="color:var(--danger);">₹0.00</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="row">
+        <div class="col">
+          <input type="text" id="khata-search" oninput="renderKhata()" placeholder="কোড, নাম বা ফোন খুঁজুন...">
+        </div>
+        <div class="col-auto">
+          <button type="button" class="btn btn-primary" onclick="openCustomerModal(null, false)" data-i18n="add_customer">+ কাস্টমার</button>
+        </div>
+      </div>
+      <div class="chip-scroll" style="margin-top:8px;">
+        <button type="button" class="chip active" id="khata-filter-all" onclick="setKhataFilter('all')" data-i18n="filter_all">সবাই</button>
+        <button type="button" class="chip" id="khata-filter-due" onclick="setKhataFilter('due')" data-i18n="filter_due_only">শুধু বাকি আছে</button>
+      </div>
+    </div>
+
+    <div id="khata-list"></div>
+  </section>
+
+  <!-- TAB 3: DAILY REPORTS & INCOME-EXPENSE -->
+  <section id="tab-reports" class="tab-section">
+    <div class="card">
+      <div class="row" style="align-items:center;">
+        <div class="col">
+          <label for="report-date" data-i18n="select_date">তারিখ নির্বাচন করুন</label>
+          <input type="date" id="report-date" onchange="renderReports()">
+        </div>
+        <div class="col-auto" style="padding-top:20px;">
+          <button type="button" class="btn btn-soft" onclick="setReportToday()" data-i18n="today_btn">আজকের হিসাব</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="kpi-grid">
+      <div class="kpi-box">
+        <div class="kpi-label" data-i18n="rpt_total_sales">মোট বিক্রি (Sales)</div>
+        <div class="kpi-value" id="rpt-sales" style="color:var(--primary);">₹0.00</div>
+      </div>
+      <div class="kpi-box">
+        <div class="kpi-label" data-i18n="rpt_cash_in">মোট নগদ জমা</div>
+        <div class="kpi-value" id="rpt-cash" style="color:var(--success);">₹0.00</div>
+      </div>
+      <div class="kpi-box">
+        <div class="kpi-label" data-i18n="rpt_new_dues">নতুন বাকি</div>
+        <div class="kpi-value" id="rpt-dues" style="color:var(--danger);">₹0.00</div>
+      </div>
+      <div class="kpi-box">
+        <div class="kpi-label" data-i18n="rpt_expenses">দোকানের খরচ</div>
+        <div class="kpi-value" id="rpt-expense" style="color:var(--accent);">₹0.00</div>
+      </div>
+    </div>
+
+    <div class="card" style="background:linear-gradient(135deg,#064E3B,#047857); color:#FFFFFF;">
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+        <div>
+          <div style="font-size:0.86rem; opacity:0.9; font-weight:700;" data-i18n="net_cash_hand">হাতে থাকা নিট নগদ (Cash In - Expense)</div>
+          <div id="rpt-net-cash" style="font-size:1.55rem; font-weight:900;">₹0.00</div>
+        </div>
+        <button type="button" class="ctrl-btn" onclick="openSettingsModal()" data-i18n="backup_restore_btn">💾 ব্যাকআপ / রিস্টোর</button>
+      </div>
+    </div>
+
+    <!-- Add Expense -->
+    <div class="card">
+      <div class="card-title"><span data-i18n="add_expense_title">💸 দোকানের খরচ যোগ করুন</span></div>
+      <div class="chip-scroll" style="margin-bottom:8px;">
+        <button type="button" class="chip" onclick="fillExpensePreset('চা-জলখাবার / Tea-Snacks')">☕ <span data-i18n="exp_tea">চা-জলখাবার</span></button>
+        <button type="button" class="chip" onclick="fillExpensePreset('বিদ্যুৎ বিল / Electricity')">⚡ <span data-i18n="exp_elec">বিদ্যুৎ বিল</span></button>
+        <button type="button" class="chip" onclick="fillExpensePreset('গাড়ি ভাড়া / Transport')">🚚 <span data-i18n="exp_trans">গাড়ি ভাড়া</span></button>
+        <button type="button" class="chip" onclick="fillExpensePreset('কর্মচারী / Staff')">👷 <span data-i18n="exp_staff">কর্মচারী</span></button>
+        <button type="button" class="chip" onclick="fillExpensePreset('প্যাকেজিং / Packaging')">🛍️ <span data-i18n="exp_pack">প্যাকেজিং</span></button>
+      </div>
+      <div class="row">
+        <div class="col" style="flex:1.6;">
+          <label for="exp-desc" data-i18n="exp_desc_label">খরচের বিবরণ</label>
+          <input type="text" id="exp-desc" placeholder="Tea, Electricity bill...">
+        </div>
+        <div class="col" style="max-width:130px;">
+          <label for="exp-amt" data-i18n="amount_rs">টাকা (₹)</label>
+          <input type="number" id="exp-amt" min="1" placeholder="50">
+        </div>
+        <div class="col-auto">
+          <button type="button" class="btn btn-primary" onclick="addExpense()" data-i18n="add_btn">+ যোগ</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span data-i18n="daily_bills_list">🧾 আজকের বিল ও জমা</span></div>
+      <div id="rpt-bills-list"></div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span data-i18n="daily_exp_list">📉 আজকের খরচের তালিকা</span></div>
+      <div id="rpt-expenses-list"></div>
+    </div>
+  </section>
+
+  <!-- TAB 4: PRODUCT STOCK & CODES -->
+  <section id="tab-stock" class="tab-section">
+    <div class="kpi-grid">
+      <div class="kpi-box">
+        <div class="kpi-label" data-i18n="total_products">মোট পণ্য</div>
+        <div class="kpi-value" id="stk-total-items">0</div>
+      </div>
+      <div class="kpi-box">
+        <div class="kpi-label" data-i18n="total_stock_units">মোট স্টক সংখ্যা</div>
+        <div class="kpi-value" id="stk-total-qty">0</div>
+      </div>
+      <div class="kpi-box">
+        <div class="kpi-label" data-i18n="low_stock_items">কম স্টক (≤ 5)</div>
+        <div class="kpi-value" id="stk-low-count" style="color:var(--danger);">0</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="row">
+        <div class="col">
+          <input type="text" id="stock-search" oninput="renderStock()" placeholder="কোড বা পণ্যের নাম খুঁজুন...">
+        </div>
+        <div class="col-auto">
+          <button type="button" class="btn btn-primary" onclick="openProductModal(null)" data-i18n="add_product">+ নতুন পণ্য</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="stock-list"></div>
+  </section>
+</main>
+
+<!-- FIXED BOTTOM NAVIGATION (4 TABS) -->
+<nav class="bottom-nav" aria-label="Primary Navigation">
+  <button type="button" class="nav-btn active" id="nav-billing" onclick="switchTab('billing')">
+    <span class="nav-icon">🧾</span>
+    <span class="nav-label" data-i18n="tab_billing">বিলিং</span>
+  </button>
+  <button type="button" class="nav-btn" id="nav-khata" onclick="switchTab('khata')">
+    <span class="nav-icon">📒</span>
+    <span class="nav-label" data-i18n="tab_khata">কাস্টমার খাতা</span>
+  </button>
+  <button type="button" class="nav-btn" id="nav-reports" onclick="switchTab('reports')">
+    <span class="nav-icon">📊</span>
+    <span class="nav-label" data-i18n="tab_reports">প্রতিদিনের হিসাব</span>
+  </button>
+  <button type="button" class="nav-btn" id="nav-stock" onclick="switchTab('stock')">
+    <span class="nav-icon">📦</span>
+    <span class="nav-label" data-i18n="tab_stock">পণ্যের স্টক</span>
+  </button>
+</nav>
+
+<!-- MODAL: PRODUCT ADD / EDIT -->
+<div id="modal-product" class="modal-backdrop">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h3 id="modal-prod-title">পণ্য যোগ / এডিট</h3>
+      <button type="button" class="close-x" onclick="closeModal('modal-product')">✕</button>
+    </div>
+    <input type="hidden" id="edit-prod-id">
+    <div class="row">
+      <div class="col">
+        <label for="prod-code" data-i18n="prod_code">প্রোডাক্ট কোড *</label>
+        <input type="text" id="prod-code" placeholder="101">
+      </div>
+      <div class="col">
+        <label for="prod-category" data-i18n="category">ধরন / ক্যাটাগরি</label>
+        <input type="text" id="prod-category" placeholder="Saree / Panjabi / Kurti">
+      </div>
+    </div>
+    <div style="margin-top:8px;">
+      <label for="prod-name-bn" data-i18n="prod_name_bn">পণ্যের নাম (বাংলা) *</label>
+      <input type="text" id="prod-name-bn" placeholder="তাঁতের শাড়ি">
+    </div>
+    <div style="margin-top:8px;">
+      <label for="prod-name-en" data-i18n="prod_name_en">Product Name (English)</label>
+      <input type="text" id="prod-name-en" placeholder="Tant Cotton Saree">
+    </div>
+    <div class="row" style="margin-top:8px;">
+      <div class="col">
+        <label for="prod-price" data-i18n="price_rs">দাম (₹) *</label>
+        <input type="number" id="prod-price" min="0" step="1" placeholder="650">
+      </div>
+      <div class="col">
+        <label for="prod-stock" data-i18n="stock_qty">স্টক সংখ্যা *</label>
+        <input type="number" id="prod-stock" min="0" step="1" placeholder="25">
+      </div>
+    </div>
+    <div style="margin-top:14px; display:flex; gap:8px;">
+      <button type="button" class="btn btn-primary btn-block" onclick="saveProduct()" data-i18n="save_btn">সেভ করুন</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: CUSTOMER ADD / EDIT -->
+<div id="modal-customer" class="modal-backdrop">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h3 id="modal-cust-title">কাস্টমার যোগ / এডিট</h3>
+      <button type="button" class="close-x" onclick="closeModal('modal-customer')">✕</button>
+    </div>
+    <input type="hidden" id="edit-cust-id">
+    <input type="hidden" id="edit-cust-select-after" value="0">
+    <div class="row">
+      <div class="col">
+        <label for="cust-code" data-i18n="cust_code">কাস্টমার কোড *</label>
+        <input type="text" id="cust-code" placeholder="503">
+      </div>
+      <div class="col">
+        <label for="cust-phone" data-i18n="phone">ফোন নম্বর</label>
+        <input type="tel" id="cust-phone" placeholder="9876543210">
+      </div>
+    </div>
+    <div style="margin-top:8px;">
+      <label for="cust-name" data-i18n="cust_name">কাস্টমারের নাম *</label>
+      <input type="text" id="cust-name" placeholder="Arun / অরুণ">
+    </div>
+    <div style="margin-top:8px;">
+      <label for="cust-address" data-i18n="address">ঠিকানা</label>
+      <input type="text" id="cust-address" placeholder="Nimtala Bazar, Khejuri">
+    </div>
+    <div style="margin-top:8px;">
+      <label for="cust-due" data-i18n="old_due_rs">পূর্বের বাকি (₹)</label>
+      <input type="number" id="cust-due" min="0" value="0">
+    </div>
+    <div style="margin-top:14px;">
+      <button type="button" class="btn btn-primary btn-block" onclick="saveCustomer()" data-i18n="save_btn">সেভ করুন</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: RECEIVE DUE PAYMENT -->
+<div id="modal-due-pay" class="modal-backdrop">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h3 data-i18n="receive_due_title">💰 বাকি টাকা জমা</h3>
+      <button type="button" class="close-x" onclick="closeModal('modal-due-pay')">✕</button>
+    </div>
+    <input type="hidden" id="due-pay-cust-id">
+    <div id="due-pay-info" class="cust-banner" style="margin-top:0; margin-bottom:10px;"></div>
+    <div>
+      <label for="due-pay-amount" data-i18n="amount_received_rs">জমা দেওয়া টাকা (₹)</label>
+      <input type="number" id="due-pay-amount" min="1" style="font-size:1.25rem; font-weight:900; color:var(--success);">
+    </div>
+    <div style="margin-top:8px;">
+      <label for="due-pay-note" data-i18n="note_optional">মন্তব্য (ঐচ্ছিক)</label>
+      <input type="text" id="due-pay-note" placeholder="Cash / UPI...">
+    </div>
+    <div style="margin-top:14px; display:flex; gap:8px;">
+      <button type="button" class="btn btn-success btn-block" onclick="submitDuePayment(true)" data-i18n="save_print_receipt">জমা ও রসিদ প্রিন্ট</button>
+      <button type="button" class="btn btn-primary" onclick="submitDuePayment(false)" data-i18n="save_only">💾 সেভ</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: CUSTOMER HISTORY -->
+<div id="modal-cust-history" class="modal-backdrop">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h3 id="hist-title">কাস্টমার খাতা</h3>
+      <button type="button" class="close-x" onclick="closeModal('modal-cust-history')">✕</button>
+    </div>
+    <div id="hist-summary" style="margin-bottom:10px;"></div>
+    <div id="hist-list"></div>
+  </div>
+</div>
+
+<!-- MODAL: PICKER (CUSTOMER / PRODUCT) -->
+<div id="modal-picker" class="modal-backdrop">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h3 id="picker-title">তালিকা</h3>
+      <button type="button" class="close-x" onclick="closeModal('modal-picker')">✕</button>
+    </div>
+    <input type="text" id="picker-search" oninput="renderPickerList()" placeholder="খুঁজুন..." style="margin-bottom:10px;">
+    <div id="picker-list"></div>
+  </div>
+</div>
+
+<!-- MODAL: UPI QR CODE -->
+<div id="modal-upi" class="modal-backdrop">
+  <div class="modal-box" style="text-align:center;">
+    <div class="modal-header">
+      <h3 data-i18n="upi_modal_title">📱 UPI পেমেন্ট স্ক্যান করুন</h3>
+      <button type="button" class="close-x" onclick="closeModal('modal-upi')">✕</button>
+    </div>
+    <div style="font-weight:800; font-size:1.05rem; color:var(--primary);">Avarani bastralaya (আবরণী বস্ত্রালয়)</div>
+    <div style="font-size:0.86rem; color:var(--text-muted); margin-bottom:8px;">UPI: <strong>8145990958@okbizaxis</strong> | +91 81459 90958</div>
+    <div style="max-width:220px; margin:0 auto 10px auto;">
+      <label for="upi-amount-input" data-i18n="upi_amount_label">টাকার পরিমাণ (₹)</label>
+      <input type="number" id="upi-amount-input" min="0" oninput="refreshUpiModalQr()" style="text-align:center; font-size:1.2rem; font-weight:900;">
+    </div>
+    <div id="upi-qr-container" style="display:inline-block; padding:12px; background:#FFFFFF; border:2px solid var(--border); border-radius:14px;"></div>
+    <div style="margin-top:10px; font-size:0.8rem; color:var(--text-muted);" data-i18n="upi_scan_hint">PhonePe, Google Pay, Paytm বা BHIM দিয়ে স্ক্যান করুন</div>
+  </div>
+</div>
+
+<!-- MODAL: RECEIPT PREVIEW & THERMAL PRINT -->
+<div id="modal-receipt" class="modal-backdrop print-target">
+  <div class="modal-box">
+    <div class="modal-header no-print">
+      <h3 data-i18n="receipt_preview_title">🧾 রসিদ প্রিভিউ ও প্রিন্ট</h3>
+      <button type="button" class="close-x" onclick="closeModal('modal-receipt')">✕</button>
+    </div>
+
+    <div class="no-print" style="background:#F9FAFB; border:1px solid var(--border); border-radius:12px; padding:10px; margin-bottom:10px;">
+      <div class="row" style="align-items:center;">
+        <div class="col">
+          <label data-i18n="paper_width">কাগজের মাপ (Thermal Width)</label>
+          <div style="display:flex; gap:6px;">
+            <button type="button" class="chip" id="rcpt-w58-btn" onclick="setReceiptWidth('58mm')">58mm</button>
+            <button type="button" class="chip" id="rcpt-w80-btn" onclick="setReceiptWidth('80mm')">80mm</button>
+          </div>
+        </div>
+        <div class="col">
+          <label data-i18n="watermark_toggle">ওয়াটারমার্ক (Watermark)</label>
+          <button type="button" class="chip" id="rcpt-wm-toggle" onclick="toggleReceiptWatermark()">ON / OFF</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="receipt-wrapper">
+      <div id="receipt-paper" class="receipt-paper w58">
+        <div id="receipt-watermark" class="receipt-watermark">আবরণী বস্ত্রালয়</div>
+        <div id="receipt-content" class="receipt-content"></div>
+      </div>
+    </div>
+
+    <div class="no-print" style="margin-top:12px; display:flex; flex-direction:column; gap:8px;">
+      <button type="button" class="btn btn-success btn-block" onclick="triggerPrint()" data-i18n="print_btn">🖨️ প্রিন্ট করুন (Thermal / PDF)</button>
+      <button type="button" class="btn btn-outline btn-block" onclick="printUsbEscPos()" data-i18n="usb_otg_btn">🔌 USB / OTG থার্মাল প্রিন্ট (ESC/POS)</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: SETTINGS & BACKUP -->
+<div id="modal-settings" class="modal-backdrop">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h3 data-i18n="settings_title">⚙️ সেটিংস ও ডেটা ব্যাকআপ</h3>
+      <button type="button" class="close-x" onclick="closeModal('modal-settings')">✕</button>
+    </div>
+
+    <div class="card" style="background:#FFFDF9; margin-bottom:10px;">
+      <div style="font-weight:800; color:var(--primary);">আবরণী বস্ত্রালয় (Avarani Bastralaya)</div>
+      <div style="font-size:0.84rem; color:var(--text-muted);">Nimtala Bazar, Khejuri, Purba Medinipur - 721431</div>
+      <div style="font-size:0.84rem; color:var(--text-muted);">Phone: +91 81459 90958 | UPI: 8145990958@okbizaxis</div>
+    </div>
+
+    <div style="margin-bottom:10px;">
+      <label for="set-paper-width" data-i18n="default_paper_width">ডিফল্ট প্রিন্টার পেপার</label>
+      <select id="set-paper-width" onchange="saveSettingsFromUi()">
+        <option value="58mm">58mm Thermal (2 inch)</option>
+        <option value="80mm">80mm Thermal (3 inch)</option>
+      </select>
+    </div>
+
+    <div class="row" style="margin-bottom:10px; align-items:center;">
+      <div class="col">
+        <label for="set-wm-text" data-i18n="wm_text_label">থার্মাল প্রিন্ট ওয়াটারমার্ক লেখা</label>
+        <input type="text" id="set-wm-text" oninput="saveSettingsFromUi()" placeholder="আবরণী বস্ত্রালয়">
+      </div>
+      <div class="col-auto" style="padding-top:20px;">
+        <button type="button" class="btn btn-sm btn-outline" id="set-wm-btn" onclick="toggleWatermarkFromSettings()">ON</button>
+      </div>
+    </div>
+
+    <hr style="border:none; border-top:1px solid var(--border); margin:12px 0;">
+
+    <div style="display:flex; flex-direction:column; gap:8px;">
+      <button type="button" class="btn btn-primary btn-block" onclick="downloadJsonBackup()" data-i18n="download_backup">⬇️ JSON ব্যাকআপ ডাউনলোড করুন</button>
+      <button type="button" class="btn btn-accent btn-block" onclick="triggerJsonRestore()" data-i18n="restore_backup">⬆️ JSON ব্যাকআপ রিস্টোর করুন</button>
+      <input type="file" id="restore-file-input" accept=".json,application/json" style="display:none;" onchange="handleBrowserFileRestore(event)">
+      <button type="button" class="btn btn-outline btn-block" onclick="exportHtmlCopy()" data-i18n="export_html_btn">🌐 অফলাইন HTML ফাইল সেভ করুন</button>
+      <button type="button" class="btn btn-danger btn-block" onclick="resetDemoData()" data-i18n="reset_demo_btn">🔄 ডেমো ডেটা রিসেট করুন</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* =========================================================================
+   PURE ES5 QR CODE ENCODER (ISO/IEC 18004, Byte Mode, EC Level M)
+   100% Offline - Zero external dependencies, compatible with Android 5.0+
+   ========================================================================= */
+(function(global) {
+  var QRUtil = {
+    PATTERN_POSITION_TABLE: [
+      [], [6, 18], [6, 22], [6, 26], [6, 30], [6, 34],
+      [6, 22, 38], [6, 24, 42], [6, 26, 46], [6, 28, 50],
+      [6, 30, 54], [6, 32, 58], [6, 34, 62]
+    ],
+    G15: (1 << 10) | (1 << 8) | (1 << 5) | (1 << 4) | (1 << 2) | (1 << 1) | (1 << 0),
+    G18: (1 << 12) | (1 << 11) | (1 << 10) | (1 << 9) | (1 << 8) | (1 << 5) | (1 << 2) | (1 << 0),
+    G15_MASK: (1 << 14) | (1 << 12) | (1 << 10) | (1 << 4) | (1 << 1),
+    getBCHTypeInfo: function(data) {
+      var d = data << 10;
+      while (QRUtil.getBCHDigit(d) - QRUtil.getBCHDigit(QRUtil.G15) >= 0) {
+        d ^= (QRUtil.G15 << (QRUtil.getBCHDigit(d) - QRUtil.getBCHDigit(QRUtil.G15)));
+      }
+      return ((data << 10) | d) ^ QRUtil.G15_MASK;
+    },
+    getBCHTypeNumber: function(data) {
+      var d = data << 12;
+      while (QRUtil.getBCHDigit(d) - QRUtil.getBCHDigit(QRUtil.G18) >= 0) {
+        d ^= (QRUtil.G18 << (QRUtil.getBCHDigit(d) - QRUtil.getBCHDigit(QRUtil.G18)));
+      }
+      return (data << 12) | d;
+    },
+    getBCHDigit: function(data) {
+      var digit = 0;
+      while (data !== 0) { digit++; data >>>= 1; }
+      return digit;
+    },
+    getPatternPosition: function(typeNumber) {
+      return QRUtil.PATTERN_POSITION_TABLE[typeNumber - 1];
+    },
+    getMask: function(maskPattern, i, j) {
+      switch (maskPattern) {
+        case 0: return (i + j) % 2 === 0;
+        case 1: return i % 2 === 0;
+        case 2: return j % 3 === 0;
+        case 3: return (i + j) % 3 === 0;
+        case 4: return (Math.floor(i / 2) + Math.floor(j / 3)) % 2 === 0;
+        case 5: return (i * j) % 2 + (i * j) % 3 === 0;
+        case 6: return ((i * j) % 2 + (i * j) % 3) % 2 === 0;
+        case 7: return ((i * j) % 3 + (i + j) % 2) % 2 === 0;
+        default: return false;
+      }
+    },
+    getErrorCorrectPolynomial: function(errorCorrectLength) {
+      var a = new QRPolynomial([1], 0);
+      for (var i = 0; i < errorCorrectLength; i++) {
+        a = a.multiply(new QRPolynomial([1, QRMath.gexp(i)], 0));
+      }
+      return a;
+    },
+    getLengthInBits: function(type) {
+      return type < 10 ? 8 : 16;
+    },
+    getLostPoint: function(qrCode) {
+      var moduleCount = qrCode.getModuleCount();
+      var lostPoint = 0;
+      var row, col;
+      for (row = 0; row < moduleCount; row++) {
+        for (col = 0; col < moduleCount; col++) {
+          var sameCount = 0;
+          var dark = qrCode.isDark(row, col);
+          for (var r = -1; r <= 1; r++) {
+            if (row + r < 0 || moduleCount <= row + r) continue;
+            for (var c = -1; c <= 1; c++) {
+              if (col + c < 0 || moduleCount <= col + c) continue;
+              if (r === 0 && c === 0) continue;
+              if (dark === qrCode.isDark(row + r, col + c)) sameCount++;
+            }
+          }
+          if (sameCount > 5) lostPoint += (3 + sameCount - 5);
+        }
+      }
+      for (row = 0; row < moduleCount - 1; row++) {
+        for (col = 0; col < moduleCount - 1; col++) {
+          var count = 0;
+          if (qrCode.isDark(row, col)) count++;
+          if (qrCode.isDark(row + 1, col)) count++;
+          if (qrCode.isDark(row, col + 1)) count++;
+          if (qrCode.isDark(row + 1, col + 1)) count++;
+          if (count === 0 || count === 4) lostPoint += 3;
+        }
+      }
+      for (row = 0; row < moduleCount; row++) {
+        for (col = 0; col < moduleCount - 6; col++) {
+          if (qrCode.isDark(row, col) && !qrCode.isDark(row, col + 1) && qrCode.isDark(row, col + 2) &&
+              qrCode.isDark(row, col + 3) && qrCode.isDark(row, col + 4) && !qrCode.isDark(row, col + 5) && qrCode.isDark(row, col + 6)) {
+            lostPoint += 40;
+          }
+        }
+      }
+      for (col = 0; col < moduleCount; col++) {
+        for (row = 0; row < moduleCount - 6; row++) {
+          if (qrCode.isDark(row, col) && !qrCode.isDark(row + 1, col) && qrCode.isDark(row + 2, col) &&
+              qrCode.isDark(row + 3, col) && qrCode.isDark(row + 4, col) && !qrCode.isDark(row + 5, col) && qrCode.isDark(row + 6, col)) {
+            lostPoint += 40;
+          }
+        }
+      }
+      var darkCount = 0;
+      for (col = 0; col < moduleCount; col++) {
+        for (row = 0; row < moduleCount; row++) {
+          if (qrCode.isDark(row, col)) darkCount++;
+        }
+      }
+      var ratio = Math.abs(100 * darkCount / moduleCount / moduleCount - 50) / 5;
+      lostPoint += ratio * 10;
+      return lostPoint;
+    }
+  };
+
+  var QRMath = {
+    EXP_TABLE: new Array(256),
+    LOG_TABLE: new Array(256),
+    glog: function(n) { return QRMath.LOG_TABLE[n]; },
+    gexp: function(n) {
+      while (n < 0) n += 255;
+      while (n >= 256) n -= 255;
+      return QRMath.EXP_TABLE[n];
+    }
+  };
+  for (var i = 0; i < 8; i++) QRMath.EXP_TABLE[i] = 1 << i;
+  for (var i = 8; i < 256; i++) {
+    QRMath.EXP_TABLE[i] = QRMath.EXP_TABLE[i - 4] ^ QRMath.EXP_TABLE[i - 5] ^ QRMath.EXP_TABLE[i - 6] ^ QRMath.EXP_TABLE[i - 8];
+  }
+  for (var i = 0; i < 255; i++) QRMath.LOG_TABLE[QRMath.EXP_TABLE[i]] = i;
+
+  function QRPolynomial(num, shift) {
+    var offset = 0;
+    while (offset < num.length && num[offset] === 0) offset++;
+    this.num = new Array(num.length - offset + shift);
+    for (var i = 0; i < num.length - offset; i++) this.num[i] = num[i + offset];
+  }
+  QRPolynomial.prototype.get = function(index) { return this.num[index]; };
+  QRPolynomial.prototype.getLength = function() { return this.num.length; };
+  QRPolynomial.prototype.multiply = function(e) {
+    var num = new Array(this.getLength() + e.getLength() - 1);
+    for (var i = 0; i < num.length; i++) num[i] = 0;
+    for (var i = 0; i < this.getLength(); i++) {
+      for (var j = 0; j < e.getLength(); j++) {
+        num[i + j] ^= QRMath.gexp(QRMath.glog(this.get(i)) + QRMath.glog(e.get(j)));
+      }
+    }
+    return new QRPolynomial(num, 0);
+  };
+  QRPolynomial.prototype.mod = function(e) {
+    if (this.getLength() - e.getLength() < 0) return this;
+    var ratio = QRMath.glog(this.get(0)) - QRMath.glog(e.get(0));
+    var num = new Array(this.getLength());
+    for (var i = 0; i < this.getLength(); i++) num[i] = this.get(i);
+    for (var i = 0; i < e.getLength(); i++) num[i] ^= QRMath.gexp(QRMath.glog(e.get(i)) + ratio);
+    return new QRPolynomial(num, 0).mod(e);
+  };
+
+  // EC Level M (0) RS Block table for Versions 1 to 12
+  var RS_BLOCKS_M = {
+    1:  [[1, 26, 16]],
+    2:  [[1, 44, 28]],
+    3:  [[1, 70, 44]],
+    4:  [[2, 50, 32]],
+    5:  [[2, 67, 43]],
+    6:  [[4, 43, 27]],
+    7:  [[4, 49, 31]],
+    8:  [[2, 60, 38], [2, 61, 39]],
+    9:  [[3, 58, 36], [2, 59, 37]],
+    10: [[4, 69, 43], [1, 70, 44]],
+    11: [[1, 80, 50], [4, 81, 51]],
+    12: [[6, 58, 36], [2, 59, 37]]
+  };
+
+  function getRSBlocks(typeNumber) {
+    var rsBlock = RS_BLOCKS_M[typeNumber];
+    var list = [];
+    for (var i = 0; i < rsBlock.length; i++) {
+      var count = rsBlock[i][0];
+      var totalCount = rsBlock[i][1];
+      var dataCount = rsBlock[i][2];
+      for (var j = 0; j < count; j++) {
+        list.push({ totalCount: totalCount, dataCount: dataCount });
+      }
+    }
+    return list;
+  }
+
+  function QRBitBuffer() {
+    this.buffer = [];
+    this.length = 0;
+  }
+  QRBitBuffer.prototype.get = function(index) {
+    var bufIndex = Math.floor(index / 8);
+    return ((this.buffer[bufIndex] >>> (7 - index % 8)) & 1) === 1;
+  };
+  QRBitBuffer.prototype.put = function(num, length) {
+    for (var i = 0; i < length; i++) {
+      this.putBit(((num >>> (length - i - 1)) & 1) === 1);
+    }
+  };
+  QRBitBuffer.prototype.getLengthInBits = function() { return this.length; };
+  QRBitBuffer.prototype.putBit = function(bit) {
+    var bufIndex = Math.floor(this.length / 8);
+    if (this.buffer.length <= bufIndex) this.buffer.push(0);
+    if (bit) this.buffer[bufIndex] |= (0x80 >>> (this.length % 8));
+    this.length++;
+  };
+
+  function utf8Bytes(str) {
+    var out = [];
+    for (var i = 0; i < str.length; i++) {
+      var c = str.charCodeAt(i);
+      if (c < 128) out.push(c);
+      else if (c < 2048) {
+        out.push((c >> 6) | 192, (c & 63) | 128);
+      } else {
+        out.push((c >> 12) | 224, ((c >> 6) & 63) | 128, (c & 63) | 128);
+      }
+    }
+    return out;
+  }
+
+  function QRCodeModel(typeNumber) {
+    this.typeNumber = typeNumber;
+    this.modules = null;
+    this.moduleCount = 0;
+    this.dataCache = null;
+    this.bytes = [];
+  }
+  QRCodeModel.prototype.addData = function(text) {
+    this.bytes = utf8Bytes(text);
+  };
+  QRCodeModel.prototype.isDark = function(row, col) {
+    return this.modules[row][col];
+  };
+  QRCodeModel.prototype.getModuleCount = function() {
+    return this.moduleCount;
+  };
+  QRCodeModel.prototype.make = function() {
+    this.makeImpl(false, this.getBestMaskPattern());
+  };
+  QRCodeModel.prototype.getBestMaskPattern = function() {
+    var minLostPoint = 0;
+    var pattern = 0;
+    for (var i = 0; i < 8; i++) {
+      this.makeImpl(true, i);
+      var lostPoint = QRUtil.getLostPoint(this);
+      if (i === 0 || minLostPoint > lostPoint) {
+        minLostPoint = lostPoint;
+        pattern = i;
+      }
+    }
+    return pattern;
+  };
+  QRCodeModel.prototype.makeImpl = function(test, maskPattern) {
+    this.moduleCount = this.typeNumber * 4 + 17;
+    this.modules = new Array(this.moduleCount);
+    for (var row = 0; row < this.moduleCount; row++) {
+      this.modules[row] = new Array(this.moduleCount);
+      for (var col = 0; col < this.moduleCount; col++) this.modules[row][col] = null;
+    }
+    this.setupPositionProbePattern(0, 0);
+    this.setupPositionProbePattern(this.moduleCount - 7, 0);
+    this.setupPositionProbePattern(0, this.moduleCount - 7);
+    this.setupPositionAdjustPattern();
+    this.setupTimingPattern();
+    this.setupTypeInfo(test, maskPattern);
+    if (this.typeNumber >= 7) this.setupTypeNumber(test);
+    if (this.dataCache === null) this.dataCache = this.createData();
+    this.mapData(this.dataCache, maskPattern);
+  };
+  QRCodeModel.prototype.setupPositionProbePattern = function(row, col) {
+    for (var r = -1; r <= 7; r++) {
+      if (row + r <= -1 || this.moduleCount <= row + r) continue;
+      for (var c = -1; c <= 7; c++) {
+        if (col + c <= -1 || this.moduleCount <= col + c) continue;
+        if ((0 <= r && r <= 6 && (c === 0 || c === 6)) ||
+            (0 <= c && c <= 6 && (r === 0 || r === 6)) ||
+            (2 <= r && r <= 4 && 2 <= c && c <= 4)) {
+          this.modules[row + r][col + c] = true;
+        } else {
+          this.modules[row + r][col + c] = false;
+        }
+      }
+    }
+  };
+  QRCodeModel.prototype.setupTimingPattern = function() {
+    for (var r = 8; r < this.moduleCount - 8; r++) {
+      if (this.modules[r][6] !== null) continue;
+      this.modules[r][6] = (r % 2 === 0);
+    }
+    for (var c = 8; c < this.moduleCount - 8; c++) {
+      if (this.modules[6][c] !== null) continue;
+      this.modules[6][c] = (c % 2 === 0);
+    }
+  };
+  QRCodeModel.prototype.setupPositionAdjustPattern = function() {
+    var pos = QRUtil.getPatternPosition(this.typeNumber);
+    for (var i = 0; i < pos.length; i++) {
+      for (var j = 0; j < pos.length; j++) {
+        var row = pos[i], col = pos[j];
+        if (this.modules[row][col] !== null) continue;
+        for (var r = -2; r <= 2; r++) {
+          for (var c = -2; c <= 2; c++) {
+            this.modules[row + r][col + c] = (r === -2 || r === 2 || c === -2 || c === 2 || (r === 0 && c === 0));
+          }
+        }
+      }
+    }
+  };
+  QRCodeModel.prototype.setupTypeNumber = function(test) {
+    var bits = QRUtil.getBCHTypeNumber(this.typeNumber);
+    for (var i = 0; i < 18; i++) {
+      var mod = (!test && ((bits >> i) & 1) === 1);
+      this.modules[Math.floor(i / 3)][i % 3 + this.moduleCount - 8 - 3] = mod;
+      this.modules[i % 3 + this.moduleCount - 8 - 3][Math.floor(i / 3)] = mod;
+    }
+  };
+  QRCodeModel.prototype.setupTypeInfo = function(test, maskPattern) {
+    // EC Level M = 0
+    var data = (0 << 3) | maskPattern;
+    var bits = QRUtil.getBCHTypeInfo(data);
+    for (var i = 0; i < 15; i++) {
+      var mod = (!test && ((bits >> i) & 1) === 1);
+      if (i < 6) this.modules[i][8] = mod;
+      else if (i < 8) this.modules[i + 1][8] = mod;
+      else this.modules[this.moduleCount - 15 + i][8] = mod;
+    }
+    for (var i = 0; i < 15; i++) {
+      var mod = (!test && ((bits >> i) & 1) === 1);
+      if (i < 8) this.modules[8][this.moduleCount - i - 1] = mod;
+      else if (i < 9) this.modules[8][15 - i - 1 + 1] = mod;
+      else this.modules[8][15 - i - 1] = mod;
+    }
+    this.modules[this.moduleCount - 8][8] = (!test);
+  };
+  QRCodeModel.prototype.createData = function() {
+    var rsBlocks = getRSBlocks(this.typeNumber);
+    var buffer = new QRBitBuffer();
+    buffer.put(4, 4); // Byte mode
+    buffer.put(this.bytes.length, QRUtil.getLengthInBits(this.typeNumber));
+    for (var i = 0; i < this.bytes.length; i++) buffer.put(this.bytes[i], 8);
+    var totalDataCount = 0;
+    for (var i = 0; i < rsBlocks.length; i++) totalDataCount += rsBlocks[i].dataCount;
+    if (buffer.getLengthInBits() + 4 <= totalDataCount * 8) buffer.put(0, 4);
+    while (buffer.getLengthInBits() % 8 !== 0) buffer.putBit(false);
+    while (true) {
+      if (buffer.getLengthInBits() >= totalDataCount * 8) break;
+      buffer.put(0xEC, 8);
+      if (buffer.getLengthInBits() >= totalDataCount * 8) break;
+      buffer.put(0x11, 8);
+    }
+    return this.createBytes(buffer, rsBlocks);
+  };
+  QRCodeModel.prototype.createBytes = function(buffer, rsBlocks) {
+    var offset = 0;
+    var maxDcCount = 0, maxEcCount = 0;
+    var dcdata = new Array(rsBlocks.length);
+    var ecdata = new Array(rsBlocks.length);
+    for (var r = 0; r < rsBlocks.length; r++) {
+      var dcCount = rsBlocks[r].dataCount;
+      var ecCount = rsBlocks[r].totalCount - dcCount;
+      maxDcCount = Math.max(maxDcCount, dcCount);
+      maxEcCount = Math.max(maxEcCount, ecCount);
+      dcdata[r] = new Array(dcCount);
+      for (var i = 0; i < dcdata[r].length; i++) dcdata[r][i] = 0xff & buffer.buffer[i + offset];
+      offset += dcCount;
+      var rsPoly = QRUtil.getErrorCorrectPolynomial(ecCount);
+      var rawPoly = new QRPolynomial(dcdata[r], rsPoly.getLength() - 1);
+      var modPoly = rawPoly.mod(rsPoly);
+      ecdata[r] = new Array(rsPoly.getLength() - 1);
+      for (var i = 0; i < ecdata[r].length; i++) {
+        var modIndex = i + modPoly.getLength() - ecdata[r].length;
+        ecdata[r][i] = (modIndex >= 0) ? modPoly.get(modIndex) : 0;
+      }
+    }
+    var totalCodeCount = 0;
+    for (var i = 0; i < rsBlocks.length; i++) totalCodeCount += rsBlocks[i].totalCount;
+    var data = new Array(totalCodeCount);
+    var index = 0;
+    for (var i = 0; i < maxDcCount; i++) {
+      for (var r = 0; r < rsBlocks.length; r++) {
+        if (i < dcdata[r].length) data[index++] = dcdata[r][i];
+      }
+    }
+    for (var i = 0; i < maxEcCount; i++) {
+      for (var r = 0; r < rsBlocks.length; r++) {
+        if (i < ecdata[r].length) data[index++] = ecdata[r][i];
+      }
+    }
+    return data;
+  };
+  QRCodeModel.prototype.mapData = function(data, maskPattern) {
+    var inc = -1;
+    var row = this.moduleCount - 1;
+    var bitIndex = 7;
+    var byteIndex = 0;
+    for (var col = this.moduleCount - 1; col > 0; col -= 2) {
+      if (col === 6) col--;
+      while (true) {
+        for (var c = 0; c < 2; c++) {
+          if (this.modules[row][col - c] === null) {
+            var dark = false;
+            if (byteIndex < data.length) dark = (((data[byteIndex] >>> bitIndex) & 1) === 1);
+            if (QRUtil.getMask(maskPattern, row, col - c)) dark = !dark;
+            this.modules[row][col - c] = dark;
+            bitIndex--;
+            if (bitIndex === -1) { byteIndex++; bitIndex = 7; }
+          }
+        }
+        row += inc;
+        if (row < 0 || this.moduleCount <= row) {
+          row -= inc;
+          inc = -inc;
+          break;
+        }
+      }
+    }
+  };
+
+  global.renderQrToElement = function(el, text, pixelSize) {
+    var bytesLen = utf8Bytes(text).length;
+    var typeNumber = 4;
+    for (var v = 1; v <= 12; v++) {
+      var blocks = getRSBlocks(v);
+      var cap = 0;
+      for (var k = 0; k < blocks.length; k++) cap += blocks[k].dataCount;
+      var headerBytes = v < 10 ? 2 : 3;
+      if (bytesLen + headerBytes <= cap) { typeNumber = v; break; }
+    }
+    var qr = new QRCodeModel(typeNumber);
+    qr.addData(text);
+    qr.make();
+    var count = qr.getModuleCount();
+    var quiet = 2;
+    var totalModules = count + quiet * 2;
+    var cell = Math.max(2, Math.floor(pixelSize / totalModules));
+    var size = totalModules * cell;
+
+    var canvas = document.createElement("canvas");
+    canvas.width = size;
+    canvas.height = size;
+    canvas.style.width = pixelSize + "px";
+    canvas.style.height = pixelSize + "px";
+    canvas.style.imageRendering = "pixelated";
+    var ctx = canvas.getContext("2d");
+    ctx.fillStyle = "#FFFFFF";
+    ctx.fillRect(0, 0, size, size);
+    ctx.fillStyle = "#000000";
+    for (var r = 0; r < count; r++) {
+      for (var c = 0; c < count; c++) {
+        if (qr.isDark(r, c)) {
+          ctx.fillRect((c + quiet) * cell, (r + quiet) * cell, cell, cell);
+        }
+      }
+    }
+    el.innerHTML = "";
+    el.appendChild(canvas);
+  };
+})(window);
+
+/* =========================================================================
+   TRANSLATIONS (BENGALI & ENGLISH)
+   ========================================================================= */
+var I18N = {
+  bn: {
+    store_name: "আবরণী বস্ত্রালয়",
+    store_addr: "নিমতলা বাজার, খেজুরী, পূর্ব মেদিনীপুর - ৭২১৪৩১",
+    tab_billing: "বিলিং",
+    tab_khata: "কাস্টমার খাতা",
+    tab_reports: "প্রতিদিনের হিসাব",
+    tab_stock: "পণ্যের স্টক",
+    cust_select_title: "👤 কাস্টমার নির্বাচন (কোড বা নাম)",
+    walk_in: "নগদ ক্রেতা",
+    new_cust_short: "+ নতুন",
+    cust_code_label: "কাস্টমার কোড / ফোন / নাম (যেমন: 503)",
+    browse: "তালিকা",
+    quick_item_entry: "🏷️ প্রোডাক্ট কোড দিয়ে বিল",
+    browse_items: "সব পণ্য দেখুন",
+    prod_code_label: "প্রোডাক্ট কোড বা নাম (যেমন: 101)",
+    qty: "সংখ্যা",
+    add_btn: "+ যোগ",
+    quick_tap_items: "দ্রুত যোগ করুন:",
+    bill_items_title: "🛒 বিলের তালিকা",
+    bill_calc_title: "💰 হিসাব ও পেমেন্ট",
+    clear_bill: "পরিষ্কার",
+    subtotal: "মোট দাম (Subtotal)",
+    discount_rs: "ছাড় (Discount ₹)",
+    net_bill: "বর্তমান বিল (Net Bill)",
+    prev_due: "আগের বাকি (Old Due)",
+    grand_payable: "সর্বমোট পাওনা",
+    cash_paid_label: "নগদ জমা (Cash Paid ₹)",
+    cash_exact: "পুরো টাকা",
+    cash_net_only: "শুধু আজকের বিল",
+    cash_zero: "₹0 (বাকি)",
+    remaining_due: "বাকি থাকল (Due)",
+    overpaid_change: "ফেরত / অগ্রিম",
+    show_upi_qr: "📱 UPI QR কোড দেখান (Paytm / GPay)",
+    save_and_print: "🖨️ সেভ ও প্রিন্ট বিল",
+    save_only: "💾 সেভ",
+    total_customers: "মোট কাস্টমার",
+    total_market_due: "মোট বাকি পাওনা",
+    add_customer: "+ কাস্টমার",
+    filter_all: "সবাই",
+    filter_due_only: "শুধু বাকি আছে",
+    select_date: "তারিখ নির্বাচন করুন",
+    today_btn: "আজকের হিসাব",
+    rpt_total_sales: "মোট বিক্রি (Sales)",
+    rpt_cash_in: "মোট নগদ জমা",
+    rpt_new_dues: "নতুন বাকি",
+    rpt_expenses: "দোকানের খরচ",
+    net_cash_hand: "হাতে থাকা নিট নগদ (Cash In - Expense)",
+    backup_restore_btn: "💾 ব্যাকআপ / রিস্টোর",
+    add_expense_title: "💸 দোকানের খরচ যোগ করুন",
+    exp_tea: "চা-জলখাবার",
+    exp_elec: "বিদ্যুৎ বিল",
+    exp_trans: "গাড়ি ভাড়া",
+    exp_staff: "কর্মচারী",
+    exp_pack: "প্যাকেজিং",
+    exp_desc_label: "খরচের বিবরণ",
+    amount_rs: "টাকা (₹)",
+    daily_bills_list: "🧾 আজকের বিল ও জমা",
+    daily_exp_list: "📉 আজকের খরচের তালিকা",
+    total_products: "মোট পণ্য",
+    total_stock_units: "মোট স্টক সংখ্যা",
+    low_stock_items: "কম স্টক (≤ 5)",
+    add_product: "+ নতুন পণ্য",
+    prod_code: "প্রোডাক্ট কোড *",
+    category: "ধরন / ক্যাটাগরি",
+    prod_name_bn: "পণ্যের নাম (বাংলা) *",
+    prod_name_en: "Product Name (English)",
+    price_rs: "দাম (₹) *",
+    stock_qty: "স্টক সংখ্যা *",
+    save_btn: "সেভ করুন",
+    cust_code: "কাস্টমার কোড *",
+    phone: "ফোন নম্বর",
+    cust_name: "কাস্টমারের নাম *",
+    address: "ঠিকানা",
+    old_due_rs: "পূর্বের বাকি (₹)",
+    receive_due_title: "💰 বাকি টাকা জমা",
+    amount_received_rs: "জমা দেওয়া টাকা (₹)",
+    note_optional: "মন্তব্য (ঐচ্ছিক)",
+    save_print_receipt: "জমা ও রসিদ প্রিন্ট",
+    upi_modal_title: "📱 UPI পেমেন্ট স্ক্যান করুন",
+    upi_amount_label: "টাকার পরিমাণ (₹)",
+    upi_scan_hint: "PhonePe, Google Pay, Paytm বা BHIM দিয়ে স্ক্যান করুন",
+    receipt_preview_title: "🧾 রসিদ প্রিভিউ ও প্রিন্ট",
+    paper_width: "কাগজের মাপ",
+    watermark_toggle: "ওয়াটারমার্ক (Watermark)",
+    print_btn: "🖨️ প্রিন্ট করুন (Thermal / PDF)",
+    usb_otg_btn: "🔌 USB / OTG থার্মাল প্রিন্ট (ESC/POS)",
+    settings_title: "⚙️ সেটিংস ও ডেটা ব্যাকআপ",
+    default_paper_width: "ডিফল্ট প্রিন্টার পেপার",
+    wm_text_label: "থার্মাল প্রিন্ট ওয়াটারমার্ক লেখা",
+    download_backup: "⬇️ JSON ব্যাকআপ ডাউনলোড করুন",
+    restore_backup: "⬆️ JSON ব্যাকআপ রিস্টোর করুন",
+    export_html_btn: "🌐 অফলাইন HTML ফাইল সেভ করুন",
+    reset_demo_btn: "🔄 ডেমো ডেটা রিসেট করুন",
+    empty_cart: "বিলে কোনো পণ্য নেই। কোড (যেমন 101) লিখে বা নিচের বাটনে চাপ দিয়ে যোগ করুন।",
+    no_records: "কোনো তথ্য পাওয়া যায়নি।",
+    rcpt_bill_no: "বিল নং",
+    rcpt_date: "তারিখ",
+    rcpt_cust: "ক্রেতা",
+    rcpt_item: "পণ্য",
+    rcpt_qty: "সংখ্যা",
+    rcpt_amt: "টাকা",
+    rcpt_thank_you: "আবার আসবেন! ধন্যবাদ।"
+  },
+  en: {
+    store_name: "Avarani Bastralaya",
+    store_addr: "Nimtala Bazar, Khejuri, Purba Medinipur - 721431",
+    tab_billing: "Billing",
+    tab_khata: "Customer Khata",
+    tab_reports: "Daily Reports",
+    tab_stock: "Product Stock",
+    cust_select_title: "👤 Select Customer (Code / Name)",
+    walk_in: "Walk-in",
+    new_cust_short: "+ New",
+    cust_code_label: "Customer Code / Phone / Name (e.g. 503)",
+    browse: "Browse",
+    quick_item_entry: "🏷️ Quick Billing by Product Code",
+    browse_items: "All Products",
+    prod_code_label: "Product Code or Name (e.g. 101)",
+    qty: "Qty",
+    add_btn: "+ Add",
+    quick_tap_items: "Quick Tap Items:",
+    bill_items_title: "🛒 Bill Items",
+    bill_calc_title: "💰 Bill & Payment",
+    clear_bill: "Clear",
+    subtotal: "Subtotal",
+    discount_rs: "Discount (₹)",
+    net_bill: "Net Bill",
+    prev_due: "Previous Due",
+    grand_payable: "Grand Payable",
+    cash_paid_label: "Cash Paid (₹)",
+    cash_exact: "Exact Full",
+    cash_net_only: "Current Bill Only",
+    cash_zero: "₹0 (Full Due)",
+    remaining_due: "Remaining Due",
+    overpaid_change: "Change / Advance",
+    show_upi_qr: "📱 Show UPI QR Code (Paytm / GPay)",
+    save_and_print: "🖨️ Save & Print Bill",
+    save_only: "💾 Save",
+    total_customers: "Total Customers",
+    total_market_due: "Total Market Due",
+    add_customer: "+ Customer",
+    filter_all: "All",
+    filter_due_only: "Due Only",
+    select_date: "Select Date",
+    today_btn: "Today",
+    rpt_total_sales: "Total Sales",
+    rpt_cash_in: "Cash Received",
+    rpt_new_dues: "New Dues",
+    rpt_expenses: "Shop Expenses",
+    net_cash_hand: "Net Cash in Hand (Cash In - Expense)",
+    backup_restore_btn: "💾 Backup / Restore",
+    add_expense_title: "💸 Add Shop Expense",
+    exp_tea: "Tea & Snacks",
+    exp_elec: "Electricity",
+    exp_trans: "Transport",
+    exp_staff: "Staff",
+    exp_pack: "Packaging",
+    exp_desc_label: "Expense Description",
+    amount_rs: "Amount (₹)",
+    daily_bills_list: "🧾 Day's Bills & Collections",
+    daily_exp_list: "📉 Day's Expenses",
+    total_products: "Total Products",
+    total_stock_units: "Total Stock Units",
+    low_stock_items: "Low Stock (≤ 5)",
+    add_product: "+ Add Product",
+    prod_code: "Product Code *",
+    category: "Category",
+    prod_name_bn: "Product Name (Bengali) *",
+    prod_name_en: "Product Name (English)",
+    price_rs: "Price (₹) *",
+    stock_qty: "Stock Qty *",
+    save_btn: "Save",
+    cust_code: "Customer Code *",
+    phone: "Phone Number",
+    cust_name: "Customer Name *",
+    address: "Address",
+    old_due_rs: "Previous Due (₹)",
+    receive_due_title: "💰 Receive Due Payment",
+    amount_received_rs: "Amount Received (₹)",
+    note_optional: "Note (Optional)",
+    save_print_receipt: "Save & Print Receipt",
+    upi_modal_title: "📱 Scan UPI QR to Pay",
+    upi_amount_label: "Amount (₹)",
+    upi_scan_hint: "Scan using PhonePe, Google Pay, Paytm or BHIM",
+    receipt_preview_title: "🧾 Receipt Preview & Print",
+    paper_width: "Paper Width",
+    watermark_toggle: "Watermark",
+    print_btn: "🖨️ Print Receipt (Thermal / PDF)",
+    usb_otg_btn: "🔌 USB / OTG Thermal Print (ESC/POS)",
+    settings_title: "⚙️ Settings & Data Backup",
+    default_paper_width: "Default Printer Width",
+    wm_text_label: "Thermal Receipt Watermark Text",
+    download_backup: "⬇️ Download JSON Backup",
+    restore_backup: "⬆️ Restore JSON Backup",
+    export_html_btn: "🌐 Save Standalone Offline HTML",
+    reset_demo_btn: "🔄 Reset Starter Data",
+    empty_cart: "Bill is empty. Type a code like 101 or tap a product chip above.",
+    no_records: "No records found.",
+    rcpt_bill_no: "Bill No",
+    rcpt_date: "Date",
+    rcpt_cust: "Customer",
+    rcpt_item: "Item",
+    rcpt_qty: "Qty",
+    rcpt_amt: "Amt",
+    rcpt_thank_you: "Thank you! Visit again."
+  }
+};
+
+/* =========================================================================
+   STATE & PERSISTENCE (localStorage)
+   ========================================================================= */
+var STORAGE_KEY = "avarani_bastralaya_pos_v1";
+var UPI_ID = "8145990958@okbizaxis";
+var UPI_NAME = "Avarani bastralaya";
+var STORE_PHONE = "+91 81459 90958";
+
+function getDefaultData() {
+  return {
+    settings: {
+      lang: "bn",
+      fontSize: 16,
+      paperWidth: "58mm",
+      watermarkEnabled: true,
+      watermarkText: "আবরণী বস্ত্রালয়",
+      nextBillNum: 1001
+    },
+    products: [
+      { id: "p1", code: "101", nameBn: "ধনেখালি তাঁতের শাড়ি", nameEn: "Dhaniakhali Tant Saree", category: "Saree", price: 650, stock: 30 },
+      { id: "p2", code: "102", nameBn: "জামদানি শাড়ি (কটন)", nameEn: "Cotton Jamdani Saree", category: "Saree", price: 1250, stock: 18 },
+      { id: "p3", code: "103", nameBn: "ছেলেদের কটন পাঞ্জাবি", nameEn: "Men's Cotton Panjabi", category: "Panjabi", price: 580, stock: 24 },
+      { id: "p4", code: "104", nameBn: "সুতির প্রিন্টেড কুর্তি", nameEn: "Printed Cotton Kurti", category: "Kurti", price: 420, stock: 35 },
+      { id: "p5", code: "105", nameBn: "হ্যান্ডলুম লুঙ্গি", nameEn: "Handloom Lungi", category: "Lungi", price: 240, stock: 45 },
+      { id: "p6", code: "106", nameBn: "ব্লাউজ পিস (সিল্ক)", nameEn: "Silk Blouse Piece", category: "Blouse", price: 140, stock: 60 },
+      { id: "p7", code: "107", nameBn: "ছোটদের ফ্রক / সেট", nameEn: "Kids Party Dress", category: "Kids", price: 490, stock: 15 },
+      { id: "p8", code: "108", nameBn: "ফরমাল শার্ট প্যান্ট কাপড়", nameEn: "Formal Shirt-Pant Piece", category: "Mens", price: 850, stock: 20 }
+    ],
+    customers: [
+      { id: "c1", code: "503", name: "Arun Maity (অরুণ মাইতি)", phone: "9732100503", address: "Nimtala Bazar, Khejuri", due: 450 },
+      { id: "c2", code: "501", name: "Subrata Jana (সুব্রত জানা)", phone: "9832400501", address: "Khejuri Bus Stand", due: 0 },
+      { id: "c3", code: "502", name: "Mousumi Das (মৌসুমী দাস)", phone: "9641200502", address: "Heroya, Purba Medinipur", due: 1200 }
+    ],
+    bills: [],
+    expenses: [],
+    duePayments: []
+  };
+}
+
+var appData = loadData();
+var currentCart = [];
+var selectedCustomerId = null;
+var cashEditedManually = false;
+var khataFilter = "all";
+var pickerMode = "product";
+var activeReceiptObj = null;
+
+function loadData() {
+  try {
+    var raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) {
+      var parsed = JSON.parse(raw);
+      if (parsed && parsed.settings && parsed.products && parsed.customers) {
+        if (!parsed.bills) parsed.bills = [];
+        if (!parsed.expenses) parsed.expenses = [];
+        if (!parsed.duePayments) parsed.duePayments = [];
+        return parsed;
+      }
+    }
+  } catch (e) {}
+  var def = getDefaultData();
+  saveDataObj(def);
+  return def;
+}
+
+function saveDataObj(obj) {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(obj));
+  } catch (e) {}
+}
+
+function saveData() {
+  saveDataObj(appData);
+  if (window.AndroidPOS && typeof window.AndroidPOS.syncPosData === "function") {
+    clearTimeout(window.__cloudSyncTimer);
+    window.__cloudSyncTimer = setTimeout(function() {
+      try {
+        window.AndroidPOS.syncPosData(JSON.stringify(appData));
+      } catch (e) {}
+    }, 1200);
+  }
+}
+
+function todayIso() {
+  var d = new Date();
+  var m = d.getMonth() + 1;
+  var day = d.getDate();
+  return d.getFullYear() + "-" + (m < 10 ? "0" + m : m) + "-" + (day < 10 ? "0" + day : day);
+}
+
+function formatDateTime(ts) {
+  var d = new Date(ts);
+  var dd = d.getDate();
+  var mm = d.getMonth() + 1;
+  var yyyy = d.getFullYear();
+  var hh = d.getHours();
+  var min = d.getMinutes();
+  var ampm = hh >= 12 ? "PM" : "AM";
+  hh = hh % 12;
+  if (hh === 0) hh = 12;
+  return (dd < 10 ? "0" + dd : dd) + "/" + (mm < 10 ? "0" + mm : mm) + "/" + yyyy + " " +
+         hh + ":" + (min < 10 ? "0" + min : min) + " " + ampm;
+}
+
+function money(n) {
+  var num = parseFloat(n) || 0;
+  return "₹" + num.toFixed(2).replace(/\.00$/, "");
+}
+
+function t(key) {
+  var lang = appData.settings.lang || "bn";
+  return (I18N[lang] && I18N[lang][key]) ? I18N[lang][key] : key;
+}
+
+function prodDisplayName(p) {
+  if (appData.settings.lang === "en") {
+    return p.nameEn || p.nameBn || "";
+  }
+  return p.nameBn || p.nameEn || "";
+}
+
+function showToast(msg) {
+  var el = document.getElementById("toast");
+  el.textContent = msg;
+  el.style.display = "block";
+  clearTimeout(window.__toastTimer);
+  window.__toastTimer = setTimeout(function() {
+    el.style.display = "none";
+  }, 2400);
+}
+
+/* =========================================================================
+   LANGUAGE & FONT SIZE
+   ========================================================================= */
+function applyLanguageAndFont() {
+  var lang = appData.settings.lang || "bn";
+  document.documentElement.lang = lang;
+  document.documentElement.style.setProperty("--base-font", (appData.settings.fontSize || 16) + "px");
+
+  document.getElementById("hdr-store-name").textContent = t("store_name");
+  document.getElementById("hdr-store-addr").textContent = t("store_addr");
+  document.getElementById("btn-lang-toggle").textContent = lang === "bn" ? "English" : "বাংলা";
+
+  var nodes = document.querySelectorAll("[data-i18n]");
+  for (var i = 0; i < nodes.length; i++) {
+    var key = nodes[i].getAttribute("data-i18n");
+    nodes[i].textContent = t(key);
+  }
+
+  document.getElementById("khata-search").placeholder = lang === "bn" ? "কোড (503), নাম বা ফোন খুঁজুন..." : "Search code (503), name or phone...";
+  document.getElementById("stock-search").placeholder = lang === "bn" ? "কোড (101) বা পণ্যের নাম খুঁজুন..." : "Search code (101) or item name...";
+  document.getElementById("bill-cust-code").placeholder = lang === "bn" ? "503 / Arun / ফোন..." : "503 / Arun / Phone...";
+  document.getElementById("bill-prod-code").placeholder = lang === "bn" ? "101 / শাড়ি..." : "101 / Saree...";
+
+  renderQuickProductChips();
+  renderSelectedCustomerBanner();
+  renderCart();
+  renderKhata();
+  renderReports();
+  renderStock();
+}
+
+function toggleLang() {
+  appData.settings.lang = appData.settings.lang === "bn" ? "en" : "bn";
+  saveData();
+  applyLanguageAndFont();
+  showToast(appData.settings.lang === "bn" ? "ভাষা: বাংলা" : "Language: English");
+}
+
+function adjustFont(delta) {
+  var cur = appData.settings.fontSize || 16;
+  var next = Math.max(13, Math.min(22, cur + delta * 2));
+  appData.settings.fontSize = next;
+  saveData();
+  document.documentElement.style.setProperty("--base-font", next + "px");
+  showToast((appData.settings.lang === "bn" ? "ফন্ট সাইজ: " : "Font Size: ") + next + "px");
+}
+
+/* =========================================================================
+   NAVIGATION
+   ========================================================================= */
+function switchTab(tabName) {
+  var tabs = ["billing", "khata", "reports", "stock"];
+  for (var i = 0; i < tabs.length; i++) {
+    var sec = document.getElementById("tab-" + tabs[i]);
+    var btn = document.getElementById("nav-" + tabs[i]);
+    if (tabs[i] === tabName) {
+      sec.classList.add("active");
+      btn.classList.add("active");
+    } else {
+      sec.classList.remove("active");
+      btn.classList.remove("active");
+    }
+  }
+  if (tabName === "khata") renderKhata();
+  if (tabName === "reports") renderReports();
+  if (tabName === "stock") renderStock();
+  window.scrollTo(0, 0);
+}
+
+/* =========================================================================
+   TAB 1: BILLING LOGIC
+   ========================================================================= */
+function findCustomerByQuery(q) {
+  var s = (q || "").trim().toLowerCase();
+  if (!s) return null;
+  // Exact code match first
+  for (var i = 0; i < appData.customers.length; i++) {
+    if (appData.customers[i].code.toLowerCase() === s) return appData.customers[i];
+  }
+  // Exact phone or partial name
+  for (var i = 0; i < appData.customers.length; i++) {
+    var c = appData.customers[i];
+    if ((c.phone && c.phone.toLowerCase() === s) || c.name.toLowerCase().indexOf(s) !== -1) {
+      return c;
+    }
+  }
+  return null;
+}
+
+function onCustomerCodeInput() {
+  var val = document.getElementById("bill-cust-code").value;
+  if (!val.trim()) {
+    selectedCustomerId = null;
+    renderSelectedCustomerBanner();
+    recalcTotals();
+    return;
+  }
+  var match = findCustomerByQuery(val);
+  if (match) {
+    selectedCustomerId = match.id;
+    renderSelectedCustomerBanner();
+    recalcTotals();
+  } else {
+    selectedCustomerId = null;
+    var banner = document.getElementById("bill-cust-banner");
+    banner.style.display = "flex";
+    banner.innerHTML = "<span style='color:var(--danger);font-weight:700;'>" +
+      (appData.settings.lang === "bn" ? "কাস্টমার পাওয়া যায়নি" : "Customer not found") +
+      "</span><button type='button' class='btn btn-sm btn-soft' onclick='openCustomerModal(null, true)'>" + t("new_cust_short") + "</button>";
+    recalcTotals();
+  }
+}
+
+function selectCustomerForBilling(custId) {
+  selectedCustomerId = custId;
+  var c = getCustomerById(custId);
+  if (c) {
+    document.getElementById("bill-cust-code").value = c.code;
+  }
+  renderSelectedCustomerBanner();
+  recalcTotals();
+}
+
+function clearSelectedCustomer() {
+  selectedCustomerId = null;
+  document.getElementById("bill-cust-code").value = "";
+  renderSelectedCustomerBanner();
+  recalcTotals();
+}
+
+function getCustomerById(id) {
+  for (var i = 0; i < appData.customers.length; i++) {
+    if (appData.customers[i].id === id) return appData.customers[i];
+  }
+  return null;
+}
+
+function renderSelectedCustomerBanner() {
+  var banner = document.getElementById("bill-cust-banner");
+  var c = selectedCustomerId ? getCustomerById(selectedCustomerId) : null;
+  if (!c) {
+    banner.style.display = "none";
+    banner.innerHTML = "";
+    return;
+  }
+  banner.style.display = "flex";
+  banner.innerHTML =
+    "<div>" +
+      "<div><span class='badge badge-code'>#" + escapeHtml(c.code) + "</span> <strong>" + escapeHtml(c.name) + "</strong></div>" +
+      "<div style='font-size:0.82rem; color:var(--text-muted); margin-top:2px;'>📞 " + escapeHtml(c.phone || "-") + " | 📍 " + escapeHtml(c.address || "-") + "</div>" +
+    "</div>" +
+    "<div style='text-align:right;'>" +
+      "<div style='font-size:0.75rem; color:var(--text-muted); font-weight:700;'>" + t("prev_due") + "</div>" +
+      "<div style='font-size:1.05rem; font-weight:900; color:" + (c.due > 0 ? "var(--danger)" : "var(--success)") + ";'>" + money(c.due) + "</div>" +
+    "</div>";
+}
+
+function findProductByQuery(q) {
+  var s = (q || "").trim().toLowerCase();
+  if (!s) return null;
+  for (var i = 0; i < appData.products.length; i++) {
+    if (appData.products[i].code.toLowerCase() === s) return appData.products[i];
+  }
+  for (var i = 0; i < appData.products.length; i++) {
+    var p = appData.products[i];
+    if ((p.nameBn && p.nameBn.toLowerCase().indexOf(s) !== -1) ||
+        (p.nameEn && p.nameEn.toLowerCase().indexOf(s) !== -1)) {
+      return p;
+    }
+  }
+  return null;
+}
+
+function getProductById(id) {
+  for (var i = 0; i < appData.products.length; i++) {
+    if (appData.products[i].id === id) return appData.products[i];
+  }
+  return null;
+}
+
+function onProductCodeInput() {
+  var val = document.getElementById("bill-prod-code").value;
+  var prev = document.getElementById("bill-prod-preview");
+  if (!val.trim()) {
+    prev.style.display = "none";
+    return;
+  }
+  var p = findProductByQuery(val);
+  if (p) {
+    prev.style.display = "flex";
+    prev.style.background = "var(--success-light)";
+    prev.style.borderColor = "#A7F3D0";
+    prev.innerHTML = "<span>#" + escapeHtml(p.code) + " — " + escapeHtml(prodDisplayName(p)) +
+      "</span><span>" + money(p.price) + " (Stock: " + p.stock + ")</span>";
+  } else {
+    prev.style.display = "flex";
+    prev.style.background = "var(--danger-light)";
+    prev.style.borderColor = "#FECACA";
+    prev.innerHTML = "<span style='color:var(--danger);'>" +
+      (appData.settings.lang === "bn" ? "এই কোডের কোনো পণ্য নেই" : "No product matching code/name") + "</span>";
+  }
+}
+
+function addByCodeInput() {
+  var codeEl = document.getElementById("bill-prod-code");
+  var qtyEl = document.getElementById("bill-prod-qty");
+  var p = findProductByQuery(codeEl.value);
+  if (!p) {
+    showToast(appData.settings.lang === "bn" ? "সঠিক প্রোডাক্ট কোড দিন!" : "Enter valid product code!");
+    return;
+  }
+  var qty = Math.max(1, parseInt(qtyEl.value, 10) || 1);
+  addProductToCart(p, qty);
+  codeEl.value = "";
+  qtyEl.value = "1";
+  document.getElementById("bill-prod-preview").style.display = "none";
+  codeEl.focus();
+}
+
+function addProductToCart(p, qty) {
+  var existing = null;
+  for (var i = 0; i < currentCart.length; i++) {
+    if (currentCart[i].productId === p.id) { existing = currentCart[i]; break; }
+  }
+  if (existing) {
+    existing.qty += qty;
+  } else {
+    currentCart.push({
+      productId: p.id,
+      code: p.code,
+      nameBn: p.nameBn,
+      nameEn: p.nameEn,
+      price: p.price,
+      qty: qty
+    });
+  }
+  renderCart();
+  recalcTotals();
+}
+
+function renderQuickProductChips() {
+  var wrap = document.getElementById("quick-product-chips");
+  var html = "";
+  var limit = Math.min(8, appData.products.length);
+  for (var i = 0; i < limit; i++) {
+    var p = appData.products[i];
+    html += "<button type='button' class='chip' onclick=\"quickAddProd('" + p.id + "')\">" +
+      "<strong>" + escapeHtml(p.code) + "</strong> " + escapeHtml(prodDisplayName(p)) + " (" + money(p.price) + ")" +
+      "</button>";
+  }
+  wrap.innerHTML = html;
+}
+
+function quickAddProd(pid) {
+  var p = getProductById(pid);
+  if (p) addProductToCart(p, 1);
+}
+
+function renderCart() {
+  var listEl = document.getElementById("cart-list");
+  var totalItems = 0;
+  for (var i = 0; i < currentCart.length; i++) totalItems += currentCart[i].qty;
+  document.getElementById("cart-count-badge").textContent = totalItems;
+
+  if (currentCart.length === 0) {
+    listEl.innerHTML = "<div class='empty-state'>" + t("empty_cart") + "</div>";
+    return;
+  }
+
+  var html = "";
+  for (var i = 0; i < currentCart.length; i++) {
+    var item = currentCart[i];
+    var displayName = appData.settings.lang === "en" ? (item.nameEn || item.nameBn) : (item.nameBn || item.nameEn);
+    var lineTotal = item.price * item.qty;
+    html +=
+      "<div class='cart-item'>" +
+        "<div class='cart-item-top'>" +
+          "<div><span class='badge badge-code'>#" + escapeHtml(item.code) + "</span> <strong>" + escapeHtml(displayName) + "</strong></div>" +
+          "<button type='button' class='btn btn-sm btn-outline' style='min-height:36px;color:var(--danger);' onclick='removeCartItem(" + i + ")'>🗑️</button>" +
+        "</div>" +
+        "<div class='cart-item-bottom'>" +
+          "<div style='display:flex;align-items:center;gap:6px;'>" +
+            "<span style='font-size:0.85rem;color:var(--text-muted);'>₹</span>" +
+            "<input type='number' value='" + item.price + "' min='0' onchange='updateCartPrice(" + i + ", this.value)' style='width:86px;min-height:40px;padding:4px 8px;font-weight:700;'>" +
+          "</div>" +
+          "<div class='qty-stepper'>" +
+            "<button type='button' onclick='changeCartQty(" + i + ", -1)'>-</button>" +
+            "<span>" + item.qty + "</span>" +
+            "<button type='button' onclick='changeCartQty(" + i + ", 1)'>+</button>" +
+          "</div>" +
+          "<strong style='font-size:1.05rem;color:var(--primary);'>" + money(lineTotal) + "</strong>" +
+        "</div>" +
+      "</div>";
+  }
+  listEl.innerHTML = html;
+}
+
+function changeCartQty(idx, delta) {
+  if (!currentCart[idx]) return;
+  currentCart[idx].qty += delta;
+  if (currentCart[idx].qty <= 0) currentCart.splice(idx, 1);
+  renderCart();
+  recalcTotals();
+}
+
+function updateCartPrice(idx, val) {
+  if (!currentCart[idx]) return;
+  currentCart[idx].price = Math.max(0, parseFloat(val) || 0);
+  renderCart();
+  recalcTotals();
+}
+
+function removeCartItem(idx) {
+  currentCart.splice(idx, 1);
+  renderCart();
+  recalcTotals();
+}
+
+function clearCartConfirm() {
+  currentCart = [];
+  document.getElementById("bill-discount").value = "0";
+  document.getElementById("bill-cash-paid").value = "0";
+  cashEditedManually = false;
+  clearSelectedCustomer();
+  renderCart();
+  recalcTotals();
+}
+
+function getBillCalculations() {
+  var subtotal = 0;
+  for (var i = 0; i < currentCart.length; i++) {
+    subtotal += currentCart[i].price * currentCart[i].qty;
+  }
+  var discount = Math.max(0, parseFloat(document.getElementById("bill-discount").value) || 0);
+  if (discount > subtotal) discount = subtotal;
+  var netBill = subtotal - discount;
+  var cust = selectedCustomerId ? getCustomerById(selectedCustomerId) : null;
+  var prevDue = cust ? (parseFloat(cust.due) || 0) : 0;
+  var grandPayable = netBill + prevDue;
+  var cashPaid = Math.max(0, parseFloat(document.getElementById("bill-cash-paid").value) || 0);
+  var remainingDue = grandPayable - cashPaid;
+  return {
+    subtotal: subtotal,
+    discount: discount,
+    netBill: netBill,
+    prevDue: prevDue,
+    grandPayable: grandPayable,
+    cashPaid: cashPaid,
+    remainingDue: remainingDue,
+    customer: cust
+  };
+}
+
+function onCashPaidManual() {
+  cashEditedManually = true;
+  recalcTotals();
+}
+
+function setQuickCash(val) {
+  var calc = getBillCalculations();
+  cashEditedManually = true;
+  if (val === "exact") {
+    document.getElementById("bill-cash-paid").value = calc.grandPayable;
+  } else if (val === "net") {
+    document.getElementById("bill-cash-paid").value = calc.netBill;
+  } else {
+    document.getElementById("bill-cash-paid").value = val;
+  }
+  recalcTotals();
+}
+
+function recalcTotals() {
+  if (!cashEditedManually) {
+    var temp = getBillCalculations();
+    document.getElementById("bill-cash-paid").value = temp.netBill;
+  }
+  var c = getBillCalculations();
+  document.getElementById("sum-subtotal").textContent = money(c.subtotal);
+  document.getElementById("sum-netbill").textContent = money(c.netBill);
+  document.getElementById("sum-prevdue").textContent = money(c.prevDue);
+  document.getElementById("sum-grandtotal").textContent = money(c.grandPayable);
+
+  var dueBox = document.getElementById("sum-due-box");
+  var dueLbl = document.getElementById("sum-due-label");
+  var dueVal = document.getElementById("sum-remaining-due");
+  if (c.remainingDue > 0.009) {
+    dueBox.className = "summary-row due-highlight badge-due";
+    dueLbl.textContent = t("remaining_due");
+    dueVal.textContent = money(c.remainingDue);
+  } else if (c.remainingDue < -0.009) {
+    dueBox.className = "summary-row due-highlight badge-warn";
+    dueLbl.textContent = t("overpaid_change");
+    dueVal.textContent = money(Math.abs(c.remainingDue));
+  } else {
+    dueBox.className = "summary-row due-highlight badge-ok";
+    dueLbl.textContent = t("remaining_due");
+    dueVal.textContent = "₹0";
+  }
+}
+
+function finalizeBill(andPrint) {
+  var c = getBillCalculations();
+  if (currentCart.length === 0 && c.prevDue <= 0) {
+    showToast(appData.settings.lang === "bn" ? "বিল খালি! আগে পণ্য যোগ করুন।" : "Cart is empty! Add items first.");
+    return;
+  }
+  if (c.remainingDue > 0 && !c.customer) {
+    showToast(appData.settings.lang === "bn" ? "বাকি রাখতে হলে কাস্টমার সিলেক্ট করুন!" : "Select a customer to record due balance!");
+    return;
+  }
+
+  var billNo = appData.settings.nextBillNum || 1001;
+  appData.settings.nextBillNum = billNo + 1;
+
+  // Deduct stock
+  for (var i = 0; i < currentCart.length; i++) {
+    var p = getProductById(currentCart[i].productId);
+    if (p) {
+      p.stock = Math.max(0, (parseInt(p.stock, 10) || 0) - currentCart[i].qty);
+    }
+  }
+
+  // Update customer due
+  if (c.customer) {
+    c.customer.due = Math.max(0, Math.round((c.remainingDue) * 100) / 100);
+  }
+
+  var billObj = {
+    id: "b_" + Date.now(),
+    billNo: billNo,
+    dateIso: todayIso(),
+    timestamp: Date.now(),
+    customerId: c.customer ? c.customer.id : null,
+    customerCode: c.customer ? c.customer.code : "",
+    customerName: c.customer ? c.customer.name : (appData.settings.lang === "bn" ? "নগদ ক্রেতা" : "Walk-in Customer"),
+    customerPhone: c.customer ? c.customer.phone : "",
+    customerAddress: c.customer ? c.customer.address : "",
+    items: JSON.parse(JSON.stringify(currentCart)),
+    subtotal: c.subtotal,
+    discount: c.discount,
+    netBill: c.netBill,
+    prevDue: c.prevDue,
+    grandPayable: c.grandPayable,
+    cashPaid: Math.min(c.cashPaid, c.grandPayable),
+    remainingDue: Math.max(0, c.remainingDue)
+  };
+
+  appData.bills.unshift(billObj);
+  saveData();
+
+  showToast((appData.settings.lang === "bn" ? "বিল #" : "Bill #") + billNo + (appData.settings.lang === "bn" ? " সেভ হয়েছে!" : " saved!"));
+
+  // Reset cart
+  currentCart = [];
+  document.getElementById("bill-discount").value = "0";
+  document.getElementById("bill-cash-paid").value = "0";
+  cashEditedManually = false;
+  clearSelectedCustomer();
+  renderCart();
+  recalcTotals();
+  renderStock();
+  renderKhata();
+  renderReports();
+
+  if (andPrint) {
+    openBillReceipt(billObj);
+  }
+}
+
+/* =========================================================================
+   UPI QR MODAL
+   ========================================================================= */
+function buildUpiUri(amount) {
+  var uri = "upi://pay?pa=" + encodeURIComponent(UPI_ID) +
+            "&pn=" + encodeURIComponent(UPI_NAME) +
+            "&cu=INR";
+  var amt = parseFloat(amount) || 0;
+  if (amt > 0) uri += "&am=" + amt.toFixed(2);
+  return uri;
+}
+
+function openUpiQrModal() {
+  var c = getBillCalculations();
+  var defaultAmt = c.grandPayable > 0 ? c.grandPayable : 0;
+  document.getElementById("upi-amount-input").value = defaultAmt > 0 ? defaultAmt : "";
+  refreshUpiModalQr();
+  openModal("modal-upi");
+}
+
+function refreshUpiModalQr() {
+  var amt = document.getElementById("upi-amount-input").value;
+  var uri = buildUpiUri(amt);
+  renderQrToElement(document.getElementById("upi-qr-container"), uri, 210);
+}
+
+/* =========================================================================
+   THERMAL RECEIPT PREVIEW & PRINTING (58mm / 80mm + Watermark + USB/OTG)
+   ========================================================================= */
+function openBillReceipt(bill) {
+  activeReceiptObj = { type: "bill", data: bill };
+  renderReceiptPreview();
+  openModal("modal-receipt");
+}
+
+function openPaymentReceipt(pay) {
+  activeReceiptObj = { type: "payment", data: pay };
+  renderReceiptPreview();
+  openModal("modal-receipt");
+}
+
+function setReceiptWidth(w) {
+  appData.settings.paperWidth = w;
+  saveData();
+  renderReceiptPreview();
+}
+
+function toggleReceiptWatermark() {
+  appData.settings.watermarkEnabled = !appData.settings.watermarkEnabled;
+  saveData();
+  renderReceiptPreview();
+}
+
+function renderReceiptPreview() {
+  if (!activeReceiptObj) return;
+  var paper = document.getElementById("receipt-paper");
+  var wm = document.getElementById("receipt-watermark");
+  var content = document.getElementById("receipt-content");
+
+  var w = appData.settings.paperWidth || "58mm";
+  paper.className = "receipt-paper " + (w === "80mm" ? "w80" : "w58");
+  document.getElementById("rcpt-w58-btn").className = "chip" + (w === "58mm" ? " active" : "");
+  document.getElementById("rcpt-w80-btn").className = "chip" + (w === "80mm" ? " active" : "");
+
+  var wmOn = !!appData.settings.watermarkEnabled;
+  var wmBtn = document.getElementById("rcpt-wm-toggle");
+  wmBtn.className = "chip" + (wmOn ? " active" : "");
+  wmBtn.textContent = wmOn ? "ON (" + (appData.settings.watermarkText || "আবরণী বস্ত্রালয়") + ")" : "OFF";
+  wm.style.display = wmOn ? "block" : "none";
+  var wmTxt = appData.settings.watermarkText || "আবরণী বস্ত্রালয়";
+  wm.innerHTML = escapeHtml(wmTxt) + "<br>" + escapeHtml(wmTxt) + "<br>" + escapeHtml(wmTxt);
+
+  var isBn = appData.settings.lang === "bn";
+  var headerHtml =
+    "<div class='rcpt-center'>" +
+      "<div class='rcpt-bold' style='font-size:1.25em;'>" + (isBn ? "আবরণী বস্ত্রালয়" : "AVARANI BASTRALAYA") + "</div>" +
+      "<div>" + (isBn ? "নিমতলা বাজার, খেজুরী, পূর্ব মেদিনীপুর" : "Nimtala Bazar, Khejuri, Purba Medinipur") + "</div>" +
+      "<div>PIN: 721431 | Ph: " + STORE_PHONE + "</div>" +
+    "</div>" +
+    "<div class='rcpt-hr'></div>";
+
+  if (activeReceiptObj.type === "bill") {
+    var b = activeReceiptObj.data;
+    var rows = "";
+    for (var i = 0; i < b.items.length; i++) {
+      var it = b.items[i];
+      var nm = isBn ? (it.nameBn || it.nameEn) : (it.nameEn || it.nameBn);
+      rows +=
+        "<tr>" +
+          "<td>" + escapeHtml(nm) + "<br><span style='font-size:0.85em;'>#" + escapeHtml(it.code) + " x " + money(it.price) + "</span></td>" +
+          "<td class='num'>" + it.qty + "</td>" +
+          "<td class='num'>" + money(it.price * it.qty) + "</td>" +
+        "</tr>";
+    }
+
+    content.innerHTML = headerHtml +
+      "<div class='rcpt-row'><span>" + t("rcpt_bill_no") + ": #" + b.billNo + "</span><span>" + formatDateTime(b.timestamp) + "</span></div>" +
+      "<div>" + t("rcpt_cust") + ": <strong>" + escapeHtml(b.customerName) + "</strong>" + (b.customerCode ? " (#" + escapeHtml(b.customerCode) + ")" : "") + "</div>" +
+      (b.customerAddress ? "<div>" + escapeHtml(b.customerAddress) + "</div>" : "") +
+      "<div class='rcpt-hr'></div>" +
+      "<table class='rcpt-table'><thead><tr><th>" + t("rcpt_item") + "</th><th class='num'>" + t("rcpt_qty") + "</th><th class='num'>" + t("rcpt_amt") + "</th></tr></thead><tbody>" + rows + "</tbody></table>" +
+      "<div class='rcpt-hr'></div>" +
+      "<div class='rcpt-row'><span>" + t("subtotal") + "</span><span>" + money(b.subtotal) + "</span></div>" +
+      (b.discount > 0 ? "<div class='rcpt-row'><span>" + t("discount_rs") + "</span><span>-" + money(b.discount) + "</span></div>" : "") +
+      "<div class='rcpt-row'><span>" + t("net_bill") + "</span><span>" + money(b.netBill) + "</span></div>" +
+      (b.prevDue > 0 ? "<div class='rcpt-row'><span>" + t("prev_due") + "</span><span>+" + money(b.prevDue) + "</span></div>" : "") +
+      "<div class='rcpt-row rcpt-bold' style='font-size:1.1em;'><span>" + t("grand_payable") + "</span><span>" + money(b.grandPayable) + "</span></div>" +
+      "<div class='rcpt-row'><span>" + t("cash_paid_label") + "</span><span>" + money(b.cashPaid) + "</span></div>" +
+      "<div class='rcpt-row rcpt-bold'><span>" + t("remaining_due") + "</span><span>" + money(b.remainingDue) + "</span></div>" +
+      "<div class='rcpt-hr'></div>" +
+      "<div class='rcpt-center'>" +
+        "<div style='font-weight:700;margin-bottom:4px;'>UPI: " + UPI_ID + "</div>" +
+        "<div id='rcpt-qr-box' style='display:inline-block;'></div>" +
+        "<div style='margin-top:4px;font-weight:700;'>" + t("rcpt_thank_you") + "</div>" +
+      "</div>";
+
+    var qrAmt = b.remainingDue > 0 ? b.remainingDue : b.netBill;
+    renderQrToElement(document.getElementById("rcpt-qr-box"), buildUpiUri(qrAmt), w === "80mm" ? 116 : 96);
+  } else {
+    var p = activeReceiptObj.data;
+    content.innerHTML = headerHtml +
+      "<div class='rcpt-center rcpt-bold'>" + (isBn ? "বাকি জমা রসিদ" : "DUE PAYMENT RECEIPT") + "</div>" +
+      "<div class='rcpt-row'><span>" + t("rcpt_date") + ":</span><span>" + formatDateTime(p.timestamp) + "</span></div>" +
+      "<div>" + t("rcpt_cust") + ": <strong>" + escapeHtml(p.customerName) + "</strong> (#" + escapeHtml(p.customerCode) + ")</div>" +
+      "<div class='rcpt-hr'></div>" +
+      "<div class='rcpt-row'><span>" + t("prev_due") + "</span><span>" + money(p.oldDue) + "</span></div>" +
+      "<div class='rcpt-row rcpt-bold'><span>" + t("amount_received_rs") + "</span><span>" + money(p.amount) + "</span></div>" +
+      "<div class='rcpt-row rcpt-bold'><span>" + t("remaining_due") + "</span><span>" + money(p.newDue) + "</span></div>" +
+      (p.note ? "<div>Note: " + escapeHtml(p.note) + "</div>" : "") +
+      "<div class='rcpt-hr'></div>" +
+      "<div class='rcpt-center rcpt-bold'>" + t("rcpt_thank_you") + "</div>";
+  }
+}
+
+function triggerPrint() {
+  if (window.AndroidPOS && typeof window.AndroidPOS.printReceipt === "function") {
+    var jobName = "Avarani_Receipt_" + Date.now();
+    window.AndroidPOS.printReceipt(jobName);
+  } else {
+    window.print();
+  }
+}
+
+function printUsbEscPos() {
+  if (!navigator.usb) {
+    showToast(appData.settings.lang === "bn"
+      ? "এই ব্রাউজারে WebUSB নেই। উপরের 'প্রিন্ট করুন' বাটন ব্যবহার করুন।"
+      : "WebUSB not supported here. Use System Print above for OTG/PDF.");
+    return;
+  }
+  if (!activeReceiptObj) return;
+  navigator.usb.requestDevice({ filters: [] }).then(function(device) {
+    return device.open().then(function() {
+      if (device.configuration === null) return device.selectConfiguration(1);
+    }).then(function() {
+      return device.claimInterface(0);
+    }).then(function() {
+      var epOut = null;
+      var iface = device.configuration.interfaces[0].alternate;
+      for (var i = 0; i < iface.endpoints.length; i++) {
+        if (iface.endpoints[i].direction === "out") { epOut = iface.endpoints[i].endpointNumber; break; }
+      }
+      var lines = [];
+      lines.push("\x1B\x40"); // Init
+      lines.push("\x1B\x61\x01"); // Center
+      lines.push("AVARANI BASTRALAYA\n");
+      lines.push("Nimtala Bazar, Khejuri - 721431\n");
+      lines.push("Ph: +91 81459 90958\n");
+      lines.push("--------------------------------\n");
+      lines.push("\x1B\x61\x00"); // Left
+      if (activeReceiptObj.type === "bill") {
+        var b = activeReceiptObj.data;
+        lines.push("Bill #" + b.billNo + "  " + formatDateTime(b.timestamp) + "\n");
+        lines.push("Cust: " + b.customerName + "\n");
+        lines.push("--------------------------------\n");
+        for (var j = 0; j < b.items.length; j++) {
+          var it = b.items[j];
+          lines.push((it.nameEn || it.nameBn) + " x" + it.qty + "  Rs." + (it.price * it.qty).toFixed(0) + "\n");
+        }
+        lines.push("--------------------------------\n");
+        lines.push("Net Bill:   Rs." + b.netBill.toFixed(2) + "\n");
+        lines.push("Paid Cash:  Rs." + b.cashPaid.toFixed(2) + "\n");
+        lines.push("Due Bal:    Rs." + b.remainingDue.toFixed(2) + "\n");
+      }
+      lines.push("\nThank You!\n\n\n\x1D\x56\x42\x00"); // Cut
+      var rawText = lines.join("");
+      var buf = new Uint8Array(rawText.length);
+      for (var k = 0; k < rawText.length; k++) buf[k] = rawText.charCodeAt(k) & 0xFF;
+      return device.transferOut(epOut || 1, buf);
+    }).then(function() {
+      showToast(appData.settings.lang === "bn" ? "USB প্রিন্ট পাঠানো হয়েছে!" : "Sent to USB thermal printer!");
+    });
+  }).catch(function(err) {
+    showToast((appData.settings.lang === "bn" ? "USB প্রিন্টার সংযুক্ত হয়নি: " : "USB print cancelled/error: ") + (err && err.message ? err.message : ""));
+  });
+}
+
+/* =========================================================================
+   TAB 2: CUSTOMER KHATA
+   ========================================================================= */
+function setKhataFilter(f) {
+  khataFilter = f;
+  document.getElementById("khata-filter-all").className = "chip" + (f === "all" ? " active" : "");
+  document.getElementById("khata-filter-due").className = "chip" + (f === "due" ? " active" : "");
+  renderKhata();
+}
+
+function renderKhata() {
+  var totalDue = 0;
+  for (var i = 0; i < appData.customers.length; i++) {
+    totalDue += parseFloat(appData.customers[i].due) || 0;
+  }
+  document.getElementById("khata-total-cust").textContent = appData.customers.length;
+  document.getElementById("khata-total-due").textContent = money(totalDue);
+
+  var q = (document.getElementById("khata-search").value || "").trim().toLowerCase();
+  var filtered = [];
+  for (var i = 0; i < appData.customers.length; i++) {
+    var c = appData.customers[i];
+    if (khataFilter === "due" && (parseFloat(c.due) || 0) <= 0) continue;
+    if (q) {
+      var match = c.code.toLowerCase().indexOf(q) !== -1 ||
+                  c.name.toLowerCase().indexOf(q) !== -1 ||
+                  (c.phone && c.phone.toLowerCase().indexOf(q) !== -1) ||
+                  (c.address && c.address.toLowerCase().indexOf(q) !== -1);
+      if (!match) continue;
+    }
+    filtered.push(c);
+  }
+
+  var wrap = document.getElementById("khata-list");
+  if (filtered.length === 0) {
+    wrap.innerHTML = "<div class='empty-state'>" + t("no_records") + "</div>";
+    return;
+  }
+
+  var html = "";
+  for (var i = 0; i < filtered.length; i++) {
+    var c = filtered[i];
+    var hasDue = (parseFloat(c.due) || 0) > 0;
+    html +=
+      "<div class='item-card'>" +
+        "<div class='item-card-header'>" +
+          "<div>" +
+            "<span class='badge badge-code'>#" + escapeHtml(c.code) + "</span> " +
+            "<strong style='font-size:1.05rem;'>" + escapeHtml(c.name) + "</strong>" +
+            "<div style='font-size:0.84rem;color:var(--text-muted);margin-top:3px;'>📞 " + escapeHtml(c.phone || "-") + " | 📍 " + escapeHtml(c.address || "-") + "</div>" +
+          "</div>" +
+          "<span class='badge " + (hasDue ? "badge-due" : "badge-ok") + "' style='font-size:0.92rem;padding:5px 10px;'>" +
+            (hasDue ? (appData.settings.lang === "bn" ? "বাকি: " : "Due: ") + money(c.due) : (appData.settings.lang === "bn" ? "কোনো বাকি নেই" : "Clear")) +
+          "</span>" +
+        "</div>" +
+        "<div class='item-actions'>" +
+          (hasDue ? "<button type='button' class='btn btn-sm btn-success' onclick=\"openDuePayModal('" + c.id + "')\">💰 " + (appData.settings.lang === "bn" ? "জমা নিন" : "Receive Due") + "</button>" : "") +
+          "<button type='button' class='btn btn-sm btn-soft' onclick=\"openCustomerHistory('" + c.id + "')\">📜 " + (appData.settings.lang === "bn" ? "হিসাব দেখুন" : "History") + "</button>" +
+          "<button type='button' class='btn btn-sm btn-primary' onclick=\"billThisCustomer('" + c.id + "')\">🧾 " + (appData.settings.lang === "bn" ? "বিল করুন" : "Bill") + "</button>" +
+          "<button type='button' class='btn btn-sm btn-outline' onclick=\"openCustomerModal('" + c.id + "', false)\">✏️</button>" +
+          "<button type='button' class='btn btn-sm btn-outline' style='color:var(--danger);' onclick=\"deleteCustomer('" + c.id + "')\">🗑️</button>" +
+        "</div>" +
+      "</div>";
+  }
+  wrap.innerHTML = html;
+}
+
+function billThisCustomer(cid) {
+  selectCustomerForBilling(cid);
+  switchTab("billing");
+}
+
+function openCustomerModal(custId, selectAfter) {
+  document.getElementById("edit-cust-id").value = custId || "";
+  document.getElementById("edit-cust-select-after").value = selectAfter ? "1" : "0";
+  if (custId) {
+    var c = getCustomerById(custId);
+    document.getElementById("modal-cust-title").textContent = appData.settings.lang === "bn" ? "কাস্টমার এডিট করুন" : "Edit Customer";
+    document.getElementById("cust-code").value = c.code;
+    document.getElementById("cust-phone").value = c.phone || "";
+    document.getElementById("cust-name").value = c.name;
+    document.getElementById("cust-address").value = c.address || "";
+    document.getElementById("cust-due").value = c.due || 0;
+  } else {
+    document.getElementById("modal-cust-title").textContent = appData.settings.lang === "bn" ? "নতুন কাস্টমার যোগ করুন" : "Add New Customer";
+    var nextCode = 500 + appData.customers.length + 1;
+    document.getElementById("cust-code").value = String(nextCode);
+    document.getElementById("cust-phone").value = "";
+    document.getElementById("cust-name").value = "";
+    document.getElementById("cust-address").value = "";
+    document.getElementById("cust-due").value = "0";
+  }
+  openModal("modal-customer");
+}
+
+function saveCustomer() {
+  var id = document.getElementById("edit-cust-id").value;
+  var code = document.getElementById("cust-code").value.trim();
+  var phone = document.getElementById("cust-phone").value.trim();
+  var name = document.getElementById("cust-name").value.trim();
+  var addr = document.getElementById("cust-address").value.trim();
+  var due = Math.max(0, parseFloat(document.getElementById("cust-due").value) || 0);
+
+  if (!code || !name) {
+    showToast(appData.settings.lang === "bn" ? "কোড ও নাম আবশ্যক!" : "Code and Name are required!");
+    return;
+  }
+  for (var i = 0; i < appData.customers.length; i++) {
+    if (appData.customers[i].code.toLowerCase() === code.toLowerCase() && appData.customers[i].id !== id) {
+      showToast(appData.settings.lang === "bn" ? "এই কোড আগেই আছে!" : "Customer code already exists!");
+      return;
+    }
+  }
+
+  var savedId = id;
+  if (id) {
+    var c = getCustomerById(id);
+    if (c) {
+      c.code = code; c.phone = phone; c.name = name; c.address = addr; c.due = due;
+    }
+  } else {
+    savedId = "c_" + Date.now();
+    appData.customers.unshift({ id: savedId, code: code, phone: phone, name: name, address: addr, due: due });
+  }
+  saveData();
+  closeModal("modal-customer");
+  renderKhata();
+
+  if (document.getElementById("edit-cust-select-after").value === "1") {
+    selectCustomerForBilling(savedId);
+  } else {
+    renderSelectedCustomerBanner();
+    recalcTotals();
+  }
+  showToast(appData.settings.lang === "bn" ? "কাস্টমার সেভ হয়েছে!" : "Customer saved!");
+}
+
+function deleteCustomer(cid) {
+  if (!confirm(appData.settings.lang === "bn" ? "এই কাস্টমার ডিলিট করবেন?" : "Delete this customer?")) return;
+  appData.customers = appData.customers.filter(function(c) { return c.id !== cid; });
+  if (selectedCustomerId === cid) clearSelectedCustomer();
+  saveData();
+  renderKhata();
+}
+
+function openDuePayModal(cid) {
+  var c = getCustomerById(cid);
+  if (!c) return;
+  document.getElementById("due-pay-cust-id").value = cid;
+  document.getElementById("due-pay-info").innerHTML =
+    "<div><strong>#" + escapeHtml(c.code) + " " + escapeHtml(c.name) + "</strong></div>" +
+    "<div style='color:var(--danger);font-weight:900;'>" + t("prev_due") + ": " + money(c.due) + "</div>";
+  document.getElementById("due-pay-amount").value = c.due;
+  document.getElementById("due-pay-note").value = "";
+  openModal("modal-due-pay");
+}
+
+function submitDuePayment(andPrint) {
+  var cid = document.getElementById("due-pay-cust-id").value;
+  var c = getCustomerById(cid);
+  if (!c) return;
+  var amt = Math.max(0, parseFloat(document.getElementById("due-pay-amount").value) || 0);
+  if (amt <= 0) {
+    showToast(appData.settings.lang === "bn" ? "সঠিক টাকা লিখুন!" : "Enter valid amount!");
+    return;
+  }
+  var oldDue = parseFloat(c.due) || 0;
+  var newDue = Math.max(0, Math.round((oldDue - amt) * 100) / 100);
+  c.due = newDue;
+
+  var payObj = {
+    id: "dp_" + Date.now(),
+    dateIso: todayIso(),
+    timestamp: Date.now(),
+    customerId: c.id,
+    customerCode: c.code,
+    customerName: c.name,
+    oldDue: oldDue,
+    amount: amt,
+    newDue: newDue,
+    note: document.getElementById("due-pay-note").value.trim()
+  };
+  appData.duePayments.unshift(payObj);
+  saveData();
+  closeModal("modal-due-pay");
+  renderKhata();
+  renderReports();
+  renderSelectedCustomerBanner();
+  recalcTotals();
+  showToast(appData.settings.lang === "bn" ? "বাকি টাকা জমা হয়েছে!" : "Due payment recorded!");
+  if (andPrint) openPaymentReceipt(payObj);
+}
+
+function openCustomerHistory(cid) {
+  var c = getCustomerById(cid);
+  if (!c) return;
+  document.getElementById("hist-title").textContent = "#" + c.code + " — " + c.name;
+  document.getElementById("hist-summary").innerHTML =
+    "<div class='cust-banner' style='margin-top:0;'>" +
+      "<div>📞 " + escapeHtml(c.phone || "-") + "<br>📍 " + escapeHtml(c.address || "-") + "</div>" +
+      "<div style='text-align:right;'><div style='font-size:0.78rem;'>" + t("remaining_due") + "</div><strong style='font-size:1.2rem;color:var(--danger);'>" + money(c.due) + "</strong></div>" +
+    "</div>";
+
+  var events = [];
+  for (var i = 0; i < appData.bills.length; i++) {
+    if (appData.bills[i].customerId === cid) events.push({ kind: "bill", ts: appData.bills[i].timestamp, obj: appData.bills[i] });
+  }
+  for (var i = 0; i < appData.duePayments.length; i++) {
+    if (appData.duePayments[i].customerId === cid) events.push({ kind: "pay", ts: appData.duePayments[i].timestamp, obj: appData.duePayments[i] });
+  }
+  events.sort(function(a, b) { return b.ts - a.ts; });
+
+  var wrap = document.getElementById("hist-list");
+  if (events.length === 0) {
+    wrap.innerHTML = "<div class='empty-state'>" + t("no_records") + "</div>";
+  } else {
+    var html = "";
+    for (var i = 0; i < events.length; i++) {
+      var ev = events[i];
+      if (ev.kind === "bill") {
+        var b = ev.obj;
+        html +=
+          "<div class='item-card'>" +
+            "<div class='item-card-header'>" +
+              "<div><strong>🧾 " + (appData.settings.lang === "bn" ? "বিল #" : "Bill #") + b.billNo + "</strong><div style='font-size:0.78rem;color:var(--text-muted);'>" + formatDateTime(b.timestamp) + "</div></div>" +
+              "<button type='button' class='btn btn-sm btn-soft' onclick='reprintBillById(\"" + b.id + "\")'>🖨️</button>" +
+            "</div>" +
+            "<div style='font-size:0.86rem;'>" + t("net_bill") + ": <strong>" + money(b.netBill) + "</strong> | " + t("cash_paid_label") + ": <strong style='color:var(--success);'>" + money(b.cashPaid) + "</strong> | " + t("remaining_due") + ": <strong style='color:var(--danger);'>" + money(b.remainingDue) + "</strong></div>" +
+          "</div>";
+      } else {
+        var p = ev.obj;
+        html +=
+          "<div class='item-card' style='border-color:#A7F3D0;background:#F0FDF4;'>" +
+            "<div class='item-card-header'>" +
+              "<div><strong>💰 " + (appData.settings.lang === "bn" ? "বাকি জমা" : "Due Payment") + "</strong><div style='font-size:0.78rem;color:var(--text-muted);'>" + formatDateTime(p.timestamp) + "</div></div>" +
+              "<strong style='color:var(--success);'>+" + money(p.amount) + "</strong>" +
+            "</div>" +
+            "<div style='font-size:0.84rem;'>" + t("remaining_due") + ": " + money(p.newDue) + (p.note ? " | " + escapeHtml(p.note) : "") + "</div>" +
+          "</div>";
+      }
+    }
+    wrap.innerHTML = html;
+  }
+  openModal("modal-cust-history");
+}
+
+function reprintBillById(billId) {
+  for (var i = 0; i < appData.bills.length; i++) {
+    if (appData.bills[i].id === billId) {
+      openBillReceipt(appData.bills[i]);
+      return;
+    }
+  }
+}
+
+/* =========================================================================
+   TAB 3: DAILY REPORTS & EXPENSES
+   ========================================================================= */
+function setReportToday() {
+  document.getElementById("report-date").value = todayIso();
+  renderReports();
+}
+
+function renderReports() {
+  var dateEl = document.getElementById("report-date");
+  if (!dateEl.value) dateEl.value = todayIso();
+  var targetDate = dateEl.value;
+
+  var totalSales = 0;
+  var cashFromBills = 0;
+  var newDues = 0;
+  var dayBills = [];
+  for (var i = 0; i < appData.bills.length; i++) {
+    var b = appData.bills[i];
+    if (b.dateIso === targetDate) {
+      dayBills.push(b);
+      totalSales += b.netBill;
+      cashFromBills += b.cashPaid;
+      newDues += Math.max(0, b.netBill - b.cashPaid);
+    }
+  }
+
+  var cashFromDues = 0;
+  var dayDuePays = [];
+  for (var i = 0; i < appData.duePayments.length; i++) {
+    var dp = appData.duePayments[i];
+    if (dp.dateIso === targetDate) {
+      dayDuePays.push(dp);
+      cashFromDues += dp.amount;
+    }
+  }
+
+  var totalExp = 0;
+  var dayExpenses = [];
+  for (var i = 0; i < appData.expenses.length; i++) {
+    var ex = appData.expenses[i];
+    if (ex.dateIso === targetDate) {
+      dayExpenses.push(ex);
+      totalExp += ex.amount;
+    }
+  }
+
+  var totalCashIn = cashFromBills + cashFromDues;
+  var netCash = totalCashIn - totalExp;
+
+  document.getElementById("rpt-sales").textContent = money(totalSales);
+  document.getElementById("rpt-cash").textContent = money(totalCashIn);
+  document.getElementById("rpt-dues").textContent = money(newDues);
+  document.getElementById("rpt-expense").textContent = money(totalExp);
+  document.getElementById("rpt-net-cash").textContent = money(netCash);
+
+  var billsHtml = "";
+  for (var i = 0; i < dayBills.length; i++) {
+    var b = dayBills[i];
+    billsHtml +=
+      "<div class='item-card'>" +
+        "<div class='item-card-header'>" +
+          "<div><strong>🧾 #" + b.billNo + " — " + escapeHtml(b.customerName) + "</strong><div style='font-size:0.78rem;color:var(--text-muted);'>" + formatDateTime(b.timestamp) + "</div></div>" +
+          "<button type='button' class='btn btn-sm btn-soft' onclick='reprintBillById(\"" + b.id + "\")'>🖨️</button>" +
+        "</div>" +
+        "<div style='font-size:0.86rem;'>" + t("net_bill") + ": <strong>" + money(b.netBill) + "</strong> | " + t("cash_paid_label") + ": <strong style='color:var(--success);'>" + money(b.cashPaid) + "</strong> | " + t("remaining_due") + ": <strong style='color:var(--danger);'>" + money(b.remainingDue) + "</strong></div>" +
+      "</div>";
+  }
+  for (var i = 0; i < dayDuePays.length; i++) {
+    var dp = dayDuePays[i];
+    billsHtml +=
+      "<div class='item-card' style='background:#F0FDF4;border-color:#A7F3D0;'>" +
+        "<div class='item-card-header'>" +
+          "<div><strong>💰 " + (appData.settings.lang === "bn" ? "বাকি জমা: " : "Due Collection: ") + escapeHtml(dp.customerName) + "</strong><div style='font-size:0.78rem;color:var(--text-muted);'>" + formatDateTime(dp.timestamp) + "</div></div>" +
+          "<strong style='color:var(--success);'>+" + money(dp.amount) + "</strong>" +
+        "</div>" +
+      "</div>";
+  }
+  document.getElementById("rpt-bills-list").innerHTML = billsHtml || "<div class='empty-state'>" + t("no_records") + "</div>";
+
+  var expHtml = "";
+  for (var i = 0; i < dayExpenses.length; i++) {
+    var ex = dayExpenses[i];
+    expHtml +=
+      "<div class='item-card'>" +
+        "<div class='item-card-header'>" +
+          "<div><strong>" + escapeHtml(ex.desc) + "</strong><div style='font-size:0.78rem;color:var(--text-muted);'>" + formatDateTime(ex.timestamp) + "</div></div>" +
+          "<div style='display:flex;align-items:center;gap:8px;'>" +
+            "<strong style='color:var(--danger);'>-" + money(ex.amount) + "</strong>" +
+            "<button type='button' class='btn btn-sm btn-outline' style='color:var(--danger);min-height:36px;' onclick='deleteExpense(\"" + ex.id + "\")'>🗑️</button>" +
+          "</div>" +
+        "</div>" +
+      "</div>";
+  }
+  document.getElementById("rpt-expenses-list").innerHTML = expHtml || "<div class='empty-state'>" + t("no_records") + "</div>";
+}
+
+function fillExpensePreset(text) {
+  document.getElementById("exp-desc").value = text;
+  document.getElementById("exp-amt").focus();
+}
+
+function addExpense() {
+  var desc = document.getElementById("exp-desc").value.trim();
+  var amt = Math.max(0, parseFloat(document.getElementById("exp-amt").value) || 0);
+  if (!desc || amt <= 0) {
+    showToast(appData.settings.lang === "bn" ? "খরচের বিবরণ ও টাকা লিখুন!" : "Enter expense description and amount!");
+    return;
+  }
+  var targetDate = document.getElementById("report-date").value || todayIso();
+  appData.expenses.unshift({
+    id: "ex_" + Date.now(),
+    dateIso: targetDate,
+    timestamp: Date.now(),
+    desc: desc,
+    amount: amt
+  });
+  saveData();
+  document.getElementById("exp-desc").value = "";
+  document.getElementById("exp-amt").value = "";
+  renderReports();
+  showToast(appData.settings.lang === "bn" ? "খরচ যোগ হয়েছে!" : "Expense added!");
+}
+
+function deleteExpense(exId) {
+  appData.expenses = appData.expenses.filter(function(e) { return e.id !== exId; });
+  saveData();
+  renderReports();
+}
+
+/* =========================================================================
+   TAB 4: PRODUCT STOCK & CODES
+   ========================================================================= */
+function renderStock() {
+  var totalQty = 0;
+  var lowCount = 0;
+  for (var i = 0; i < appData.products.length; i++) {
+    var st = parseInt(appData.products[i].stock, 10) || 0;
+    totalQty += st;
+    if (st <= 5) lowCount++;
+  }
+  document.getElementById("stk-total-items").textContent = appData.products.length;
+  document.getElementById("stk-total-qty").textContent = totalQty;
+  document.getElementById("stk-low-count").textContent = lowCount;
+
+  var q = (document.getElementById("stock-search").value || "").trim().toLowerCase();
+  var filtered = [];
+  for (var i = 0; i < appData.products.length; i++) {
+    var p = appData.products[i];
+    if (q) {
+      var m = p.code.toLowerCase().indexOf(q) !== -1 ||
+              (p.nameBn && p.nameBn.toLowerCase().indexOf(q) !== -1) ||
+              (p.nameEn && p.nameEn.toLowerCase().indexOf(q) !== -1) ||
+              (p.category && p.category.toLowerCase().indexOf(q) !== -1);
+      if (!m) continue;
+    }
+    filtered.push(p);
+  }
+
+  var wrap = document.getElementById("stock-list");
+  if (filtered.length === 0) {
+    wrap.innerHTML = "<div class='empty-state'>" + t("no_records") + "</div>";
+    return;
+  }
+
+  var html = "";
+  for (var i = 0; i < filtered.length; i++) {
+    var p = filtered[i];
+    var isLow = (parseInt(p.stock, 10) || 0) <= 5;
+    html +=
+      "<div class='item-card'>" +
+        "<div class='item-card-header'>" +
+          "<div>" +
+            "<span class='badge badge-code'>#" + escapeHtml(p.code) + "</span> " +
+            "<strong style='font-size:1.03rem;'>" + escapeHtml(prodDisplayName(p)) + "</strong>" +
+            "<div style='font-size:0.8rem;color:var(--text-muted);margin-top:2px;'>" + escapeHtml(p.category || "-") + (p.nameBn && p.nameEn ? " | " + escapeHtml(appData.settings.lang === "bn" ? p.nameEn : p.nameBn) : "") + "</div>" +
+          "</div>" +
+          "<div style='text-align:right;'>" +
+            "<strong style='font-size:1.1rem;color:var(--primary);'>" + money(p.price) + "</strong><br>" +
+            "<span class='badge " + (isLow ? "badge-due" : "badge-ok") + "'>Stock: " + p.stock + "</span>" +
+          "</div>" +
+        "</div>" +
+        "<div class='item-actions'>" +
+          "<button type='button' class='btn btn-sm btn-primary' onclick=\"addStockItemToBill('" + p.id + "')\">🛒 " + (appData.settings.lang === "bn" ? "বিলে যোগ" : "Add to Bill") + "</button>" +
+          "<button type='button' class='btn btn-sm btn-outline' onclick=\"adjustProductStock('" + p.id + "', 1)\">+1</button>" +
+          "<button type='button' class='btn btn-sm btn-outline' onclick=\"adjustProductStock('" + p.id + "', -1)\">-1</button>" +
+          "<button type='button' class='btn btn-sm btn-soft' onclick=\"openProductModal('" + p.id + "')\">✏️</button>" +
+          "<button type='button' class='btn btn-sm btn-outline' style='color:var(--danger);' onclick=\"deleteProduct('" + p.id + "')\">🗑️</button>" +
+        "</div>" +
+      "</div>";
+  }
+  wrap.innerHTML = html;
+}
+
+function addStockItemToBill(pid) {
+  var p = getProductById(pid);
+  if (!p) return;
+  addProductToCart(p, 1);
+  switchTab("billing");
+  showToast(prodDisplayName(p) + (appData.settings.lang === "bn" ? " বিলে যোগ হয়েছে" : " added to bill"));
+}
+
+function adjustProductStock(pid, delta) {
+  var p = getProductById(pid);
+  if (!p) return;
+  p.stock = Math.max(0, (parseInt(p.stock, 10) || 0) + delta);
+  saveData();
+  renderStock();
+}
+
+function openProductModal(pid) {
+  document.getElementById("edit-prod-id").value = pid || "";
+  if (pid) {
+    var p = getProductById(pid);
+    document.getElementById("modal-prod-title").textContent = appData.settings.lang === "bn" ? "পণ্য এডিট করুন" : "Edit Product";
+    document.getElementById("prod-code").value = p.code;
+    document.getElementById("prod-category").value = p.category || "";
+    document.getElementById("prod-name-bn").value = p.nameBn || "";
+    document.getElementById("prod-name-en").value = p.nameEn || "";
+    document.getElementById("prod-price").value = p.price;
+    document.getElementById("prod-stock").value = p.stock;
+  } else {
+    document.getElementById("modal-prod-title").textContent = appData.settings.lang === "bn" ? "নতুন পণ্য যোগ করুন" : "Add New Product";
+    document.getElementById("prod-code").value = String(100 + appData.products.length + 1);
+    document.getElementById("prod-category").value = "Saree";
+    document.getElementById("prod-name-bn").value = "";
+    document.getElementById("prod-name-en").value = "";
+    document.getElementById("prod-price").value = "";
+    document.getElementById("prod-stock").value = "10";
+  }
+  openModal("modal-product");
+}
+
+function saveProduct() {
+  var id = document.getElementById("edit-prod-id").value;
+  var code = document.getElementById("prod-code").value.trim();
+  var cat = document.getElementById("prod-category").value.trim();
+  var nameBn = document.getElementById("prod-name-bn").value.trim();
+  var nameEn = document.getElementById("prod-name-en").value.trim();
+  var price = Math.max(0, parseFloat(document.getElementById("prod-price").value) || 0);
+  var stock = Math.max(0, parseInt(document.getElementById("prod-stock").value, 10) || 0);
+
+  if (!code || (!nameBn && !nameEn) || price <= 0) {
+    showToast(appData.settings.lang === "bn" ? "কোড, নাম এবং দাম আবশ্যক!" : "Code, Name, and Price are required!");
+    return;
+  }
+  for (var i = 0; i < appData.products.length; i++) {
+    if (appData.products[i].code.toLowerCase() === code.toLowerCase() && appData.products[i].id !== id) {
+      showToast(appData.settings.lang === "bn" ? "এই প্রোডাক্ট কোড আগেই আছে!" : "Product code already exists!");
+      return;
+    }
+  }
+
+  if (id) {
+    var p = getProductById(id);
+    if (p) {
+      p.code = code; p.category = cat;
+      p.nameBn = nameBn || nameEn; p.nameEn = nameEn || nameBn;
+      p.price = price; p.stock = stock;
+    }
+  } else {
+    appData.products.unshift({
+      id: "p_" + Date.now(),
+      code: code,
+      category: cat,
+      nameBn: nameBn || nameEn,
+      nameEn: nameEn || nameBn,
+      price: price,
+      stock: stock
+    });
+  }
+  saveData();
+  closeModal("modal-product");
+  renderStock();
+  renderQuickProductChips();
+  showToast(appData.settings.lang === "bn" ? "পণ্য সেভ হয়েছে!" : "Product saved!");
+}
+
+function deleteProduct(pid) {
+  if (!confirm(appData.settings.lang === "bn" ? "এই পণ্য ডিলিট করবেন?" : "Delete this product?")) return;
+  appData.products = appData.products.filter(function(p) { return p.id !== pid; });
+  saveData();
+  renderStock();
+  renderQuickProductChips();
+}
+
+/* =========================================================================
+   PICKER MODAL (QUICK BROWSE FOR BILLING)
+   ========================================================================= */
+function openPickerModal(mode) {
+  pickerMode = mode;
+  document.getElementById("picker-search").value = "";
+  document.getElementById("picker-title").textContent = mode === "customer" ? t("cust_select_title") : t("browse_items");
+  renderPickerList();
+  openModal("modal-picker");
+}
+
+function renderPickerList() {
+  var q = (document.getElementById("picker-search").value || "").trim().toLowerCase();
+  var wrap = document.getElementById("picker-list");
+  var html = "";
+  if (pickerMode === "customer") {
+    for (var i = 0; i < appData.customers.length; i++) {
+      var c = appData.customers[i];
+      if (q && c.code.toLowerCase().indexOf(q) === -1 && c.name.toLowerCase().indexOf(q) === -1 && (c.phone || "").indexOf(q) === -1) continue;
+      html +=
+        "<div class='item-card' style='cursor:pointer;' onclick=\"pickCustomer('" + c.id + "')\">" +
+          "<div class='item-card-header'>" +
+            "<div><span class='badge badge-code'>#" + escapeHtml(c.code) + "</span> <strong>" + escapeHtml(c.name) + "</strong><div style='font-size:0.8rem;color:var(--text-muted);'>" + escapeHtml(c.address || "") + "</div></div>" +
+            "<span class='badge " + (c.due > 0 ? "badge-due" : "badge-ok") + "'>" + money(c.due) + "</span>" +
+          "</div>" +
+        "</div>";
+    }
+  } else {
+    for (var i = 0; i < appData.products.length; i++) {
+      var p = appData.products[i];
+      if (q && p.code.toLowerCase().indexOf(q) === -1 && (p.nameBn || "").toLowerCase().indexOf(q) === -1 && (p.nameEn || "").toLowerCase().indexOf(q) === -1) continue;
+      html +=
+        "<div class='item-card' style='cursor:pointer;' onclick=\"pickProduct('" + p.id + "')\">" +
+          "<div class='item-card-header'>" +
+            "<div><span class='badge badge-code'>#" + escapeHtml(p.code) + "</span> <strong>" + escapeHtml(prodDisplayName(p)) + "</strong></div>" +
+            "<strong>" + money(p.price) + "</strong>" +
+          "</div>" +
+        "</div>";
+    }
+  }
+  wrap.innerHTML = html || "<div class='empty-state'>" + t("no_records") + "</div>";
+}
+
+function pickCustomer(cid) {
+  selectCustomerForBilling(cid);
+  closeModal("modal-picker");
+}
+
+function pickProduct(pid) {
+  var p = getProductById(pid);
+  if (p) addProductToCart(p, 1);
+  closeModal("modal-picker");
+}
+
+/* =========================================================================
+   SETTINGS, JSON BACKUP / RESTORE & ANDROID BRIDGE
+   ========================================================================= */
+function openSettingsModal() {
+  document.getElementById("set-paper-width").value = appData.settings.paperWidth || "58mm";
+  document.getElementById("set-wm-text").value = appData.settings.watermarkText || "আবরণী বস্ত্রালয়";
+  var btn = document.getElementById("set-wm-btn");
+  btn.textContent = appData.settings.watermarkEnabled ? "ON" : "OFF";
+  btn.className = "btn btn-sm " + (appData.settings.watermarkEnabled ? "btn-success" : "btn-outline");
+  openModal("modal-settings");
+}
+
+function saveSettingsFromUi() {
+  appData.settings.paperWidth = document.getElementById("set-paper-width").value;
+  appData.settings.watermarkText = document.getElementById("set-wm-text").value || "আবরণী বস্ত্রালয়";
+  saveData();
+}
+
+function toggleWatermarkFromSettings() {
+  appData.settings.watermarkEnabled = !appData.settings.watermarkEnabled;
+  saveData();
+  openSettingsModal();
+}
+
+function downloadJsonBackup() {
+  var jsonStr = JSON.stringify(appData, null, 2);
+  var fname = "avarani_bastralaya_backup_" + todayIso() + ".json";
+  if (window.AndroidPOS && typeof window.AndroidPOS.saveJsonBackup === "function") {
+    window.AndroidPOS.saveJsonBackup(jsonStr, fname);
+    return;
+  }
+  try {
+    var blob = new Blob([jsonStr], { type: "application/json" });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement("a");
+    a.href = url;
+    a.download = fname;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    setTimeout(function() { URL.revokeObjectURL(url); }, 1000);
+    showToast(appData.settings.lang === "bn" ? "ব্যাকআপ ডাউনলোড হয়েছে!" : "Backup downloaded!");
+  } catch (e) {
+    showToast("Backup error: " + e.message);
+  }
+}
+
+function triggerJsonRestore() {
+  if (window.AndroidPOS && typeof window.AndroidPOS.openJsonRestore === "function") {
+    window.AndroidPOS.openJsonRestore();
+  } else {
+    document.getElementById("restore-file-input").value = "";
+    document.getElementById("restore-file-input").click();
+  }
+}
+
+function handleBrowserFileRestore(ev) {
+  var file = ev.target.files && ev.target.files[0];
+  if (!file) return;
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    applyJsonRestoreText(e.target.result);
+  };
+  reader.readAsText(file);
+}
+
+window.__onAndroidJsonLoaded = function(jsonText) {
+  applyJsonRestoreText(jsonText);
+};
+
+function applyJsonRestoreText(jsonText) {
+  try {
+    var parsed = JSON.parse(jsonText);
+    if (!parsed || !Array.isArray(parsed.products) || !Array.isArray(parsed.customers)) {
+      showToast(appData.settings.lang === "bn" ? "ভুল JSON ফাইল!" : "Invalid backup JSON file!");
+      return;
+    }
+    if (!confirm(appData.settings.lang === "bn" ? "এই ব্যাকআপ ফাইল থেকে সব ডেটা রিস্টোর করবেন?" : "Restore all store data from this backup?")) return;
+    if (!parsed.settings) parsed.settings = getDefaultData().settings;
+    if (!parsed.bills) parsed.bills = [];
+    if (!parsed.expenses) parsed.expenses = [];
+    if (!parsed.duePayments) parsed.duePayments = [];
+    appData = parsed;
+    saveData();
+    applyLanguageAndFont();
+    closeModal("modal-settings");
+    showToast(appData.settings.lang === "bn" ? "ব্যাকআপ রিস্টোর সফল হয়েছে!" : "Backup restored successfully!");
+  } catch (e) {
+    showToast(appData.settings.lang === "bn" ? "JSON পড়তে সমস্যা হয়েছে!" : "Failed to parse JSON file!");
+  }
+}
+
+function exportHtmlCopy() {
+  if (window.AndroidPOS && typeof window.AndroidPOS.exportHtmlFile === "function") {
+    window.AndroidPOS.exportHtmlFile("avarani_bastralaya_pos.html");
+    return;
+  }
+  var htmlStr = "<!DOCTYPE html>\n" + document.documentElement.outerHTML;
+  var blob = new Blob([htmlStr], { type: "text/html" });
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement("a");
+  a.href = url;
+  a.download = "avarani_bastralaya_pos.html";
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  setTimeout(function() { URL.revokeObjectURL(url); }, 1000);
+}
+
+function resetDemoData() {
+  if (!confirm(appData.settings.lang === "bn" ? "সব ডেটা মুছে প্রথম অবস্থায় ফিরিয়ে নেবেন?" : "Reset all data back to starter items & customers?")) return;
+  appData = getDefaultData();
+  saveData();
+  clearCartConfirm();
+  applyLanguageAndFont();
+  closeModal("modal-settings");
+  showToast(appData.settings.lang === "bn" ? "ডেটা রিসেট হয়েছে!" : "Data reset!");
+}
+
+/* =========================================================================
+   MODAL HELPERS & BACK BUTTON BRIDGE
+   ========================================================================= */
+function openModal(id) {
+  document.getElementById(id).classList.add("open");
+}
+
+function closeModal(id) {
+  document.getElementById(id).classList.remove("open");
+}
+
+window.__handleAndroidBack = function() {
+  var modals = document.querySelectorAll(".modal-backdrop.open");
+  if (modals.length > 0) {
+    modals[modals.length - 1].classList.remove("open");
+    return true;
+  }
+  var billingActive = document.getElementById("tab-billing").classList.contains("active");
+  if (!billingActive) {
+    switchTab("billing");
+    return true;
+  }
+  return false;
+};
+
+function escapeHtml(str) {
+  return String(str || "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
+function openAiAssistant() {
+  if (!window.AndroidPOS || typeof window.AndroidPOS.openAiAssistant !== "function") {
+    showToast(appData.settings.lang === "bn" ? "AI সহায়ক শুধু Android অ্যাপে উপলব্ধ" : "AI Assistant is available in the Android app");
+    return;
+  }
+  var today = todayIso();
+  var todaySales = 0, todayCash = 0, todayExp = 0, totalMarketDue = 0;
+  for (var i = 0; i < appData.bills.length; i++) {
+    if (appData.bills[i].dateIso === today) {
+      todaySales += appData.bills[i].netBill || 0;
+      todayCash += appData.bills[i].cashPaid || 0;
+    }
+  }
+  for (var i = 0; i < appData.duePayments.length; i++) {
+    if (appData.duePayments[i].dateIso === today) {
+      todayCash += appData.duePayments[i].amount || 0;
+    }
+  }
+  for (var i = 0; i < appData.expenses.length; i++) {
+    if (appData.expenses[i].dateIso === today) {
+      todayExp += appData.expenses[i].amount || 0;
+    }
+  }
+  var lowItems = [];
+  for (var i = 0; i < appData.products.length; i++) {
+    var p = appData.products[i];
+    if ((parseInt(p.stock, 10) || 0) <= 5) {
+      lowItems.push(prodDisplayName(p) + " (stock: " + p.stock + ")");
+    }
+  }
+  var dueCusts = [];
+  for (var i = 0; i < appData.customers.length; i++) {
+    var c = appData.customers[i];
+    var d = parseFloat(c.due) || 0;
+    totalMarketDue += d;
+    if (d > 0 && dueCusts.length < 5) {
+      dueCusts.push(c.name + " (₹" + d + ")");
+    }
+  }
+  var snapshot = {
+    lang: appData.settings.lang || "bn",
+    todaySales: todaySales,
+    todayCashIn: todayCash,
+    todayExpenses: todayExp,
+    totalMarketDue: totalMarketDue,
+    lowStockSummary: lowItems.join(", "),
+    topDueSummary: dueCusts.join(", ")
+  };
+  window.AndroidPOS.openAiAssistant(JSON.stringify(snapshot));
+}
+
+function openCloudSyncSheet() {
+  if (window.AndroidPOS && typeof window.AndroidPOS.openCloudSync === "function") {
+    window.AndroidPOS.openCloudSync();
+  }
+}
+
+window.__applyCloudSync = function(cloudJsonStr) {
+  try {
+    var cloud = JSON.parse(cloudJsonStr);
+    if (!cloud) return;
+    if (Array.isArray(cloud.products) && cloud.products.length > 0) appData.products = cloud.products;
+    if (Array.isArray(cloud.customers) && cloud.customers.length > 0) appData.customers = cloud.customers;
+    if (Array.isArray(cloud.bills)) appData.bills = cloud.bills;
+    if (Array.isArray(cloud.expenses)) appData.expenses = cloud.expenses;
+    if (Array.isArray(cloud.duePayments)) appData.duePayments = cloud.duePayments;
+    saveDataObj(appData);
+    applyLanguageAndFont();
+    recalcTotals();
+    showToast(appData.settings.lang === "bn" ? "ক্লাউড থেকে ডেটা লোড হয়েছে!" : "Loaded data from Firestore!");
+  } catch (e) {}
+};
+
+// Initialize on load
+(function init() {
+  document.getElementById("report-date").value = todayIso();
+  if (window.AndroidPOS && typeof window.AndroidPOS.openAiAssistant === "function") {
+    var aiBtn = document.getElementById("btn-ai-assist");
+    if (aiBtn) aiBtn.style.display = "inline-flex";
+  }
+  if (window.AndroidPOS && typeof window.AndroidPOS.openCloudSync === "function") {
+    var cloudBtn = document.getElementById("btn-cloud-sync");
+    if (cloudBtn) cloudBtn.style.display = "inline-flex";
+  }
+  applyLanguageAndFont();
+  recalcTotals();
+})();
+</script>
+</body>
+</html>
