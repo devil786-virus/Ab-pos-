@@ -135,6 +135,7 @@ test("Products: Kotlin-mirrored create, partial update, list, and delete succeed
         category: "Saree",
         price: 650,
         stock: 30,
+        reorderPoint: 5,
         createdAt: created,
         updatedAt: created,
       })
@@ -159,7 +160,21 @@ test("Products: Kotlin-mirrored create, partial update, list, and delete succeed
         category: "Saree",
         price: 700,
         stock: 28,
+        reorderPoint: 8,
         updatedAt: new Date(Date.now() - 1000),
+      })
+  );
+
+  // Reject negative reorderPoint
+  await assertFails(
+    aliceDb
+      .collection("users")
+      .doc(ALICE_UID)
+      .collection("products")
+      .doc("p1")
+      .update({
+        reorderPoint: -1,
+        updatedAt: new Date(Date.now() - 500),
       })
   );
 

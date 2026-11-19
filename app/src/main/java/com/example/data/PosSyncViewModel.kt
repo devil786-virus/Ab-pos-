@@ -45,6 +45,7 @@ data class CloudPosBundle(
           put("category", p.category)
           put("price", p.price)
           put("stock", p.stock)
+          put("reorderPoint", p.reorderPoint ?: 5L)
         }
       )
     }

@@ -580,9 +580,188 @@
     border-radius: 10px;
   }
 
+  .nav-btn .nav-icon-wrap {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
   .nav-btn .nav-icon {
     font-size: 1.45rem;
     line-height: 1;
+  }
+
+  .nav-badge {
+    position: absolute;
+    top: -4px;
+    right: -13px;
+    min-width: 20px;
+    height: 20px;
+    padding: 0 5px;
+    border-radius: 999px;
+    background: var(--danger);
+    color: #FFFFFF;
+    font-size: 0.68rem;
+    font-weight: 900;
+    line-height: 1;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid #FFFFFF;
+    box-shadow: 0 2px 6px rgba(185, 28, 28, 0.45);
+  }
+
+  .nav-badge.visible {
+    display: inline-flex;
+  }
+
+  .nav-btn.has-alert .nav-label {
+    color: var(--danger);
+  }
+
+  .restock-banner {
+    background: linear-gradient(135deg, #FEF2F2, #FFFBEB);
+    border: 1.5px solid #FCA5A5;
+    border-left: 5px solid var(--danger);
+    border-radius: 12px;
+    padding: 12px 14px;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    flex-wrap: wrap;
+    box-shadow: var(--shadow);
+  }
+
+  .item-card.restock-needed {
+    border-color: #FCA5A5;
+    border-left: 5px solid var(--danger);
+    background: #FFF9F9;
+  }
+
+  .item-card.out-of-stock {
+    border-color: var(--danger);
+    border-left: 5px solid #7F1D1D;
+    background: #FEF2F2;
+  }
+
+  /* Monthly Financial Summary */
+  .monthly-card {
+    background: linear-gradient(180deg, #FFFDF9 0%, #FFFFFF 100%);
+    border: 1.5px solid #E5D5C5;
+    border-top: 4px solid var(--primary);
+  }
+
+  .month-picker-row {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-bottom: 12px;
+  }
+
+  .month-step-btn {
+    min-width: 44px;
+    min-height: 46px;
+    padding: 0 10px;
+    border-radius: 10px;
+    border: 2px solid #D1D5DB;
+    background: #FFFFFF;
+    color: var(--text);
+    font-weight: 800;
+    font-size: 1rem;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .month-step-btn:active {
+    background: #F3F4F6;
+  }
+
+  .monthly-kpi-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+
+  .monthly-kpi-box {
+    flex: 1 1 130px;
+    background: #FFFFFF;
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    padding: 10px 12px;
+  }
+
+  .monthly-kpi-box.profit-pos {
+    background: var(--success-light);
+    border-color: #A7F3D0;
+  }
+
+  .monthly-kpi-box.profit-neg {
+    background: var(--danger-light);
+    border-color: #FECACA;
+  }
+
+  .monthly-sub-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 10px;
+  }
+
+  .monthly-sub-pill {
+    flex: 1 1 110px;
+    background: #F9FAFB;
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    padding: 7px 10px;
+    font-size: 0.78rem;
+  }
+
+  .ratio-bar-wrap {
+    margin-bottom: 12px;
+  }
+
+  .ratio-bar-track {
+    height: 10px;
+    border-radius: 999px;
+    background: #E5E7EB;
+    overflow: hidden;
+    display: flex;
+  }
+
+  .ratio-bar-profit {
+    height: 100%;
+    background: var(--success);
+    transition: width 0.25s ease;
+  }
+
+  .ratio-bar-exp {
+    height: 100%;
+    background: var(--accent);
+    transition: width 0.25s ease;
+  }
+
+  .monthly-day-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 10px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: #FFFFFF;
+    margin-bottom: 6px;
+    cursor: pointer;
+  }
+
+  .monthly-day-row:active {
+    background: var(--primary-light);
   }
 
   .nav-btn .nav-label {
@@ -816,6 +995,7 @@
       </div>
     </div>
     <div class="topbar-controls">
+      <button type="button" class="ctrl-btn" id="btn-store-map" onclick="openStoreMap()" style="display:none;" aria-label="Store and Customer Map">📍</button>
       <button type="button" class="ctrl-btn" id="btn-cloud-sync" onclick="openCloudSyncSheet()" style="display:none;" aria-label="Cloud Sync">☁️</button>
       <button type="button" class="ctrl-btn" id="btn-ai-assist" onclick="openAiAssistant()" style="display:none; background:#F59E0B; color:#450A0A; border-color:#FBBF24;" aria-label="AI Assistant">✨ AI</button>
       <button type="button" class="ctrl-btn" onclick="adjustFont(-1)" aria-label="Decrease font size">A-</button>
@@ -982,19 +1162,20 @@
       <div class="chip-scroll" style="margin-top:8px;">
         <button type="button" class="chip active" id="khata-filter-all" onclick="setKhataFilter('all')" data-i18n="filter_all">সবাই</button>
         <button type="button" class="chip" id="khata-filter-due" onclick="setKhataFilter('due')" data-i18n="filter_due_only">শুধু বাকি আছে</button>
+        <button type="button" class="chip" id="khata-map-chip" onclick="openStoreMap()" style="display:none;">📍 <span data-i18n="khata_map_btn">কাস্টমার ম্যাপ</span></button>
       </div>
     </div>
 
     <div id="khata-list"></div>
   </section>
 
-  <!-- TAB 3: DAILY REPORTS & INCOME-EXPENSE -->
+  <!-- TAB 3: DAILY REPORTS & MONTHLY FINANCIAL SUMMARY -->
   <section id="tab-reports" class="tab-section">
     <div class="card">
       <div class="row" style="align-items:center;">
         <div class="col">
           <label for="report-date" data-i18n="select_date">তারিখ নির্বাচন করুন</label>
-          <input type="date" id="report-date" onchange="renderReports()">
+          <input type="date" id="report-date" onchange="onReportDateChange()">
         </div>
         <div class="col-auto" style="padding-top:20px;">
           <button type="button" class="btn btn-soft" onclick="setReportToday()" data-i18n="today_btn">আজকের হিসাব</button>
@@ -1029,6 +1210,80 @@
         </div>
         <button type="button" class="ctrl-btn" onclick="openSettingsModal()" data-i18n="backup_restore_btn">💾 ব্যাকআপ / রিস্টোর</button>
       </div>
+      <div style="display:flex; gap:8px; flex-wrap:wrap; margin-top:10px; padding-top:10px; border-top:1px solid rgba(255,255,255,0.22);">
+        <button type="button" class="ctrl-btn" style="flex:1; min-width:130px; background:rgba(255,255,255,0.18);" onclick="exportDailyReportPdf(false)" data-i18n="save_report_pdf">📄 PDF সেভ করুন</button>
+        <button type="button" class="ctrl-btn" style="flex:1; min-width:130px; background:#FBBF24; color:#450A0A; border-color:#F59E0B;" onclick="exportDailyReportPdf(true)" data-i18n="share_report_pdf">📤 PDF শেয়ার করুন</button>
+      </div>
+    </div>
+
+    <!-- Monthly Financial Summary -->
+    <div class="card monthly-card" id="monthly-summary-card">
+      <div class="card-title">
+        <span data-i18n="monthly_summary_title">🗓️ মাসিক আর্থিক সারসংক্ষেপ</span>
+        <span id="mon-label-badge" class="badge badge-code"></span>
+      </div>
+
+      <label for="report-month" data-i18n="select_month">মাস নির্বাচন করুন</label>
+      <div class="month-picker-row">
+        <button type="button" class="month-step-btn" onclick="stepReportMonth(-1)" aria-label="Previous Month">◀</button>
+        <div class="col" style="min-width:140px;">
+          <input type="month" id="report-month" onchange="renderMonthlyReport()">
+        </div>
+        <button type="button" class="month-step-btn" onclick="stepReportMonth(1)" aria-label="Next Month">▶</button>
+        <button type="button" class="btn btn-sm btn-soft" onclick="setReportThisMonth()" data-i18n="this_month_btn">এই মাস</button>
+      </div>
+
+      <div class="monthly-kpi-grid">
+        <div class="monthly-kpi-box">
+          <div class="kpi-label" data-i18n="mon_total_sales">মাসের মোট বিক্রি</div>
+          <div class="kpi-value" id="mon-sales" style="color:var(--primary);">₹0</div>
+          <div id="mon-bills-sub" style="font-size:0.75rem; color:var(--text-muted); margin-top:2px;">0 bills</div>
+        </div>
+        <div class="monthly-kpi-box">
+          <div class="kpi-label" data-i18n="mon_total_expenses">মাসের মোট খরচ</div>
+          <div class="kpi-value" id="mon-expense" style="color:var(--accent);">₹0</div>
+          <div id="mon-exp-sub" style="font-size:0.75rem; color:var(--text-muted); margin-top:2px;">0 items</div>
+        </div>
+        <div class="monthly-kpi-box profit-pos" id="mon-profit-box">
+          <div class="kpi-label" id="mon-profit-label" data-i18n="mon_net_profit">মাসের লাভ (বিক্রি - খরচ)</div>
+          <div class="kpi-value" id="mon-profit" style="color:var(--success);">₹0</div>
+          <div id="mon-margin-sub" style="font-size:0.75rem; font-weight:700; margin-top:2px;"></div>
+        </div>
+      </div>
+
+      <div class="ratio-bar-wrap" id="mon-ratio-wrap" style="display:none;">
+        <div style="display:flex; justify-content:space-between; font-size:0.75rem; font-weight:700; color:var(--text-muted); margin-bottom:4px;">
+          <span id="mon-ratio-profit-lbl"></span>
+          <span id="mon-ratio-exp-lbl"></span>
+        </div>
+        <div class="ratio-bar-track">
+          <div class="ratio-bar-profit" id="mon-bar-profit" style="width:0%;"></div>
+          <div class="ratio-bar-exp" id="mon-bar-exp" style="width:0%;"></div>
+        </div>
+      </div>
+
+      <div class="monthly-sub-pills">
+        <div class="monthly-sub-pill">
+          <div style="color:var(--text-muted); font-weight:700;" data-i18n="mon_cash_collected">মাসে নগদ আদায়</div>
+          <strong id="mon-cash-in" style="color:var(--success); font-size:0.95rem;">₹0</strong>
+        </div>
+        <div class="monthly-sub-pill">
+          <div style="color:var(--text-muted); font-weight:700;" data-i18n="mon_new_dues">মাসের নতুন বাকি</div>
+          <strong id="mon-dues" style="color:var(--danger); font-size:0.95rem;">₹0</strong>
+        </div>
+        <div class="monthly-sub-pill">
+          <div style="color:var(--text-muted); font-weight:700;" data-i18n="mon_active_days">সক্রিয় দিন</div>
+          <strong id="mon-active-days" style="color:var(--text); font-size:0.95rem;">0</strong>
+        </div>
+      </div>
+
+      <div style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:10px;">
+        <button type="button" class="btn btn-sm btn-soft" style="flex:1; min-width:130px;" onclick="exportMonthlyReportPdf(false)" data-i18n="save_monthly_pdf">📄 মাসিক PDF সেভ</button>
+        <button type="button" class="btn btn-sm btn-accent" style="flex:1; min-width:130px;" onclick="exportMonthlyReportPdf(true)" data-i18n="share_monthly_pdf">📤 মাসিক PDF শেয়ার</button>
+        <button type="button" class="btn btn-sm btn-outline" id="mon-breakdown-toggle" onclick="toggleMonthlyBreakdown()" data-i18n="mon_daily_breakdown">দিনের হিসাব</button>
+      </div>
+
+      <div id="mon-daily-breakdown" style="display:none;"></div>
     </div>
 
     <!-- Add Expense -->
@@ -1078,11 +1333,13 @@
         <div class="kpi-label" data-i18n="total_stock_units">মোট স্টক সংখ্যা</div>
         <div class="kpi-value" id="stk-total-qty">0</div>
       </div>
-      <div class="kpi-box">
-        <div class="kpi-label" data-i18n="low_stock_items">কম স্টক (≤ 5)</div>
+      <div class="kpi-box" onclick="toggleLowStockFilter()" style="cursor:pointer;" id="stk-low-kpi">
+        <div class="kpi-label" data-i18n="low_stock_items">রিস্টক প্রয়োজন</div>
         <div class="kpi-value" id="stk-low-count" style="color:var(--danger);">0</div>
       </div>
     </div>
+
+    <div id="stock-restock-banner" class="restock-banner" style="display:none;"></div>
 
     <div class="card">
       <div class="row">
@@ -1092,6 +1349,10 @@
         <div class="col-auto">
           <button type="button" class="btn btn-primary" onclick="openProductModal(null)" data-i18n="add_product">+ নতুন পণ্য</button>
         </div>
+      </div>
+      <div class="chip-scroll" style="margin-top:8px;">
+        <button type="button" class="chip active" id="stock-filter-all" onclick="setStockFilter('all')" data-i18n="stock_filter_all">সব পণ্য</button>
+        <button type="button" class="chip" id="stock-filter-low" onclick="setStockFilter('low')">⚠️ <span data-i18n="stock_filter_low">রিস্টক প্রয়োজন</span> <span id="stock-filter-low-count"></span></button>
       </div>
     </div>
 
@@ -1114,7 +1375,10 @@
     <span class="nav-label" data-i18n="tab_reports">প্রতিদিনের হিসাব</span>
   </button>
   <button type="button" class="nav-btn" id="nav-stock" onclick="switchTab('stock')">
-    <span class="nav-icon">📦</span>
+    <span class="nav-icon-wrap">
+      <span class="nav-icon">📦</span>
+      <span class="nav-badge" id="nav-stock-badge" aria-hidden="true">0</span>
+    </span>
     <span class="nav-label" data-i18n="tab_stock">পণ্যের স্টক</span>
   </button>
 </nav>
@@ -1153,6 +1417,10 @@
       <div class="col">
         <label for="prod-stock" data-i18n="stock_qty">স্টক সংখ্যা *</label>
         <input type="number" id="prod-stock" min="0" step="1" placeholder="25">
+      </div>
+      <div class="col">
+        <label for="prod-reorder" data-i18n="reorder_point">রিঅর্ডার সীমা</label>
+        <input type="number" id="prod-reorder" min="0" step="1" placeholder="5">
       </div>
     </div>
     <div style="margin-top:14px; display:flex; gap:8px;">
@@ -1819,7 +2087,7 @@ var I18N = {
     store_addr: "নিমতলা বাজার, খেজুরী, পূর্ব মেদিনীপুর - ৭২১৪৩১",
     tab_billing: "বিলিং",
     tab_khata: "কাস্টমার খাতা",
-    tab_reports: "প্রতিদিনের হিসাব",
+    tab_reports: "হিসাব রিপোর্ট",
     tab_stock: "পণ্যের স্টক",
     cust_select_title: "👤 কাস্টমার নির্বাচন (কোড বা নাম)",
     walk_in: "নগদ ক্রেতা",
@@ -1854,6 +2122,7 @@ var I18N = {
     add_customer: "+ কাস্টমার",
     filter_all: "সবাই",
     filter_due_only: "শুধু বাকি আছে",
+    khata_map_btn: "কাস্টমার ম্যাপ",
     select_date: "তারিখ নির্বাচন করুন",
     today_btn: "আজকের হিসাব",
     rpt_total_sales: "মোট বিক্রি (Sales)",
@@ -1862,6 +2131,22 @@ var I18N = {
     rpt_expenses: "দোকানের খরচ",
     net_cash_hand: "হাতে থাকা নিট নগদ (Cash In - Expense)",
     backup_restore_btn: "💾 ব্যাকআপ / রিস্টোর",
+    save_report_pdf: "📄 দৈনিক PDF সেভ",
+    share_report_pdf: "📤 দৈনিক PDF শেয়ার",
+    monthly_summary_title: "🗓️ মাসিক আর্থিক সারসংক্ষেপ",
+    select_month: "মাস নির্বাচন করুন",
+    this_month_btn: "এই মাস",
+    mon_total_sales: "মাসের মোট বিক্রি",
+    mon_total_expenses: "মাসের মোট খরচ",
+    mon_net_profit: "মাসের লাভ (বিক্রি - খরচ)",
+    mon_net_loss: "মাসের ক্ষতি (বিক্রি - খরচ)",
+    mon_cash_collected: "মাসে নগদ আদায়",
+    mon_new_dues: "মাসের নতুন বাকি",
+    mon_active_days: "সক্রিয় দিন",
+    mon_daily_breakdown: "দিনের তালিকা",
+    mon_no_records: "এই মাসে কোনো লেনদেন নেই।",
+    save_monthly_pdf: "📄 মাসিক PDF সেভ",
+    share_monthly_pdf: "📤 মাসিক PDF শেয়ার",
     add_expense_title: "💸 দোকানের খরচ যোগ করুন",
     exp_tea: "চা-জলখাবার",
     exp_elec: "বিদ্যুৎ বিল",
@@ -1874,7 +2159,9 @@ var I18N = {
     daily_exp_list: "📉 আজকের খরচের তালিকা",
     total_products: "মোট পণ্য",
     total_stock_units: "মোট স্টক সংখ্যা",
-    low_stock_items: "কম স্টক (≤ 5)",
+    low_stock_items: "রিস্টক প্রয়োজন",
+    stock_filter_all: "সব পণ্য",
+    stock_filter_low: "রিস্টক প্রয়োজন",
     add_product: "+ নতুন পণ্য",
     prod_code: "প্রোডাক্ট কোড *",
     category: "ধরন / ক্যাটাগরি",
@@ -1882,6 +2169,7 @@ var I18N = {
     prod_name_en: "Product Name (English)",
     price_rs: "দাম (₹) *",
     stock_qty: "স্টক সংখ্যা *",
+    reorder_point: "রিঅর্ডার সীমা (Min)",
     save_btn: "সেভ করুন",
     cust_code: "কাস্টমার কোড *",
     phone: "ফোন নম্বর",
@@ -1922,7 +2210,7 @@ var I18N = {
     store_addr: "Nimtala Bazar, Khejuri, Purba Medinipur - 721431",
     tab_billing: "Billing",
     tab_khata: "Customer Khata",
-    tab_reports: "Daily Reports",
+    tab_reports: "Reports",
     tab_stock: "Product Stock",
     cust_select_title: "👤 Select Customer (Code / Name)",
     walk_in: "Walk-in",
@@ -1957,6 +2245,7 @@ var I18N = {
     add_customer: "+ Customer",
     filter_all: "All",
     filter_due_only: "Due Only",
+    khata_map_btn: "Customer Map",
     select_date: "Select Date",
     today_btn: "Today",
     rpt_total_sales: "Total Sales",
@@ -1965,6 +2254,22 @@ var I18N = {
     rpt_expenses: "Shop Expenses",
     net_cash_hand: "Net Cash in Hand (Cash In - Expense)",
     backup_restore_btn: "💾 Backup / Restore",
+    save_report_pdf: "📄 Save Daily PDF",
+    share_report_pdf: "📤 Share Daily PDF",
+    monthly_summary_title: "🗓️ Monthly Financial Summary",
+    select_month: "Select Month",
+    this_month_btn: "This Month",
+    mon_total_sales: "Monthly Sales",
+    mon_total_expenses: "Monthly Expenses",
+    mon_net_profit: "Monthly Profit (Sales - Exp.)",
+    mon_net_loss: "Monthly Loss (Sales - Exp.)",
+    mon_cash_collected: "Cash Collected",
+    mon_new_dues: "New Khata Dues",
+    mon_active_days: "Active Days",
+    mon_daily_breakdown: "Daily Breakdown",
+    mon_no_records: "No transactions recorded for this month.",
+    save_monthly_pdf: "📄 Save Monthly PDF",
+    share_monthly_pdf: "📤 Share Monthly PDF",
     add_expense_title: "💸 Add Shop Expense",
     exp_tea: "Tea & Snacks",
     exp_elec: "Electricity",
@@ -1977,7 +2282,9 @@ var I18N = {
     daily_exp_list: "📉 Day's Expenses",
     total_products: "Total Products",
     total_stock_units: "Total Stock Units",
-    low_stock_items: "Low Stock (≤ 5)",
+    low_stock_items: "Needs Restock",
+    stock_filter_all: "All Products",
+    stock_filter_low: "Needs Restock",
     add_product: "+ Add Product",
     prod_code: "Product Code *",
     category: "Category",
@@ -1985,6 +2292,7 @@ var I18N = {
     prod_name_en: "Product Name (English)",
     price_rs: "Price (₹) *",
     stock_qty: "Stock Qty *",
+    reorder_point: "Reorder Point (Min)",
     save_btn: "Save",
     cust_code: "Customer Code *",
     phone: "Phone Number",
@@ -2041,14 +2349,14 @@ function getDefaultData() {
       nextBillNum: 1001
     },
     products: [
-      { id: "p1", code: "101", nameBn: "ধনেখালি তাঁতের শাড়ি", nameEn: "Dhaniakhali Tant Saree", category: "Saree", price: 650, stock: 30 },
-      { id: "p2", code: "102", nameBn: "জামদানি শাড়ি (কটন)", nameEn: "Cotton Jamdani Saree", category: "Saree", price: 1250, stock: 18 },
-      { id: "p3", code: "103", nameBn: "ছেলেদের কটন পাঞ্জাবি", nameEn: "Men's Cotton Panjabi", category: "Panjabi", price: 580, stock: 24 },
-      { id: "p4", code: "104", nameBn: "সুতির প্রিন্টেড কুর্তি", nameEn: "Printed Cotton Kurti", category: "Kurti", price: 420, stock: 35 },
-      { id: "p5", code: "105", nameBn: "হ্যান্ডলুম লুঙ্গি", nameEn: "Handloom Lungi", category: "Lungi", price: 240, stock: 45 },
-      { id: "p6", code: "106", nameBn: "ব্লাউজ পিস (সিল্ক)", nameEn: "Silk Blouse Piece", category: "Blouse", price: 140, stock: 60 },
-      { id: "p7", code: "107", nameBn: "ছোটদের ফ্রক / সেট", nameEn: "Kids Party Dress", category: "Kids", price: 490, stock: 15 },
-      { id: "p8", code: "108", nameBn: "ফরমাল শার্ট প্যান্ট কাপড়", nameEn: "Formal Shirt-Pant Piece", category: "Mens", price: 850, stock: 20 }
+      { id: "p1", code: "101", nameBn: "ধনেখালি তাঁতের শাড়ি", nameEn: "Dhaniakhali Tant Saree", category: "Saree", price: 650, stock: 30, reorderPoint: 5 },
+      { id: "p2", code: "102", nameBn: "জামদানি শাড়ি (কটন)", nameEn: "Cotton Jamdani Saree", category: "Saree", price: 1250, stock: 18, reorderPoint: 5 },
+      { id: "p3", code: "103", nameBn: "ছেলেদের কটন পাঞ্জাবি", nameEn: "Men's Cotton Panjabi", category: "Panjabi", price: 580, stock: 24, reorderPoint: 5 },
+      { id: "p4", code: "104", nameBn: "সুতির প্রিন্টেড কুর্তি", nameEn: "Printed Cotton Kurti", category: "Kurti", price: 420, stock: 35, reorderPoint: 5 },
+      { id: "p5", code: "105", nameBn: "হ্যান্ডলুম লুঙ্গি", nameEn: "Handloom Lungi", category: "Lungi", price: 240, stock: 45, reorderPoint: 10 },
+      { id: "p6", code: "106", nameBn: "ব্লাউজ পিস (সিল্ক)", nameEn: "Silk Blouse Piece", category: "Blouse", price: 140, stock: 60, reorderPoint: 10 },
+      { id: "p7", code: "107", nameBn: "ছোটদের ফ্রক / সেট", nameEn: "Kids Party Dress", category: "Kids", price: 490, stock: 4, reorderPoint: 5 },
+      { id: "p8", code: "108", nameBn: "ফরমাল শার্ট প্যান্ট কাপড়", nameEn: "Formal Shirt-Pant Piece", category: "Mens", price: 850, stock: 20, reorderPoint: 5 }
     ],
     customers: [
       { id: "c1", code: "503", name: "Arun Maity (অরুণ মাইতি)", phone: "9732100503", address: "Nimtala Bazar, Khejuri", due: 450 },
@@ -2066,6 +2374,7 @@ var currentCart = [];
 var selectedCustomerId = null;
 var cashEditedManually = false;
 var khataFilter = "all";
+var stockFilter = "all";
 var pickerMode = "product";
 var activeReceiptObj = null;
 
@@ -2110,6 +2419,10 @@ function todayIso() {
   var m = d.getMonth() + 1;
   var day = d.getDate();
   return d.getFullYear() + "-" + (m < 10 ? "0" + m : m) + "-" + (day < 10 ? "0" + day : day);
+}
+
+function todayMonthIso() {
+  return todayIso().slice(0, 7);
 }
 
 function formatDateTime(ts) {
@@ -2342,11 +2655,12 @@ function onProductCodeInput() {
   }
   var p = findProductByQuery(val);
   if (p) {
+    var lowWarn = isProductLowStock(p) ? " ⚠️" : "";
     prev.style.display = "flex";
-    prev.style.background = "var(--success-light)";
-    prev.style.borderColor = "#A7F3D0";
+    prev.style.background = isProductLowStock(p) ? "var(--accent-light)" : "var(--success-light)";
+    prev.style.borderColor = isProductLowStock(p) ? "#FDE68A" : "#A7F3D0";
     prev.innerHTML = "<span>#" + escapeHtml(p.code) + " — " + escapeHtml(prodDisplayName(p)) +
-      "</span><span>" + money(p.price) + " (Stock: " + p.stock + ")</span>";
+      "</span><span>" + money(p.price) + " (Stock: " + p.stock + lowWarn + ")</span>";
   } else {
     prev.style.display = "flex";
     prev.style.background = "var(--danger-light)";
@@ -3075,11 +3389,76 @@ function reprintBillById(billId) {
 }
 
 /* =========================================================================
-   TAB 3: DAILY REPORTS & EXPENSES
+   TAB 3: DAILY REPORTS, MONTHLY SUMMARY & EXPENSES
    ========================================================================= */
-function setReportToday() {
-  document.getElementById("report-date").value = todayIso();
+var monthlyBreakdownOpen = false;
+
+function onReportDateChange() {
+  var dateEl = document.getElementById("report-date");
+  var monthEl = document.getElementById("report-month");
+  if (dateEl && dateEl.value && monthEl) {
+    monthEl.value = dateEl.value.slice(0, 7);
+  }
   renderReports();
+}
+
+function setReportToday() {
+  var today = todayIso();
+  document.getElementById("report-date").value = today;
+  var monthEl = document.getElementById("report-month");
+  if (monthEl) monthEl.value = today.slice(0, 7);
+  renderReports();
+}
+
+function setReportThisMonth() {
+  var monthEl = document.getElementById("report-month");
+  if (monthEl) monthEl.value = todayMonthIso();
+  renderMonthlyReport();
+}
+
+function stepReportMonth(delta) {
+  var monthStr = getSelectedReportMonth();
+  var parts = monthStr.split("-");
+  var y = parseInt(parts[0], 10);
+  var m = parseInt(parts[1], 10) - 1;
+  var d = new Date(y, m + delta, 1);
+  var nextM = d.getMonth() + 1;
+  var nextStr = d.getFullYear() + "-" + (nextM < 10 ? "0" + nextM : nextM);
+  var monthEl = document.getElementById("report-month");
+  if (monthEl) monthEl.value = nextStr;
+  renderMonthlyReport();
+}
+
+function getSelectedReportMonth() {
+  var monthEl = document.getElementById("report-month");
+  var val = monthEl ? monthEl.value : "";
+  if (/^\d{4}-\d{2}$/.test(val)) return val;
+  var dateEl = document.getElementById("report-date");
+  var fallback = (dateEl && /^\d{4}-\d{2}-\d{2}$/.test(dateEl.value)) ? dateEl.value.slice(0, 7) : todayMonthIso();
+  if (monthEl) monthEl.value = fallback;
+  return fallback;
+}
+
+function formatMonthLabel(monthStr, lang) {
+  var parts = (monthStr || todayMonthIso()).split("-");
+  var y = parseInt(parts[0], 10) || new Date().getFullYear();
+  var m = (parseInt(parts[1], 10) || 1) - 1;
+  var enMonths = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+  var bnMonths = ["জানুয়ারি", "ফেব্রুয়ারি", "মার্চ", "এপ্রিল", "মে", "জুন", "জুলাই", "আগস্ট", "সেপ্টেম্বর", "অক্টোবর", "নভেম্বর", "ডিসেম্বর"];
+  var name = (lang === "bn" ? bnMonths[m] : enMonths[m]) || monthStr;
+  return name + " " + y;
+}
+
+function toggleMonthlyBreakdown() {
+  monthlyBreakdownOpen = !monthlyBreakdownOpen;
+  renderMonthlyReport();
+}
+
+function jumpToDailyDate(dateIso) {
+  if (!dateIso) return;
+  document.getElementById("report-date").value = dateIso;
+  renderReports();
+  window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
 function renderReports() {
@@ -3169,6 +3548,189 @@ function renderReports() {
       "</div>";
   }
   document.getElementById("rpt-expenses-list").innerHTML = expHtml || "<div class='empty-state'>" + t("no_records") + "</div>";
+
+  renderMonthlyReport();
+}
+
+function computeMonthlySummaryData(targetMonth) {
+  var totalSales = 0, cashFromBills = 0, newDues = 0, billCount = 0;
+  var cashFromDues = 0, duePayCount = 0;
+  var totalExpenses = 0, expenseCount = 0;
+  var dayMap = {};
+
+  function ensureDay(dIso) {
+    if (!dayMap[dIso]) {
+      dayMap[dIso] = { dateIso: dIso, sales: 0, cashIn: 0, dues: 0, expenses: 0, billCount: 0, expCount: 0 };
+    }
+    return dayMap[dIso];
+  }
+
+  for (var i = 0; i < appData.bills.length; i++) {
+    var b = appData.bills[i];
+    if (b.dateIso && b.dateIso.slice(0, 7) === targetMonth) {
+      var net = parseFloat(b.netBill) || 0;
+      var paid = parseFloat(b.cashPaid) || 0;
+      var due = Math.max(0, net - paid);
+      totalSales += net;
+      cashFromBills += paid;
+      newDues += due;
+      billCount++;
+      var d = ensureDay(b.dateIso);
+      d.sales += net;
+      d.cashIn += paid;
+      d.dues += due;
+      d.billCount++;
+    }
+  }
+
+  for (var i = 0; i < appData.duePayments.length; i++) {
+    var dp = appData.duePayments[i];
+    if (dp.dateIso && dp.dateIso.slice(0, 7) === targetMonth) {
+      var amt = parseFloat(dp.amount) || 0;
+      cashFromDues += amt;
+      duePayCount++;
+      var d = ensureDay(dp.dateIso);
+      d.cashIn += amt;
+    }
+  }
+
+  for (var i = 0; i < appData.expenses.length; i++) {
+    var ex = appData.expenses[i];
+    if (ex.dateIso && ex.dateIso.slice(0, 7) === targetMonth) {
+      var eAmt = parseFloat(ex.amount) || 0;
+      totalExpenses += eAmt;
+      expenseCount++;
+      var d = ensureDay(ex.dateIso);
+      d.expenses += eAmt;
+      d.expCount++;
+    }
+  }
+
+  var days = Object.keys(dayMap).sort().reverse().map(function(k) {
+    var item = dayMap[k];
+    item.profit = item.sales - item.expenses;
+    return item;
+  });
+
+  var totalCashIn = cashFromBills + cashFromDues;
+  var profit = totalSales - totalExpenses;
+  var profitMarginPct = totalSales > 0 ? ((profit / totalSales) * 100) : 0;
+
+  return {
+    monthIso: targetMonth,
+    totalSales: totalSales,
+    totalExpenses: totalExpenses,
+    profit: profit,
+    profitMarginPct: profitMarginPct,
+    cashFromBills: cashFromBills,
+    cashFromDues: cashFromDues,
+    totalCashIn: totalCashIn,
+    newDues: newDues,
+    billCount: billCount,
+    duePayCount: duePayCount,
+    expenseCount: expenseCount,
+    activeDays: days.length,
+    days: days
+  };
+}
+
+function renderMonthlyReport() {
+  var targetMonth = getSelectedReportMonth();
+  var lang = appData.settings.lang || "bn";
+  var m = computeMonthlySummaryData(targetMonth);
+
+  var badgeEl = document.getElementById("mon-label-badge");
+  if (badgeEl) badgeEl.textContent = formatMonthLabel(targetMonth, lang);
+
+  document.getElementById("mon-sales").textContent = money(m.totalSales);
+  document.getElementById("mon-bills-sub").textContent =
+    m.billCount + (lang === "bn" ? " টি বিল" : (m.billCount === 1 ? " bill" : " bills"));
+
+  document.getElementById("mon-expense").textContent = money(m.totalExpenses);
+  document.getElementById("mon-exp-sub").textContent =
+    m.expenseCount + (lang === "bn" ? " টি খরচ" : (m.expenseCount === 1 ? " entry" : " entries"));
+
+  var profitBox = document.getElementById("mon-profit-box");
+  var profitLbl = document.getElementById("mon-profit-label");
+  var profitVal = document.getElementById("mon-profit");
+  var marginSub = document.getElementById("mon-margin-sub");
+
+  if (m.profit >= 0) {
+    profitBox.className = "monthly-kpi-box profit-pos";
+    profitLbl.textContent = t("mon_net_profit");
+    profitVal.style.color = "var(--success)";
+    profitVal.textContent = money(m.profit);
+    marginSub.style.color = "var(--success)";
+    marginSub.textContent = m.totalSales > 0
+      ? ((lang === "bn" ? "লাভের হার: " : "Margin: ") + m.profitMarginPct.toFixed(1) + "%")
+      : (lang === "bn" ? "কোনো বিক্রি নেই" : "No sales yet");
+  } else {
+    profitBox.className = "monthly-kpi-box profit-neg";
+    profitLbl.textContent = t("mon_net_loss");
+    profitVal.style.color = "var(--danger)";
+    profitVal.textContent = "-" + money(Math.abs(m.profit));
+    marginSub.style.color = "var(--danger)";
+    marginSub.textContent = lang === "bn" ? "খরচ বিক্রির চেয়ে বেশি" : "Expenses exceed sales";
+  }
+
+  var ratioWrap = document.getElementById("mon-ratio-wrap");
+  if (m.totalSales > 0 || m.totalExpenses > 0) {
+    ratioWrap.style.display = "block";
+    var base = Math.max(m.totalSales, m.totalExpenses, 1);
+    var expPct = Math.min(100, Math.round((m.totalExpenses / base) * 100));
+    var profitPct = m.profit > 0 ? Math.max(0, 100 - expPct) : 0;
+    document.getElementById("mon-bar-profit").style.width = profitPct + "%";
+    document.getElementById("mon-bar-exp").style.width = expPct + "%";
+    document.getElementById("mon-ratio-profit-lbl").textContent =
+      (lang === "bn" ? "লাভ " : "Profit ") + profitPct + "%";
+    document.getElementById("mon-ratio-exp-lbl").textContent =
+      (lang === "bn" ? "খরচ " : "Expense ") + expPct + "%";
+  } else {
+    ratioWrap.style.display = "none";
+  }
+
+  document.getElementById("mon-cash-in").textContent = money(m.totalCashIn);
+  document.getElementById("mon-dues").textContent = money(m.newDues);
+  document.getElementById("mon-active-days").textContent = String(m.activeDays);
+
+  var toggleBtn = document.getElementById("mon-breakdown-toggle");
+  if (toggleBtn) {
+    toggleBtn.textContent = (monthlyBreakdownOpen ? "▲ " : "▼ ") + t("mon_daily_breakdown") + " (" + m.days.length + ")";
+  }
+
+  var bdWrap = document.getElementById("mon-daily-breakdown");
+  if (bdWrap) {
+    if (!monthlyBreakdownOpen) {
+      bdWrap.style.display = "none";
+    } else {
+      bdWrap.style.display = "block";
+      if (m.days.length === 0) {
+        bdWrap.innerHTML = "<div class='empty-state' style='padding:14px;'>" + t("mon_no_records") + "</div>";
+      } else {
+        var html = "";
+        for (var i = 0; i < m.days.length; i++) {
+          var d = m.days[i];
+          var pColor = d.profit >= 0 ? "var(--success)" : "var(--danger)";
+          var pText = d.profit >= 0 ? money(d.profit) : ("-" + money(Math.abs(d.profit)));
+          html +=
+            "<div class='monthly-day-row' onclick=\"jumpToDailyDate('" + d.dateIso + "')\">" +
+              "<div>" +
+                "<strong style='color:var(--primary);'>" + escapeHtml(d.dateIso) + "</strong>" +
+                "<div style='font-size:0.75rem;color:var(--text-muted);'>" +
+                  (lang === "bn" ? "বিক্রি: " : "Sales: ") + money(d.sales) +
+                  " | " + (lang === "bn" ? "খরচ: " : "Exp: ") + money(d.expenses) +
+                "</div>" +
+              "</div>" +
+              "<div style='text-align:right;'>" +
+                "<div style='font-size:0.72rem;color:var(--text-muted);'>" + (lang === "bn" ? "লাভ" : "Profit") + "</div>" +
+                "<strong style='color:" + pColor + ";'>" + pText + "</strong>" +
+              "</div>" +
+            "</div>";
+        }
+        bdWrap.innerHTML = html;
+      }
+    }
+  }
 }
 
 function fillExpensePreset(text) {
@@ -3204,25 +3766,240 @@ function deleteExpense(exId) {
   renderReports();
 }
 
+function buildDailyReportPayload() {
+  var dateEl = document.getElementById("report-date");
+  var targetDate = (dateEl && dateEl.value) ? dateEl.value : todayIso();
+  var lang = appData.settings.lang || "bn";
+
+  var totalSales = 0, cashFromBills = 0, newDues = 0;
+  var billsOut = [];
+  for (var i = 0; i < appData.bills.length; i++) {
+    var b = appData.bills[i];
+    if (b.dateIso === targetDate) {
+      totalSales += parseFloat(b.netBill) || 0;
+      cashFromBills += parseFloat(b.cashPaid) || 0;
+      newDues += Math.max(0, (parseFloat(b.netBill) || 0) - (parseFloat(b.cashPaid) || 0));
+      var itemQty = 0;
+      if (Array.isArray(b.items)) {
+        for (var k = 0; k < b.items.length; k++) itemQty += parseInt(b.items[k].qty, 10) || 1;
+      }
+      billsOut.push({
+        billNo: parseInt(b.billNo, 10) || 0,
+        time: formatDateTime(b.timestamp),
+        customerCode: b.customerCode || "",
+        customerName: b.customerName || "Walk-in",
+        itemCount: itemQty,
+        subtotal: parseFloat(b.subtotal) || 0,
+        discount: parseFloat(b.discount) || 0,
+        netBill: parseFloat(b.netBill) || 0,
+        cashPaid: parseFloat(b.cashPaid) || 0,
+        remainingDue: parseFloat(b.remainingDue) || 0
+      });
+    }
+  }
+
+  var cashFromDues = 0;
+  var duesOut = [];
+  for (var i = 0; i < appData.duePayments.length; i++) {
+    var dp = appData.duePayments[i];
+    if (dp.dateIso === targetDate) {
+      cashFromDues += parseFloat(dp.amount) || 0;
+      duesOut.push({
+        time: formatDateTime(dp.timestamp),
+        customerCode: dp.customerCode || "",
+        customerName: dp.customerName || "Customer",
+        oldDue: parseFloat(dp.oldDue) || 0,
+        amount: parseFloat(dp.amount) || 0,
+        newDue: parseFloat(dp.newDue) || 0,
+        note: dp.note || ""
+      });
+    }
+  }
+
+  var totalExp = 0;
+  var expOut = [];
+  for (var i = 0; i < appData.expenses.length; i++) {
+    var ex = appData.expenses[i];
+    if (ex.dateIso === targetDate) {
+      totalExp += parseFloat(ex.amount) || 0;
+      expOut.push({
+        time: formatDateTime(ex.timestamp),
+        desc: ex.desc || "Expense",
+        amount: parseFloat(ex.amount) || 0
+      });
+    }
+  }
+
+  var totalCashIn = cashFromBills + cashFromDues;
+  return {
+    lang: lang,
+    dateIso: targetDate,
+    generatedAt: formatDateTime(Date.now()),
+    storeName: "আবরণী বস্ত্রালয় (Avarani Bastralaya)",
+    storeAddress: "Nimtala Bazar, Khejuri, Purba Medinipur - 721431",
+    storePhone: STORE_PHONE,
+    summary: {
+      totalSales: totalSales,
+      cashFromBills: cashFromBills,
+      cashFromDues: cashFromDues,
+      totalCashIn: totalCashIn,
+      newDues: newDues,
+      totalExpenses: totalExp,
+      netCash: totalCashIn - totalExp,
+      billCount: billsOut.length,
+      duePayCount: duesOut.length,
+      expenseCount: expOut.length
+    },
+    bills: billsOut,
+    duePayments: duesOut,
+    expenses: expOut
+  };
+}
+
+function exportDailyReportPdf(shareAfterGenerate) {
+  var payload = buildDailyReportPayload();
+  var fileName = "avarani_daily_report_" + payload.dateIso + ".pdf";
+  if (window.AndroidPOS && typeof window.AndroidPOS.exportDailyReportPdf === "function") {
+    window.AndroidPOS.exportDailyReportPdf(JSON.stringify(payload), fileName, !!shareAfterGenerate);
+    return;
+  }
+  showToast(appData.settings.lang === "bn" ? "PDF রপ্তানি শুধুমাত্র Android অ্যাপে উপলব্ধ" : "PDF export is available in the Android app");
+}
+
+function buildMonthlyReportPayload() {
+  var targetMonth = getSelectedReportMonth();
+  var lang = appData.settings.lang || "bn";
+  var m = computeMonthlySummaryData(targetMonth);
+  return {
+    reportType: "monthly",
+    lang: lang,
+    monthIso: targetMonth,
+    monthLabel: formatMonthLabel(targetMonth, lang),
+    generatedAt: formatDateTime(Date.now()),
+    storeName: "আবরণী বস্ত্রালয় (Avarani Bastralaya)",
+    storeAddress: "Nimtala Bazar, Khejuri, Purba Medinipur - 721431",
+    storePhone: STORE_PHONE,
+    summary: {
+      totalSales: m.totalSales,
+      totalExpenses: m.totalExpenses,
+      profit: m.profit,
+      profitMarginPct: m.profitMarginPct,
+      cashFromBills: m.cashFromBills,
+      cashFromDues: m.cashFromDues,
+      totalCashIn: m.totalCashIn,
+      newDues: m.newDues,
+      billCount: m.billCount,
+      duePayCount: m.duePayCount,
+      expenseCount: m.expenseCount,
+      activeDays: m.activeDays
+    },
+    days: m.days
+  };
+}
+
+function exportMonthlyReportPdf(shareAfterGenerate) {
+  var payload = buildMonthlyReportPayload();
+  var fileName = "avarani_monthly_report_" + payload.monthIso + ".pdf";
+  if (window.AndroidPOS && typeof window.AndroidPOS.exportDailyReportPdf === "function") {
+    window.AndroidPOS.exportDailyReportPdf(JSON.stringify(payload), fileName, !!shareAfterGenerate);
+    return;
+  }
+  showToast(appData.settings.lang === "bn" ? "PDF রপ্তানি শুধুমাত্র Android অ্যাপে উপলব্ধ" : "PDF export is available in the Android app");
+}
+
 /* =========================================================================
    TAB 4: PRODUCT STOCK & CODES
    ========================================================================= */
+function getReorderPoint(p) {
+  if (!p || p.reorderPoint === undefined || p.reorderPoint === null || p.reorderPoint === "") return 5;
+  var rp = parseInt(p.reorderPoint, 10);
+  return isNaN(rp) ? 5 : Math.max(0, rp);
+}
+
+function isProductLowStock(p) {
+  var st = parseInt(p.stock, 10) || 0;
+  var rp = getReorderPoint(p);
+  return st <= rp;
+}
+
+function updateStockNavBadge() {
+  var lowCount = 0;
+  for (var i = 0; i < appData.products.length; i++) {
+    if (isProductLowStock(appData.products[i])) lowCount++;
+  }
+  var badge = document.getElementById("nav-stock-badge");
+  var navBtn = document.getElementById("nav-stock");
+  if (!badge || !navBtn) return;
+  if (lowCount > 0) {
+    badge.textContent = lowCount > 99 ? "99+" : String(lowCount);
+    badge.classList.add("visible");
+    navBtn.classList.add("has-alert");
+    var label = appData.settings.lang === "bn"
+      ? "পণ্যের স্টক (" + lowCount + "টি পণ্যের স্টক কম)"
+      : "Product Stock (" + lowCount + " items need restocking)";
+    navBtn.setAttribute("aria-label", label);
+    navBtn.title = label;
+  } else {
+    badge.textContent = "0";
+    badge.classList.remove("visible");
+    navBtn.classList.remove("has-alert");
+    navBtn.setAttribute("aria-label", t("tab_stock"));
+    navBtn.title = t("tab_stock");
+  }
+}
+
+function setStockFilter(f) {
+  stockFilter = f;
+  document.getElementById("stock-filter-all").classList.toggle("active", f === "all");
+  document.getElementById("stock-filter-low").classList.toggle("active", f === "low");
+  renderStock();
+}
+
+function toggleLowStockFilter() {
+  setStockFilter(stockFilter === "low" ? "all" : "low");
+}
+
 function renderStock() {
   var totalQty = 0;
   var lowCount = 0;
   for (var i = 0; i < appData.products.length; i++) {
-    var st = parseInt(appData.products[i].stock, 10) || 0;
+    var p = appData.products[i];
+    var st = parseInt(p.stock, 10) || 0;
     totalQty += st;
-    if (st <= 5) lowCount++;
+    if (isProductLowStock(p)) lowCount++;
   }
   document.getElementById("stk-total-items").textContent = appData.products.length;
   document.getElementById("stk-total-qty").textContent = totalQty;
   document.getElementById("stk-low-count").textContent = lowCount;
+  var lowChipCount = document.getElementById("stock-filter-low-count");
+  if (lowChipCount) lowChipCount.textContent = lowCount > 0 ? "(" + lowCount + ")" : "";
+
+  updateStockNavBadge();
+
+  var banner = document.getElementById("stock-restock-banner");
+  if (banner) {
+    if (lowCount > 0) {
+      banner.style.display = "flex";
+      var msg = appData.settings.lang === "bn"
+        ? "<strong>⚠️ " + lowCount + "টি পণ্যের স্টক রিঅর্ডার সীমার নিচে!</strong><div style='font-size:0.82rem;color:var(--text-muted);margin-top:2px;'>দ্রুত রিস্টক করার জন্য লাল চিহ্নিত পণ্যগুলো দেখুন।</div>"
+        : "<strong>⚠️ " + lowCount + " product" + (lowCount > 1 ? "s" : "") + " at or below reorder point!</strong><div style='font-size:0.82rem;color:var(--text-muted);margin-top:2px;'>Highlighted items need restocking soon.</div>";
+      var btnText = stockFilter === "low"
+        ? (appData.settings.lang === "bn" ? "সব পণ্য দেখুন" : "Show All")
+        : (appData.settings.lang === "bn" ? "রিস্টক তালিকা দেখুন" : "Filter Low Stock");
+      banner.innerHTML =
+        "<div style='flex:1;min-width:180px;'>" + msg + "</div>" +
+        "<button type='button' class='btn btn-sm btn-danger' onclick='toggleLowStockFilter()'>" + btnText + "</button>";
+    } else {
+      banner.style.display = "none";
+      banner.innerHTML = "";
+    }
+  }
 
   var q = (document.getElementById("stock-search").value || "").trim().toLowerCase();
   var filtered = [];
   for (var i = 0; i < appData.products.length; i++) {
     var p = appData.products[i];
+    if (stockFilter === "low" && !isProductLowStock(p)) continue;
     if (q) {
       var m = p.code.toLowerCase().indexOf(q) !== -1 ||
               (p.nameBn && p.nameBn.toLowerCase().indexOf(q) !== -1) ||
@@ -3231,6 +4008,12 @@ function renderStock() {
       if (!m) continue;
     }
     filtered.push(p);
+  }
+
+  if (stockFilter === "low") {
+    filtered.sort(function(a, b) {
+      return (parseInt(a.stock, 10) || 0) - (parseInt(b.stock, 10) || 0);
+    });
   }
 
   var wrap = document.getElementById("stock-list");
@@ -3242,22 +4025,34 @@ function renderStock() {
   var html = "";
   for (var i = 0; i < filtered.length; i++) {
     var p = filtered[i];
-    var isLow = (parseInt(p.stock, 10) || 0) <= 5;
+    var st = parseInt(p.stock, 10) || 0;
+    var rp = getReorderPoint(p);
+    var isLow = st <= rp;
+    var isOut = st <= 0;
+    var cardClass = "item-card" + (isOut ? " out-of-stock" : (isLow ? " restock-needed" : ""));
+    var statusBadge = "";
+    if (isOut) {
+      statusBadge = "<span class='badge badge-due' style='margin-left:4px;'>🚨 " + (appData.settings.lang === "bn" ? "স্টক শেষ" : "Out of Stock") + "</span>";
+    } else if (isLow) {
+      statusBadge = "<span class='badge badge-warn' style='margin-left:4px;'>⚠️ " + (appData.settings.lang === "bn" ? "রিস্টক প্রয়োজন" : "Restock") + "</span>";
+    }
     html +=
-      "<div class='item-card'>" +
+      "<div class='" + cardClass + "'>" +
         "<div class='item-card-header'>" +
           "<div>" +
             "<span class='badge badge-code'>#" + escapeHtml(p.code) + "</span> " +
             "<strong style='font-size:1.03rem;'>" + escapeHtml(prodDisplayName(p)) + "</strong>" +
+            statusBadge +
             "<div style='font-size:0.8rem;color:var(--text-muted);margin-top:2px;'>" + escapeHtml(p.category || "-") + (p.nameBn && p.nameEn ? " | " + escapeHtml(appData.settings.lang === "bn" ? p.nameEn : p.nameBn) : "") + "</div>" +
           "</div>" +
           "<div style='text-align:right;'>" +
             "<strong style='font-size:1.1rem;color:var(--primary);'>" + money(p.price) + "</strong><br>" +
-            "<span class='badge " + (isLow ? "badge-due" : "badge-ok") + "'>Stock: " + p.stock + "</span>" +
+            "<span class='badge " + (isLow ? "badge-due" : "badge-ok") + "'>Stock: " + st + " / Min: " + rp + "</span>" +
           "</div>" +
         "</div>" +
         "<div class='item-actions'>" +
           "<button type='button' class='btn btn-sm btn-primary' onclick=\"addStockItemToBill('" + p.id + "')\">🛒 " + (appData.settings.lang === "bn" ? "বিলে যোগ" : "Add to Bill") + "</button>" +
+          "<button type='button' class='btn btn-sm " + (isLow ? "btn-success" : "btn-outline") + "' onclick=\"adjustProductStock('" + p.id + "', 5)\">+5</button>" +
           "<button type='button' class='btn btn-sm btn-outline' onclick=\"adjustProductStock('" + p.id + "', 1)\">+1</button>" +
           "<button type='button' class='btn btn-sm btn-outline' onclick=\"adjustProductStock('" + p.id + "', -1)\">-1</button>" +
           "<button type='button' class='btn btn-sm btn-soft' onclick=\"openProductModal('" + p.id + "')\">✏️</button>" +
@@ -3295,6 +4090,7 @@ function openProductModal(pid) {
     document.getElementById("prod-name-en").value = p.nameEn || "";
     document.getElementById("prod-price").value = p.price;
     document.getElementById("prod-stock").value = p.stock;
+    document.getElementById("prod-reorder").value = getReorderPoint(p);
   } else {
     document.getElementById("modal-prod-title").textContent = appData.settings.lang === "bn" ? "নতুন পণ্য যোগ করুন" : "Add New Product";
     document.getElementById("prod-code").value = String(100 + appData.products.length + 1);
@@ -3303,6 +4099,7 @@ function openProductModal(pid) {
     document.getElementById("prod-name-en").value = "";
     document.getElementById("prod-price").value = "";
     document.getElementById("prod-stock").value = "10";
+    document.getElementById("prod-reorder").value = "5";
   }
   openModal("modal-product");
 }
@@ -3315,6 +4112,8 @@ function saveProduct() {
   var nameEn = document.getElementById("prod-name-en").value.trim();
   var price = Math.max(0, parseFloat(document.getElementById("prod-price").value) || 0);
   var stock = Math.max(0, parseInt(document.getElementById("prod-stock").value, 10) || 0);
+  var rawReorder = document.getElementById("prod-reorder").value.trim();
+  var reorderPoint = rawReorder === "" ? 5 : Math.max(0, parseInt(rawReorder, 10) || 0);
 
   if (!code || (!nameBn && !nameEn) || price <= 0) {
     showToast(appData.settings.lang === "bn" ? "কোড, নাম এবং দাম আবশ্যক!" : "Code, Name, and Price are required!");
@@ -3332,7 +4131,7 @@ function saveProduct() {
     if (p) {
       p.code = code; p.category = cat;
       p.nameBn = nameBn || nameEn; p.nameEn = nameEn || nameBn;
-      p.price = price; p.stock = stock;
+      p.price = price; p.stock = stock; p.reorderPoint = reorderPoint;
     }
   } else {
     appData.products.unshift({
@@ -3342,7 +4141,8 @@ function saveProduct() {
       nameBn: nameBn || nameEn,
       nameEn: nameEn || nameBn,
       price: price,
-      stock: stock
+      stock: stock,
+      reorderPoint: reorderPoint
     });
   }
   saveData();
@@ -3593,8 +4393,8 @@ function openAiAssistant() {
   var lowItems = [];
   for (var i = 0; i < appData.products.length; i++) {
     var p = appData.products[i];
-    if ((parseInt(p.stock, 10) || 0) <= 5) {
-      lowItems.push(prodDisplayName(p) + " (stock: " + p.stock + ")");
+    if (isProductLowStock(p)) {
+      lowItems.push(prodDisplayName(p) + " (stock: " + p.stock + ", reorder: " + getReorderPoint(p) + ")");
     }
   }
   var dueCusts = [];
@@ -3606,16 +4406,28 @@ function openAiAssistant() {
       dueCusts.push(c.name + " (₹" + d + ")");
     }
   }
+  var mSum = computeMonthlySummaryData(today.slice(0, 7));
   var snapshot = {
     lang: appData.settings.lang || "bn",
     todaySales: todaySales,
     todayCashIn: todayCash,
     todayExpenses: todayExp,
+    monthSales: mSum.totalSales,
+    monthExpenses: mSum.totalExpenses,
+    monthProfit: mSum.profit,
     totalMarketDue: totalMarketDue,
     lowStockSummary: lowItems.join(", "),
     topDueSummary: dueCusts.join(", ")
   };
   window.AndroidPOS.openAiAssistant(JSON.stringify(snapshot));
+}
+
+function openStoreMap() {
+  if (!window.AndroidPOS || typeof window.AndroidPOS.openStoreMap !== "function") {
+    showToast(appData.settings.lang === "bn" ? "স্টোর ম্যাপ শুধু Android অ্যাপে উপলব্ধ" : "Store Map is available in the Android app");
+    return;
+  }
+  window.AndroidPOS.openStoreMap(JSON.stringify(appData.customers || []), appData.settings.lang || "bn");
 }
 
 function openCloudSyncSheet() {
@@ -3642,7 +4454,10 @@ window.__applyCloudSync = function(cloudJsonStr) {
 
 // Initialize on load
 (function init() {
-  document.getElementById("report-date").value = todayIso();
+  var today = todayIso();
+  document.getElementById("report-date").value = today;
+  var monthEl = document.getElementById("report-month");
+  if (monthEl) monthEl.value = today.slice(0, 7);
   if (window.AndroidPOS && typeof window.AndroidPOS.openAiAssistant === "function") {
     var aiBtn = document.getElementById("btn-ai-assist");
     if (aiBtn) aiBtn.style.display = "inline-flex";
@@ -3650,6 +4465,12 @@ window.__applyCloudSync = function(cloudJsonStr) {
   if (window.AndroidPOS && typeof window.AndroidPOS.openCloudSync === "function") {
     var cloudBtn = document.getElementById("btn-cloud-sync");
     if (cloudBtn) cloudBtn.style.display = "inline-flex";
+  }
+  if (window.AndroidPOS && typeof window.AndroidPOS.openStoreMap === "function") {
+    var mapBtn = document.getElementById("btn-store-map");
+    if (mapBtn) mapBtn.style.display = "inline-flex";
+    var khataMapChip = document.getElementById("khata-map-chip");
+    if (khataMapChip) khataMapChip.style.display = "inline-flex";
   }
   applyLanguageAndFont();
   recalcTotals();

@@ -26,6 +26,7 @@
         "category": { "type": "string", "description": "Product category." },
         "price": { "type": "number", "description": "Selling price in INR." },
         "stock": { "type": "integer", "description": "Available stock count." },
+        "reorderPoint": { "type": "integer", "description": "Low-stock reorder point threshold." },
         "createdAt": { "type": "string", "format": "date-time", "description": "Server creation timestamp." },
         "updatedAt": { "type": "string", "format": "date-time", "description": "Server update timestamp." }
       },

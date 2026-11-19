@@ -29,6 +29,7 @@ data class StoreProduct(
   val category: String = "",
   val price: Double = 0.0,
   val stock: Long = 0L,
+  val reorderPoint: Long? = null,
   @ServerTimestamp val createdAt: Timestamp? = null,
   @ServerTimestamp val updatedAt: Timestamp? = null,
 )

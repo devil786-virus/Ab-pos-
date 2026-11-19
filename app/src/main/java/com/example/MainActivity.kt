@@ -3,6 +3,7 @@ package com.example
 import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.print.PrintAttributes
 import android.print.PrintManager
@@ -13,6 +14,7 @@ import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.Toast
+import androidx.core.content.FileProvider
 import androidx.activity.ComponentActivity
 import androidx.activity.SystemBarStyle
 import androidx.activity.compose.BackHandler
@@ -61,12 +63,19 @@ import com.example.auth.signOut
 import com.example.data.CloudAccountSheet
 import com.example.data.PosSyncRepository
 import com.example.data.PosSyncViewModel
+import com.example.maps.StoreMapSheet
+import com.example.pdf.DailyReportPdfGenerator
 import com.example.ui.theme.CrimsonDark
 import com.example.ui.theme.MyApplicationTheme
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
 import com.google.firebase.firestore.FirebaseFirestore
+import java.io.File
+import java.io.FileOutputStream
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.json.JSONObject
 
 class MainActivity : ComponentActivity() {
@@ -142,6 +151,8 @@ class AndroidPosBridge(
   private val onOpenAiAssistant: (String) -> Unit,
   private val onSyncPosData: (String) -> Unit,
   private val onOpenCloudSync: () -> Unit,
+  private val onExportDailyReportPdf: (String, String, Boolean) -> Unit,
+  private val onOpenStoreMap: (String, String) -> Unit,
 ) {
   @JavascriptInterface
   fun printReceipt(jobName: String) {
@@ -191,6 +202,16 @@ class AndroidPosBridge(
   fun openCloudSync() {
     onOpenCloudSync()
   }
+
+  @JavascriptInterface
+  fun exportDailyReportPdf(reportJson: String, suggestedName: String, shareAfterGenerate: Boolean) {
+    onExportDailyReportPdf(reportJson, suggestedName, shareAfterGenerate)
+  }
+
+  @JavascriptInterface
+  fun openStoreMap(customersJson: String, lang: String) {
+    onOpenStoreMap(customersJson, lang)
+  }
 }
 
 @SuppressLint("SetJavaScriptEnabled")
@@ -207,8 +228,12 @@ fun PosWebHostScreen(
   val credentialManager = remember { CredentialManager.create(context) }
   var webViewRef by remember { mutableStateOf<WebView?>(null) }
   var pendingJsonBackup by remember { mutableStateOf<String?>(null) }
+  var pendingReportPdfJson by remember { mutableStateOf<String?>(null) }
   var showAiSheet by remember { mutableStateOf(false) }
   var showCloudSheet by remember { mutableStateOf(false) }
+  var showMapSheet by remember { mutableStateOf(false) }
+  var mapCustomersJson by remember { mutableStateOf("[]") }
+  var mapLang by remember { mutableStateOf("bn") }
 
   val saveBackupLauncher =
     rememberLauncherForActivityResult(
@@ -264,7 +289,33 @@ fun PosWebHostScreen(
       }
     }
 
+  val saveReportPdfLauncher =
+    rememberLauncherForActivityResult(
+      contract = ActivityResultContracts.CreateDocument("application/pdf")
+    ) { uri ->
+      val reportJson = pendingReportPdfJson
+      pendingReportPdfJson = null
+      if (uri != null && reportJson != null) {
+        scope.launch {
+          try {
+            withContext(Dispatchers.IO) {
+              context.contentResolver.openOutputStream(uri)?.use { out ->
+                DailyReportPdfGenerator.generate(reportJson, out)
+              } ?: throw IllegalStateException("Unable to open destination file")
+            }
+            Toast.makeText(context, "Report PDF saved", Toast.LENGTH_SHORT).show()
+          } catch (e: Exception) {
+            Toast.makeText(context, "PDF export failed: ${e.message}", Toast.LENGTH_LONG).show()
+          }
+        }
+      }
+    }
+
   BackHandler {
+    if (showMapSheet) {
+      showMapSheet = false
+      return@BackHandler
+    }
     if (showCloudSheet) {
       showCloudSheet = false
       return@BackHandler
@@ -375,6 +426,63 @@ fun PosWebHostScreen(
                     showCloudSheet = true
                   }
                 },
+                onExportDailyReportPdf = { reportJson, suggestedName, shareAfterGenerate ->
+                  post {
+                    val safeName =
+                      suggestedName
+                        .replace(Regex("[^a-zA-Z0-9._\\-]"), "_")
+                        .ifBlank { "avarani_daily_report.pdf" }
+                        .let { if (it.endsWith(".pdf", ignoreCase = true)) it else "$it.pdf" }
+                    if (shareAfterGenerate) {
+                      scope.launch {
+                        try {
+                          val shareFile =
+                            withContext(Dispatchers.IO) {
+                              val dir = File(context.cacheDir, "reports").apply { mkdirs() }
+                              val target = File(dir, safeName)
+                              FileOutputStream(target).use { out ->
+                                DailyReportPdfGenerator.generate(reportJson, out)
+                              }
+                              target
+                            }
+                          val uri =
+                            FileProvider.getUriForFile(
+                              context,
+                              "${context.packageName}.fileprovider",
+                              shareFile,
+                            )
+                          val shareIntent =
+                            Intent(Intent.ACTION_SEND).apply {
+                              type = "application/pdf"
+                              putExtra(Intent.EXTRA_STREAM, uri)
+                              putExtra(Intent.EXTRA_SUBJECT, "Avarani Bastralaya Report")
+                              addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                            }
+                          context.startActivity(
+                            Intent.createChooser(shareIntent, "Share Report PDF")
+                          )
+                        } catch (e: Exception) {
+                          Toast.makeText(
+                              context,
+                              "PDF share failed: ${e.message}",
+                              Toast.LENGTH_LONG,
+                            )
+                            .show()
+                        }
+                      }
+                    } else {
+                      pendingReportPdfJson = reportJson
+                      saveReportPdfLauncher.launch(safeName)
+                    }
+                  }
+                },
+                onOpenStoreMap = { customersJson, lang ->
+                  post {
+                    mapCustomersJson = customersJson
+                    mapLang = lang
+                    showMapSheet = true
+                  }
+                },
               ),
               "AndroidPOS",
             )
@@ -397,6 +505,14 @@ fun PosWebHostScreen(
     AiAssistantSheet(
       viewModel = aiViewModel,
       onDismiss = { showAiSheet = false },
+    )
+  }
+
+  if (showMapSheet) {
+    StoreMapSheet(
+      customersJson = mapCustomersJson,
+      lang = mapLang,
+      onDismiss = { showMapSheet = false },
     )
   }
 

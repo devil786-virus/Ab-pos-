@@ -173,6 +173,12 @@ class PosSyncRepository(
         val category = obj.optString("category", "").trim().take(60)
         val price = obj.optDouble("price", 0.0).coerceIn(0.0, 10_000_000.0)
         val stock = obj.optLong("stock", 0L).coerceIn(0L, 1_000_000L)
+        val reorderPoint =
+          if (obj.has("reorderPoint") && !obj.isNull("reorderPoint")) {
+            obj.optLong("reorderPoint", 5L).coerceIn(0L, 1_000_000L)
+          } else {
+            5L
+          }
         if (existingProductIds.contains(docId)) {
           docRef
             .update(
@@ -183,6 +189,7 @@ class PosSyncRepository(
                 "category" to category,
                 "price" to price,
                 "stock" to stock,
+                "reorderPoint" to reorderPoint,
                 "updatedAt" to FieldValue.serverTimestamp(),
               )
             )
@@ -198,6 +205,7 @@ class PosSyncRepository(
                 "category" to category,
                 "price" to price,
                 "stock" to stock,
+                "reorderPoint" to reorderPoint,
                 "createdAt" to FieldValue.serverTimestamp(),
                 "updatedAt" to FieldValue.serverTimestamp(),
               )

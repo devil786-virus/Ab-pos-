@@ -40,7 +40,8 @@ service cloud.firestore {
              data.nameEn is string && data.nameEn.size() >= 1 && data.nameEn.size() <= 120 &&
              data.category is string && data.category.size() <= 60 &&
              data.price is number && data.price >= 0 && data.price <= 10000000 &&
-             data.stock is int && data.stock >= 0 && data.stock <= 1000000;
+             data.stock is int && data.stock >= 0 && data.stock <= 1000000 &&
+             (!('reorderPoint' in data) || (data.reorderPoint is int && data.reorderPoint >= 0 && data.reorderPoint <= 1000000));
     }
 
     function isValidCustomer(data) {
@@ -118,7 +119,7 @@ service cloud.firestore {
         allow create: if isOwner(userId) &&
                          isValidId(productId) &&
                          incoming().keys().hasAll(['userId', 'code', 'nameBn', 'nameEn', 'category', 'price', 'stock', 'createdAt', 'updatedAt']) &&
-                         incoming().keys().hasOnly(['userId', 'code', 'nameBn', 'nameEn', 'category', 'price', 'stock', 'createdAt', 'updatedAt']) &&
+                         incoming().keys().hasOnly(['userId', 'code', 'nameBn', 'nameEn', 'category', 'price', 'stock', 'reorderPoint', 'createdAt', 'updatedAt']) &&
                          incoming().createdAt is timestamp && incoming().createdAt <= request.time &&
                          incoming().updatedAt is timestamp && incoming().updatedAt <= request.time &&
                          isValidProduct(incoming());
@@ -130,7 +131,7 @@ service cloud.firestore {
                          incoming().userId == existing().userId &&
                          incoming().createdAt == existing().createdAt &&
                          incoming().updatedAt is timestamp && incoming().updatedAt <= request.time &&
-                         incoming().diff(existing()).affectedKeys().hasOnly(['code', 'nameBn', 'nameEn', 'category', 'price', 'stock', 'updatedAt']);
+                         incoming().diff(existing()).affectedKeys().hasOnly(['code', 'nameBn', 'nameEn', 'category', 'price', 'stock', 'reorderPoint', 'updatedAt']);
 
         allow delete: if isOwner(userId) && isValidId(productId);
       }
